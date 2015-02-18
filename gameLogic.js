@@ -1,18 +1,10 @@
 'use strict'
 
-angular.module('myApp').factory('gameLogic', function()){
+angular.module('myApp',[]).factory('gameLogic', function(){
 	
-	function isEqual(object1, object2){
-		return angular.equals(object1, object2);
-	}
 
-	function copyObject(object){
-		return angular.copy(object);
-	}
-
-	function getInitialBoard(board.totalPlayerss) {
-		return 
-	{"territory" : 
+	function getInitialBoard(totalPlayerss) {
+		return {"territory" : 
 
 		{
 			"Alaska" : {
@@ -569,12 +561,11 @@ angular.module('myApp').factory('gameLogic', function()){
 			}
 
 		},
-	// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
-	"phase" : 1,
-	"totalPlayers" : totalPlayers
+		// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
+		"phase" : 1,
+		"totalPlayers" : totalPlayers
+		}
 	}
-
-
 
 	function getWinner(board){
 
@@ -591,8 +582,6 @@ angular.module('myApp').factory('gameLogic', function()){
 		}
 		return true;
 	}
-
-	
 
 	function createMove(board, turnIndexBeforeMove, country, targetCountry, moveUnits){
 		if (board === undefined){
@@ -617,7 +606,7 @@ angular.module('myApp').factory('gameLogic', function()){
 				boardAfterMove.territory[country].units++;
 
 				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
 				return [firstOperation,
 					{"set": {"key": "board", "value": boardAfterMove}},
@@ -639,7 +628,7 @@ angular.module('myApp').factory('gameLogic', function()){
 				boardAfterMove.territory[country].units++;
 
 				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
@@ -661,7 +650,7 @@ angular.module('myApp').factory('gameLogic', function()){
 				boardAfterMove.territory[country].units++;
 
 				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
@@ -701,7 +690,7 @@ angular.module('myApp').factory('gameLogic', function()){
 				boardAfterMove.territory[targetCountry].owner = result.defender.units;
 
 				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
@@ -743,7 +732,7 @@ angular.module('myApp').factory('gameLogic', function()){
 				boardAfterMove.territory[targetCountry].owner = board.territory[targetCountry].units + moveUnits;
 
 				// The next player's turn (the turn index minus one unless it's 0).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
