@@ -3,7 +3,7 @@
 angular.module('myApp',[]).factory('gameLogic', function(){
 	
 
-	function getInitialBoard(totalPlayerss) {
+	function getInitialBoard(totalPlayers) {
 		return {"territory" : 
 
 		{
@@ -565,6 +565,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		"phase" : 1,
 		"totalPlayers" : totalPlayers
 		}
+	
 	}
 
 	function getWinner(board){
@@ -583,6 +584,16 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		return true;
 	}
 
+
+	function addOneUnitOnEachCountry(board){
+		var index = 2;
+		for (var key in board.territory){
+			index = (index - 1 ) === 0 ? board.totalPlayers : (index - 1);
+			board.territory[key].owner =  index;
+			board.territory[key].units = 1;
+		}
+	}
+
 	function createMove(board, turnIndexBeforeMove, country, targetCountry, moveUnits){
 		if (board === undefined){
 			// Initirally, the board in state is undefined.
@@ -597,42 +608,38 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 1:
 			{
-				if (board.territory[country].owner !== null){
-					throw new Error("You have to deploy units on blank territory in first deploy phase");
-				}
+				if (!boardIsFull(board)){
+					if (board.territory[country].owner !== null){
+						throw new Error("You have to deploy units on blank territory in first deploy phase");
+					}
 
-				var boardAfterMove = angular.copy(board);
-				boardAfterMove.territory[country].Owner = turnIndexBeforeMove;
-				boardAfterMove.territory[country].units++;
+					var boardAfterMove = angular.copy(board);
+					boardAfterMove.territory[country].owner = turnIndexBeforeMove;
+					boardAfterMove.territory[country].units++;
 
-				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
-				
-				return [firstOperation,
-					{"set": {"key": "board", "value": boardAfterMove}},
-					{"set": {"key": "delta", "value": country}}];
-			}
-
-			/**
-			 * Return the move that should be performed when player with index turnIndexBeforeMove makes
-			 * a move in the country in the second deploy phase. You can not deploy units on others' territory.
-			**/
-
-			case 2:
-			{
-				if (board.territory[country].owner !== turnIndexBeforeMove){
-					throw new Error("You can not deploy units on other's territory");
-				}
-
-				var boardAfterMove = angular.copy(board);
-				boardAfterMove.territory[country].units++;
-
-				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
-				
-				return [firstOperation,
+					// The next player's turn (the turn index minus one).
+					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : (turnIndexBeforeMove - 1)}};
+					
+					return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
 						{"set": {"key": "delta", "value": country}}];
+				}
+
+				else{
+					if (board.territory[country].owner !== turnIndexBeforeMove){
+						throw new Error("You can not deploy units on other's territory");
+					}
+
+					var boardAfterMove = angular.copy(board);
+					boardAfterMove.territory[country].units++;
+
+					// The next player's turn (the turn index minus one).
+					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+					
+					return [firstOperation,
+							{"set": {"key": "board", "value": boardAfterMove}},
+							{"set": {"key": "delta", "value": country}}];
+				}
 			}
 
 
@@ -640,7 +647,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			 * Return the move that should be performed when player with index turnIndexBeforeMove makes
 			 * a move in the country in the reinforce phase. You can not reinforce units on others' territory.
 			**/
-			case 3:
+			case 2:
 			{
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You can not deploy units on other's territory");
@@ -661,7 +668,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			 * Return the move that should be performed when player with index turnIndexBeforeMove makes a
 			 * move in the country in the attack phase. You can only attack your neighbor enemies.
 			**/
-			case 4:
+			case 3:
 			{
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
@@ -704,7 +711,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			 * own territory to your own neighbor territory.
 			**/
 
-			case 5:
+			case 4:
 			{
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
@@ -754,9 +761,13 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 		try{
 
-			var deltaValue = move[2].set.value;
+			var country = move[2].set.value;
 			var board = stateBeforeMove.board;
-			var expectedMove = createMove(board, turnIndexBeforeMove, deltaValue);
+			var expectedMove = createMove(board, turnIndexBeforeMove, country, null, null);
+
+//			console.log(move[0]);
+//			console.log(expectedMove[0]);
+
 			if (!angular.equals(move, expectedMove)){
 				return false;
 			}
@@ -770,6 +781,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	return {
 		getInitialBoard: getInitialBoard,
 		createMove: createMove,
-		isMoveOk: isMoveOk
+		isMoveOk: isMoveOk,
+		getWinner: getWinner,
+		boardIsFull: boardIsFull,
+		addOneUnitOnEachCountry: addOneUnitOnEachCountry
 	};
 });
