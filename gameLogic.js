@@ -590,7 +590,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		for (var key in board.territory){
 			index = (index - 1 ) === 0 ? board.totalPlayers : (index - 1);
 			board.territory[key].owner =  index;
-			board.territory[key].units = 1;
+			board.territory[key].units++;
 		}
 	}
 
@@ -616,6 +616,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.territory[country].owner = turnIndexBeforeMove;
 					boardAfterMove.territory[country].units++;
+
 
 					// The next player's turn (the turn index minus one).
 					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : (turnIndexBeforeMove - 1)}};
@@ -670,32 +671,43 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 3:
 			{
+
+
+
+
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
 				}
 
+				
 				if (board.territory[country].units === 1){
 					throw new Error("You have to choose a country with units more than one")
 				}
 
-				if (!board.territory[targetCountry].name in board[country].neighbors){
+				if (!(Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) > -1)){
 					throw new Error("You can only attack adjacent countries");
 				}
 
-				if (board.territory[targetCountry].owner !== turnIndexBeforeMove){
+
+
+				if (board.territory[targetCountry].owner === turnIndexBeforeMove){
 					throw new Error("You can not attack your own territory");
 				}
 
+
 				// the result after an attack including the owner and the units info, it depends on players sometime.
-				var result = getReusltAfterAttack(board.territory[country].units, board.territory[targetCountry].units);
+				var result = getReusltAfterAttack(board.territory[country].units, board.territory[country].owner,
+							 board.territory[targetCountry].units, board.territory[targetCountry].owner);
 				
+				console.log(result);
 				var boardAfterMove = angular.copy(board);
 
 				boardAfterMove.territory[country].owner = result.attacker.owner;
 				boardAfterMove.territory[targetCountry].owner = result.defender.owner;
 				boardAfterMove.territory[country].units = result.attacker.units;
-				boardAfterMove.territory[targetCountry].owner = result.defender.units;
+				boardAfterMove.territory[targetCountry].units = result.defender.units;
 
+				
 				// The next player's turn (the turn index minus one).
 				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
@@ -730,7 +742,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				}
 
 				if (moveUnits >= board.territory[country] || moveUnits < 0){
-					throw new Error("You can not move units more than you have.")
+					throw new Error("You can not move units more than you have.");
 				}
 
 				var boardAfterMove = angular.copy(board);
@@ -755,7 +767,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		var move = params.move;
 		var turnIndexBeforeMove = params.turnIndexBeforeMove;
 		var stateBeforeMove = params.stateBeforeMove;
-
+		var targetCountry = params.targetCountry;
+		var moveUnits = params.moveUnits;
 		//Here we assume that turnIndexBeforeMove and stateBeforeMove are legal, and we need 
 		//to verify that move is legal
 
@@ -763,19 +776,148 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 			var country = move[2].set.value;
 			var board = stateBeforeMove.board;
-			var expectedMove = createMove(board, turnIndexBeforeMove, country, null, null);
-
-//			console.log(move[0]);
-//			console.log(expectedMove[0]);
+			var expectedMove = createMove(board, turnIndexBeforeMove, country, targetCountry, moveUnits);
 
 			if (!angular.equals(move, expectedMove)){
 				return false;
 			}
 		} catch (e) {
 			// if there are any exceptions then move is illegal
+		  //console.log(e);
 		  return false;
 		}
 		return true;
+	}
+
+	function getReusltAfterAttack(attackerUnits, attackerOwner, defenderUnits, defenderOwner){
+
+		var res;
+		var attackerDices;
+		var defenderDices;
+		var attackerIndex = [];
+		var defenderIndex = [];
+
+		if (attackerUnits === 1){
+			return res;
+		}
+		else if (attackerUnits === 2){
+			attackerDices = 1;
+		}
+		else if (attackerUnits === 3){
+			attackerDices = 2;
+		}
+		else{
+			attackerDices = 3;
+		}
+
+
+		if (defenderUnits === 1){
+			defenderDices = 1;
+		}
+		else{
+			defenderDices = 2;
+		}
+
+		for(i = 0; i < attackerDices; i++){
+			attackerIndex[i] = Math.floor(Math.random() * ((6-1)+1) + 1);
+		}
+
+		for(i = 0; i < defenderDices; i++){
+			defenderIndex[i] = Math.floor(Math.random() * ((6-1)+1) + 1);
+		}
+
+		if(attackerDices === 3 && defenderDices === 2){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+
+			attackerIndex.splice(attackerIndex.indexOf(attackerHighest), 1); // remove max from the array
+    		
+    		var attackerSecondHighest = Math.max.apply(null, attackerIndex);
+
+    		var defenderHighest = Math.max.apply(null, defenderIndex);
+    		defenderIndex.splice(defenderIndex.indexOf(defenderHighest), 1);
+    		var defenderSecondHighest = defenderIndex[0];
+
+    		if(attackerHighest > defenderHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+
+    		if(attackerSecondHighest > defenderSecondHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+		}
+
+		else if(attackerDices === 3 && defenderDices === 1){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+    		var defenderHighest = defenderIndex[0];
+
+    		if(attackerHighest > defenderHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+		}
+
+		else if(attackerDices === 2 && defenderDices === 2){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+			attackerIndex.splice(attackerIndex.indexOf(attackerHighest), 1); // remove max from the array
+    		var attackerSecondHighest = attackerIndex[0];
+
+    		var defenderHighest = Math.max.apply(null, defenderIndex);
+    		defenderIndex.splice(defenderIndex.indexOf(defenderHighest), 1);
+    		var defenderSecondHighest = defenderIndex[0];
+
+    		if(attackerHighest > defenderHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+
+    		if(attackerSecondHighest > defenderSecondHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+		}
+
+		else if(attackerDices === 2 && defenderDices === 1){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+    		var defenderHighest = defenderIndex[0];
+
+    		if(attackerHighest > defenderHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+    	}
+
+    	else if(attackerDices === 1 && defenderDices === 2){
+    		var attackerHighest = attackerIndex[0];
+    		var defenderHighest = Math.max.apply(null, defenderIndex);
+
+    		if(attackerHighest > defenderHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+    	}
+
+    	else if(attackerDices === 1 && defenderDices === 1){
+    		var attackerHighest = attackerIndex[0];
+    		var defenderHighest = defenderIndex[0];
+
+    		if(attackerHighest > defenderHighest)
+    			defenderUnits--;
+    		else
+    			attackerUnits--;
+    	}
+
+    	if(defenderUnits === 0){
+    		defenderOwner = attackerOwner;
+    		defenderUnits = attackerDices;
+    		attackerUnits -= attackerDices;
+    	}
+
+    	res = {"attacker":{"owner": attackerOwner, "units": attackerUnits},
+			   "defender":{"owner": defenderOwner, "units": defenderUnits}};
+    	return res;
+
 	}
 
 	return {
