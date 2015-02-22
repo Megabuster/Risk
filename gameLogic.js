@@ -762,7 +762,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	}
 
 
-
 	function isMoveOk(params){
 		var move = params.move;
 		var turnIndexBeforeMove = params.turnIndexBeforeMove;

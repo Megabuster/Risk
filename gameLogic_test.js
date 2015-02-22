@@ -262,7 +262,8 @@ describe("In Risk", function() {
     });
   
 
-  it("player 1 attack Afghanistan(belongs to player 2) from China(belongs to player 1) (attack phase(3)) is legal", function(){
+  // how to get board after the move?
+  it("player 1 attack Afghanistan(belongs to player 2, has 5 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
     
     boardBefore = board;
     //add 5 units on each territory on the board
@@ -287,4 +288,32 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}], "Afghanistan");
     });
   
+  it("player 1 attack Afghanistan(belongs to player 2, has 1 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
+    
+    boardBefore = board;
+    //add 5 units on each territory on the board
+    for (i = 1; i < 6; i++){ 
+      _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    }
+
+    boardBefore.phase = 3;
+    boardBefore.territory.Afghanistan.units = 1;
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.China.owner = 1;
+    boardAfter.territory.China.units = 2;
+
+    boardAfter.territory.Afghanistan.owner = 1;
+    boardAfter.territory.Afghanistan.units = 3;
+    
+    expectMoveOk(1, 
+      {"board" : boardBefore},
+    [{"setTurn": {"turnIndex" : 2}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan");
+    });
+
+  
+
 });
