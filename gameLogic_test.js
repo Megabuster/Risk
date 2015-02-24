@@ -144,7 +144,7 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}]);
     });
    
-   it("player 1 placing one unit on China again after the board is full is(deploy phase(1)) legal", function(){
+  it("player 1 placing one unit on China again after the board is full is(deploy phase(1)) legal", function(){
     
     boardBefore = board; 
     _gameLogic.addOneUnitOnEachCountry(boardBefore);
@@ -214,6 +214,11 @@ describe("In Risk", function() {
     (because they are not adjacent) ", function(){
     
     boardBefore = board;
+
+    console.log(Object.keys(board.territory).length);
+    console.log(_gameLogic.getWinner(board));
+
+
     //add 5 units on each territory on the board
     for (i = 1; i < 6; i++){ 
       _gameLogic.addOneUnitOnEachCountry(boardBefore);
@@ -263,6 +268,7 @@ describe("In Risk", function() {
   
 
   // how to get board after the move?
+  /*
   it("player 1 attack Afghanistan(belongs to player 2, has 5 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
     
     boardBefore = board;
@@ -313,7 +319,7 @@ describe("In Risk", function() {
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "China"}}], "Afghanistan");
     });
-
+  */
   
 
 });

@@ -563,13 +563,77 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		},
 		// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
 		"phase" : 1,
-		"totalPlayers" : totalPlayers
+		"totalPlayers" : totalPlayers,
+		"players" : {
+			"player1" : {
+				"totalTerritories" : 0,
+				"Australia" : 0,
+				"Asia" : 0,
+				"Africa" : 0,
+				"Europe" : 0,
+				"South_America" : 0,
+				"North_America" : 0
+			},
+
+			"player2" : {
+				"totalTerritories" : 0,
+				"Australia" : 0,
+				"Asia" : 0,
+				"Africa" : 0,
+				"Europe" : 0,
+				"South_America" : 0,
+				"North_America" : 0
+			},
+
+			"player3" : {
+				"totalTerritories" : 0,
+				"Australia" : 0,
+				"Asia" : 0,
+				"Africa" : 0,
+				"Europe" : 0,
+				"South_America" : 0,
+				"North_America" : 0
+			},
+
+			"player4" : {
+				"totalTerritories" : 0,
+				"Australia" : 0,
+				"Asia" : 0,
+				"Africa" : 0,
+				"Europe" : 0,
+				"South_America" : 0,
+				"North_America" : 0
+			},
+
+			"player5" : {
+				"totalTerritories" : 0,
+				"Australia" : 0,
+				"Asia" : 0,
+				"Africa" : 0,
+				"Europe" : 0,
+				"South_America" : 0,
+				"North_America" : 0
+			},
+
+			"player6" : {
+				"totalTerritories" : 0,
+				"Australia" : 0,
+				"Asia" : 0,
+				"Africa" : 0,
+				"Europe" : 0,
+				"South_America" : 0,
+				"North_America" : 0
+			}
 		}
+	}
 	
 	}
 
 	function getWinner(board){
-
+		for (var i = 0; i < 6; i++)
+			if (board.players["player"+(i+1)].totalTerritories >= 42)
+				return "player" + (i+1);
+		return null;
 	}
 
 	/**
@@ -586,7 +650,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 
 	function addOneUnitOnEachCountry(board){
-		var index = 2;
+		var index = board.totalPlayers;
 		for (var key in board.territory){
 			index = (index - 1 ) === 0 ? board.totalPlayers : (index - 1);
 			board.territory[key].owner =  index;
@@ -671,9 +735,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 3:
 			{
-
-
-
 
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
@@ -789,7 +850,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	}
 
 	function getReusltAfterAttack(attackerUnits, attackerOwner, defenderUnits, defenderOwner){
-
+		var i;
 		var res;
 		var attackerDices;
 		var defenderDices;
