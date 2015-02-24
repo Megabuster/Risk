@@ -658,12 +658,13 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		}
 	}
 
-	function createMove(board, turnIndexBeforeMove, country, targetCountry, moveUnits){
+	function createMove(board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits){
 		if (board === undefined){
 			// Initirally, the board in state is undefined.
 			board = getInitialBoard(2);
 		}
-		
+		//console.log(dice);
+
 		switch (board.phase){
 			/**
 			 * Return the move that should be performed when player with index turnIndexBeforeMove makes
@@ -758,9 +759,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 				// the result after an attack including the owner and the units info, it depends on players sometime.
 				var result = getReusltAfterAttack(board.territory[country].units, board.territory[country].owner,
-							 board.territory[targetCountry].units, board.territory[targetCountry].owner);
+							 board.territory[targetCountry].units, board.territory[targetCountry].owner, dice);
 				
-				console.log(result);
+				//console.log(result);
 				var boardAfterMove = angular.copy(board);
 
 				boardAfterMove.territory[country].owner = result.attacker.owner;
@@ -829,6 +830,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		var stateBeforeMove = params.stateBeforeMove;
 		var targetCountry = params.targetCountry;
 		var moveUnits = params.moveUnits;
+		var dice = params.dice;
 		//Here we assume that turnIndexBeforeMove and stateBeforeMove are legal, and we need 
 		//to verify that move is legal
 
@@ -836,7 +838,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 			var country = move[2].set.value;
 			var board = stateBeforeMove.board;
-			var expectedMove = createMove(board, turnIndexBeforeMove, country, targetCountry, moveUnits);
+			var expectedMove = createMove(board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
 
 			if (!angular.equals(move, expectedMove)){
 				return false;
@@ -849,13 +851,18 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		return true;
 	}
 
-	function getReusltAfterAttack(attackerUnits, attackerOwner, defenderUnits, defenderOwner){
+	function getReusltAfterAttack(attackerUnits, attackerOwner, defenderUnits, defenderOwner, dice){
 		var i;
 		var res;
 		var attackerDices;
 		var defenderDices;
 		var attackerIndex = [];
 		var defenderIndex = [];
+		//console.log(dice);
+
+		if(Object.keys(dice).length !== 5){
+			throw new Error("Need 5 dices to perform an attack!");
+		}
 
 		if (attackerUnits === 1){
 			return res;
@@ -878,12 +885,22 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			defenderDices = 2;
 		}
 
+		/*
 		for(i = 0; i < attackerDices; i++){
 			attackerIndex[i] = Math.floor(Math.random() * ((6-1)+1) + 1);
 		}
 
 		for(i = 0; i < defenderDices; i++){
 			defenderIndex[i] = Math.floor(Math.random() * ((6-1)+1) + 1);
+		}
+		*/
+
+		for(i = 0; i < attackerDices; i++){
+			attackerIndex[i] = dice["d" + i];
+		}
+
+		for(i = 0; i < defenderDices; i++){
+			defenderIndex[i] = dice["d" + (i+3)];
 		}
 
 		if(attackerDices === 3 && defenderDices === 2){

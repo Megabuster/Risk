@@ -12,16 +12,16 @@ describe("In Risk", function() {
     //fullBoard = _gameLogic.getTheBoardWithOneUnitOnEachCountry();
   }));
 
-  function expectMoveOk(turnIndexBeforeMove, stateBeforeMove, move, targetCountry, moveUnits) {
+  function expectMoveOk(turnIndexBeforeMove, stateBeforeMove, move, targetCountry, dice, moveUnits) {
     expect(_gameLogic.isMoveOk({turnIndexBeforeMove: turnIndexBeforeMove,
       stateBeforeMove: stateBeforeMove,
-      move: move, targetCountry: targetCountry, moveUnits: moveUnits})).toBe(true);
+      move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(true);
   }
 
-  function expectIllegalMove(turnIndexBeforeMove, stateBeforeMove, move, targetCountry, moveUnits) {
+  function expectIllegalMove(turnIndexBeforeMove, stateBeforeMove, move, targetCountry, dice, moveUnits) {
     expect(_gameLogic.isMoveOk({turnIndexBeforeMove: turnIndexBeforeMove,
       stateBeforeMove: stateBeforeMove,
-      move: move, targetCountry: targetCountry, moveUnits: moveUnits})).toBe(false);
+      move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(false);
   }
 
   
@@ -215,10 +215,6 @@ describe("In Risk", function() {
     
     boardBefore = board;
 
-    console.log(Object.keys(board.territory).length);
-    console.log(_gameLogic.getWinner(board));
-
-
     //add 5 units on each territory on the board
     for (i = 1; i < 6; i++){ 
       _gameLogic.addOneUnitOnEachCountry(boardBefore);
@@ -266,9 +262,7 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}], "India");
     });
   
-
-  // how to get board after the move?
-  /*
+    
   it("player 1 attack Afghanistan(belongs to player 2, has 5 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
     
     boardBefore = board;
@@ -291,8 +285,9 @@ describe("In Risk", function() {
       {"board" : boardBefore},
     [{"setTurn": {"turnIndex" : 2}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan");
+     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
+  
   
   it("player 1 attack Afghanistan(belongs to player 2, has 1 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
     
@@ -317,9 +312,7 @@ describe("In Risk", function() {
       {"board" : boardBefore},
     [{"setTurn": {"turnIndex" : 2}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan");
+     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan",  {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
-  */
-  
 
 });
