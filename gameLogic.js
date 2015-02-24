@@ -787,6 +787,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 			case 4:
 			{
+
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
 				}
@@ -795,7 +796,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					throw new Error("You have to choose a country with units more than one")
 				}
 
-				if (!board.territory[targetCountry].name in board[country].neighbors){
+				if (!(Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) > -1)){
 					throw new Error("You can only fortify adjacent countries");
 				}
 
@@ -810,7 +811,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				var boardAfterMove = angular.copy(board);
 
 				boardAfterMove.territory[country].units = board.territory[country].units - moveUnits;
-				boardAfterMove.territory[targetCountry].owner = board.territory[targetCountry].units + moveUnits;
+				boardAfterMove.territory[targetCountry].units = board.territory[targetCountry].units + moveUnits;
+
 
 				// The next player's turn (the turn index minus one unless it's 0).
 				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
@@ -839,7 +841,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			var country = move[2].set.value;
 			var board = stateBeforeMove.board;
 			var expectedMove = createMove(board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
-
+			
 			if (!angular.equals(move, expectedMove)){
 				return false;
 			}
@@ -850,6 +852,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		}
 		return true;
 	}
+
+
 
 	function getReusltAfterAttack(attackerUnits, attackerOwner, defenderUnits, defenderOwner, dice){
 		var i;

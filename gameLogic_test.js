@@ -1,6 +1,9 @@
 describe("In Risk", function() {
   var _gameLogic;
   var board;
+  var boardAfter;
+  var boardBefore;
+  var i;
   //var fullBoard;
 
   beforeEach(module("myApp"));
@@ -23,7 +26,6 @@ describe("In Risk", function() {
       stateBeforeMove: stateBeforeMove,
       move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(false);
   }
-
   
   it("player 1 placing one unit on China from initial state (deploy phase(1)) is legal", function(){
     boardBefore = board;
@@ -209,7 +211,6 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "Middle_East"}}]);
     });
 
-  
   it("player 1 attack Middle_East(belongs to player 2) from China(belongs to player 1) (attack phase(3)) is illegal\
     (because they are not adjacent) ", function(){
     
@@ -261,7 +262,6 @@ describe("In Risk", function() {
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "China"}}], "India");
     });
-  
     
   it("player 1 attack Afghanistan(belongs to player 2, has 5 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
     
@@ -288,7 +288,6 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}], "Afghanistan", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
   
-  
   it("player 1 attack Afghanistan(belongs to player 2, has 1 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
     
     boardBefore = board;
@@ -314,5 +313,54 @@ describe("In Risk", function() {
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "China"}}], "Afghanistan",  {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
+
+
+  it("player 1 fortify India(belongs to player 1, has 5 units) from China(belongs to player 1, has 5 units) with 3 units (fortify phase(4)) is legal", function(){
+    debugger;
+    boardBefore = board;
+    //add 5 units on each territory on the board
+    for (i = 1; i < 6; i++){ 
+      _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    }
+    
+    boardBefore.phase = 4;
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.China.units = 2;
+
+    boardAfter.territory.India.units = 8;
+    
+    expectMoveOk(1, 
+      {"board" : boardBefore},
+    [{"setTurn": {"turnIndex" : 2}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "China"}}], "India", {}, 3);
+    });
+
+  it("player 1 fortify India(belongs to player 1, has 5 units) from China(belongs to player 1, has 5 units) with 6 units (fortify phase(4)) is illegal", function(){
+    debugger;
+    boardBefore = board;
+    //add 5 units on each territory on the board
+    for (i = 1; i < 6; i++){ 
+      _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    }
+    
+    boardBefore.phase = 4;
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.China.units = 2;
+
+    boardAfter.territory.India.units = 8;
+    
+    expectIllegalMove(1, 
+      {"board" : boardBefore},
+    [{"setTurn": {"turnIndex" : 2}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "China"}}], "India", {}, 6);
+  });
+
+
 
 });

@@ -15,8 +15,8 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      '/home/zhuoran/node_modules/angular/angular.js',      
-      '/home/zhuoran/node_modules/angular-mocks/angular-mocks.js',      
+      'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js',
+      'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-mocks.js',
       'gameLogic.js',
       'gameLogic_test.js'
     ],
@@ -30,17 +30,22 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
+       'gameLogic.js': ['coverage']
     },
 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'coverage'],
 
+    coverageReporter: {
+        type : 'html',
+        dir : 'coverage/'
+    },
 
     // web server port
-    port: 9876,
+    port: 8888,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -60,6 +65,11 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     browsers: ['Firefox'],
 
+    plugins : [
+        'karma-firefox-launcher',
+        'karma-jasmine',
+        'karma-coverage'
+    ],
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
