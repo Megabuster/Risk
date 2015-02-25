@@ -1,3 +1,6 @@
+/*
+	Created by Zhuoran on 2/24/14
+*/
 'use strict'
 
 angular.module('myApp',[]).factory('gameLogic', function(){
@@ -655,6 +658,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			index = (index - 1 ) === 0 ? board.totalPlayers : (index - 1);
 			board.territory[key].owner =  index;
 			board.territory[key].units++;
+			
 		}
 	}
 

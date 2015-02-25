@@ -1,3 +1,8 @@
+/*
+  Created by Zhuoran on 2/24/14
+*/
+'use strict'
+
 describe("In Risk", function() {
   var _gameLogic;
   var board;
