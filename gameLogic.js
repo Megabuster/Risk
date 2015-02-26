@@ -570,6 +570,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		"players" : {
 			"player1" : {
 				"totalTerritories" : 0,
+				"remainUnits" : 30,
 				"Australia" : 0,
 				"Asia" : 0,
 				"Africa" : 0,
@@ -580,46 +581,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 			"player2" : {
 				"totalTerritories" : 0,
-				"Australia" : 0,
-				"Asia" : 0,
-				"Africa" : 0,
-				"Europe" : 0,
-				"South_America" : 0,
-				"North_America" : 0
-			},
-
-			"player3" : {
-				"totalTerritories" : 0,
-				"Australia" : 0,
-				"Asia" : 0,
-				"Africa" : 0,
-				"Europe" : 0,
-				"South_America" : 0,
-				"North_America" : 0
-			},
-
-			"player4" : {
-				"totalTerritories" : 0,
-				"Australia" : 0,
-				"Asia" : 0,
-				"Africa" : 0,
-				"Europe" : 0,
-				"South_America" : 0,
-				"North_America" : 0
-			},
-
-			"player5" : {
-				"totalTerritories" : 0,
-				"Australia" : 0,
-				"Asia" : 0,
-				"Africa" : 0,
-				"Europe" : 0,
-				"South_America" : 0,
-				"North_America" : 0
-			},
-
-			"player6" : {
-				"totalTerritories" : 0,
+				"remainUnits" : 30,
 				"Australia" : 0,
 				"Asia" : 0,
 				"Africa" : 0,
@@ -627,13 +589,20 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				"South_America" : 0,
 				"North_America" : 0
 			}
+		},
+		"dice" : {
+			"d1" : 0,
+			"d2" : 0,
+			"d3" : 0,
+			"d4" : 0,
+			"d5" : 0
 		}
 	}
 	
 	}
 
 	function getWinner(board){
-		for (var i = 0; i < 6; i++)
+		for (var i = 0; i < 2; i++)
 			if (board.players["player"+(i+1)].totalTerritories >= 42)
 				return "player" + (i+1);
 		return null;
@@ -662,14 +631,57 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		}
 	}
 
-	function createMove(board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits){
+	/* dice is a JSON object representing the current state of the dice
+	 * resrolls is an array representing the dice that need to be rolled (or rolled again)
+	*/
+	 function createRollMove(board, turnIndexBeforeMove) {
+	    if(board.dice.d1 === undefined){
+	      dice.d1 = null;
+	    }
+	    if(board.dice.d2 === undefined){
+	      dice.d2 = null;
+	    }
+	    if(borad.dice.d3 === undefined){
+	      dice.d3 = null;
+	    }
+	    if(borad.dice.d4 === undefined){
+	      dice.d4 = null;
+	    }
+	    if(dice.d5 === undefined){
+	      dice.d5 = null;
+	    }
+
+   	    var move = [{set: {key: "diceRoll", value: true}}, {set: {key: "boradAfter", value: rollNumber}}, {setTurn: {turnIndex: turnIndex}}];
+
+	    var s;
+	    for (s in dice) {
+	      if(rerolls.indexOf(s) !== -1){
+	        move.push({setRandomInteger: {key: s, from: 1, to: 7}});
+	      } else {
+	        var val = dice[s];
+	        if(dice[s] == null){
+	          val = -1;
+	        }
+	        move.push({set: {key: s, value: val}});
+	      }
+	    }
+	    return move;
+	  }
+
+
+
+	function createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, moveUnits){
 		if (board === undefined){
 			// Initirally, the board in state is undefined.
 			board = getInitialBoard(2);
 		}
-		//console.log(dice);
+		//moveType = ["deploy", "reinforce", "attack", "fortify", "endTurn", "endPhase"]
 
+
+		if(board.players.player1.remainUnits < 0 || board.players.player2.remainUnits < 0)
+			throw new Error("No enough units!");
 		switch (board.phase){
+
 			/**
 			 * Return the move that should be performed when player with index turnIndexBeforeMove makes
 			 * a move in the country in the first deploy phase. You can not deploy more than one unit on each territory 
@@ -685,7 +697,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.territory[country].owner = turnIndexBeforeMove;
 					boardAfterMove.territory[country].units++;
-
+					boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits--;
 
 					// The next player's turn (the turn index minus one).
 					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : (turnIndexBeforeMove - 1)}};
@@ -702,16 +714,25 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.territory[country].units++;
+					boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits--;
 
 					// The next player's turn (the turn index minus one).
 					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 					
+					if(boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits === 0){
+						if(turnIndexBeforeMove === 1){
+							boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+						}else{
+							boardAfterMove.phase = 2;
+							boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+						}
+						
+					}
 					return [firstOperation,
-							{"set": {"key": "board", "value": boardAfterMove}},
-							{"set": {"key": "delta", "value": country}}];
+						{"set": {"key": "board", "value": boardAfterMove}},
+						{"set": {"key": "delta", "value": country}}];
 				}
 			}
-
 
 			/**
 			 * Return the move that should be performed when player with index turnIndexBeforeMove makes
@@ -719,15 +740,19 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 2:
 			{
+
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You can not deploy units on other's territory");
 				}
-
+				
 				var boardAfterMove = angular.copy(board);
 				boardAfterMove.territory[country].units++;
+				boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits--;
 
-				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				if(boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits === 0)
+					boardAfterMove.phase = 3;
+
+				var firstOperation = turnIndexBeforeMove;
 				
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
@@ -740,6 +765,15 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 3:
 			{
+				if(moveType === "endTurn"){
+					var boardAfterMove = angular.copy(board);
+					boardAfterMove.phase = 4;
+
+					var firstOperation = turnIndexBeforeMove;
+					return [firstOperation,
+						{"set": {"key": "board", "value": boardAfterMove}},
+						{"set": {"key": "delta", "value": country}}];	
+				}
 
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
@@ -759,14 +793,15 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				if (board.territory[targetCountry].owner === turnIndexBeforeMove){
 					throw new Error("You can not attack your own territory");
 				}
+				var boardAfterMove = angular.copy(board);
+
 
 
 				// the result after an attack including the owner and the units info, it depends on players sometime.
 				var result = getReusltAfterAttack(board.territory[country].units, board.territory[country].owner,
-							 board.territory[targetCountry].units, board.territory[targetCountry].owner, dice);
+							 board.territory[targetCountry].units, board.territory[targetCountry].owner, borad.dice);
 				
 				//console.log(result);
-				var boardAfterMove = angular.copy(board);
 
 				boardAfterMove.territory[country].owner = result.attacker.owner;
 				boardAfterMove.territory[targetCountry].owner = result.defender.owner;
@@ -774,8 +809,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				boardAfterMove.territory[targetCountry].units = result.defender.units;
 
 				
-				// The next player's turn (the turn index minus one).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+				var firstOperation = turnIndexBeforeMove;
 				
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
@@ -791,6 +825,21 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 			case 4:
 			{
+				if(moveType === "endTurn"){
+					var boardAfterMove = angular.copy(board);
+					if(turnIndexBeforeMove === 1){
+						boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+					}else{
+						boardAfterMove.phase = 2;
+						boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+					}
+					
+					// The next player's turn (the turn index minus one unless it's 0).
+					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+					return [firstOperation,
+						{"set": {"key": "board", "value": boardAfterMove}},
+						{"set": {"key": "delta", "value": country}}];	
+				}
 
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You have to choose your own unit");
@@ -816,11 +865,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 				boardAfterMove.territory[country].units = board.territory[country].units - moveUnits;
 				boardAfterMove.territory[targetCountry].units = board.territory[targetCountry].units + moveUnits;
-
-
-				// The next player's turn (the turn index minus one unless it's 0).
-				var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
 				
+				var firstOperation = turnIndexBeforeMove;
+
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
 						{"set": {"key": "delta", "value": country}}];	
@@ -837,6 +884,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		var targetCountry = params.targetCountry;
 		var moveUnits = params.moveUnits;
 		var dice = params.dice;
+		var moveType = params.moveType;
 		//Here we assume that turnIndexBeforeMove and stateBeforeMove are legal, and we need 
 		//to verify that move is legal
 
@@ -844,8 +892,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 			var country = move[2].set.value;
 			var board = stateBeforeMove.board;
-			var expectedMove = createMove(board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
-			
+			var expectedMove = createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
+
 			if (!angular.equals(move, expectedMove)){
 				return false;
 			}

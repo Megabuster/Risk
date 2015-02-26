@@ -20,14 +20,14 @@ describe("In Risk", function() {
     //fullBoard = _gameLogic.getTheBoardWithOneUnitOnEachCountry();
   }));
 
-  function expectMoveOk(turnIndexBeforeMove, stateBeforeMove, move, targetCountry, dice, moveUnits) {
-    expect(_gameLogic.isMoveOk({turnIndexBeforeMove: turnIndexBeforeMove,
+  function expectMoveOk(moveType, turnIndexBeforeMove, stateBeforeMove, move, targetCountry, dice, moveUnits) {
+    expect(_gameLogic.isMoveOk({moveType: moveType, turnIndexBeforeMove: turnIndexBeforeMove,
       stateBeforeMove: stateBeforeMove,
       move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(true);
   }
 
-  function expectIllegalMove(turnIndexBeforeMove, stateBeforeMove, move, targetCountry, dice, moveUnits) {
-    expect(_gameLogic.isMoveOk({turnIndexBeforeMove: turnIndexBeforeMove,
+  function expectIllegalMove(moveType, turnIndexBeforeMove, stateBeforeMove, move, targetCountry, dice, moveUnits) {
+    expect(_gameLogic.isMoveOk({moveType: moveType, turnIndexBeforeMove: turnIndexBeforeMove,
       stateBeforeMove: stateBeforeMove,
       move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(false);
   }
@@ -37,8 +37,9 @@ describe("In Risk", function() {
     boardAfter = angular.copy(boardBefore);
     boardAfter.territory.China.owner = 1;
     boardAfter.territory.China.units = 1;
-    
-    expectMoveOk(1, 
+    boardAfter.players.player1.remainUnits = 29;
+
+    expectMoveOk(null, 1, 
       {"board" : boardBefore,
        //"delta" : null
       },
@@ -47,18 +48,21 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}]);
     });
 
+
   it("player 2 placing one unit on Iceland after player 1 placing units on China (deploy phase(1)) is legal", function(){
     boardBefore = board;
 
     boardBefore.territory.China.owner = 1;
     boardBefore.territory.China.units = 1;
-    
+    boardBefore.players.player1.remainUnits = 29;
+
     boardAfter = angular.copy(boardBefore);
     
     boardAfter.territory.Iceland.owner = 2;
     boardAfter.territory.Iceland.units = 1;
-    
-    expectMoveOk(2, 
+    boardAfter.players.player2.remainUnits = 29;
+
+    expectMoveOk(null, 2, 
       {"board" : boardBefore,
        "delta" : "China"
       },
@@ -67,18 +71,21 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "Iceland"}}]);
     });    
 
+  
   it("player 2 placing one unit on China after player 1 placing units on China (deploy phase(1)) is illegal", function(){
     boardBefore = board;
 
     boardBefore.territory.China.owner = 1;
     boardBefore.territory.China.units = 1;
-    
+    boardBefore.players.player1.remainUnits = 29;
+
     boardAfter = angular.copy(boardBefore);
 
     boardAfter.territory.China.owner = 2;
     boardAfter.territory.China.units = 1;
-    
-    expectIllegalMove(2, 
+    boardAfter.players.player2.remainUnits = 29;
+
+    expectIllegalMove(null, 2, 
       {"board" : boardBefore,
        "delta" : "China"
       },
@@ -87,6 +94,8 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}]);
     });
 
+
+  /*
   it("player 1 placing one unit on China again after player 1 placing units on China (deploy phase(1)) before the board is full is illegal", function(){
     boardBefore = board;
 
@@ -365,7 +374,6 @@ describe("In Risk", function() {
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "China"}}], "India", {}, 6);
   });
-
-
+*/
 
 });
