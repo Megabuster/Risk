@@ -9,13 +9,11 @@ describe("In Risk", function() {
   var boardAfter;
   var boardBefore;
   var i;
-  //var fullBoard;
 
   beforeEach(module("myApp"));
 
   beforeEach(inject(function (gameLogic) {
     _gameLogic = gameLogic;
-    //console.log(gameLogic);
     board = _gameLogic.getInitialBoard(2);
     //fullBoard = _gameLogic.getTheBoardWithOneUnitOnEachCountry();
   }));
@@ -31,6 +29,7 @@ describe("In Risk", function() {
       stateBeforeMove: stateBeforeMove,
       move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(false);
   }
+  
   
   it("player 1 placing one unit on China from initial state (deploy phase(1)) is legal", function(){
     boardBefore = board;
@@ -95,7 +94,7 @@ describe("In Risk", function() {
     });
 
 
-  /*
+  
   it("player 1 placing one unit on China again after player 1 placing units on China (deploy phase(1)) before the board is full is illegal", function(){
     boardBefore = board;
 
@@ -103,13 +102,16 @@ describe("In Risk", function() {
     boardBefore.territory.China.units = 1;
     boardBefore.territory.Iceland.owner = 2;
     boardBefore.territory.Iceland.units = 1;
-    
+    boardBefore.players.player1.remainUnits = 29;
+    boardBefore.players.player2.remainUnits = 29;
+
     boardAfter = angular.copy(boardBefore);
 
     boardAfter.territory.China.owner = 1;
     boardAfter.territory.China.units = 2;
-    
-    expectIllegalMove(1, 
+    boardAfter.players.player1.remainUnits = 28;
+
+    expectIllegalMove(null, 1, 
       {"board" : boardBefore,
        "delta" : "Iceland"
       },
@@ -118,6 +120,7 @@ describe("In Risk", function() {
      {"set": {"key":"delta", "value" : "China"}}]);
     });
 
+  
   it("player 1 placing one unit on Russia after player 1 placing units on China (deploy phase(1)), \
     player 2 placing units on Iceland before the board is full is legal", function(){
     boardBefore = board;
@@ -126,13 +129,16 @@ describe("In Risk", function() {
     boardBefore.territory.China.units = 1;
     boardBefore.territory.Iceland.owner = 2;
     boardBefore.territory.Iceland.units = 1;
+    boardBefore.players.player1.remainUnits = 29;
+    boardBefore.players.player2.remainUnits = 29;
     
     boardAfter = angular.copy(boardBefore);
 
     boardAfter.territory.Russia.owner = 1;
     boardAfter.territory.Russia.units = 1;
-    
-    expectMoveOk(1, 
+    boardAfter.players.player1.remainUnits = 28;
+
+    expectMoveOk(null, 1, 
       {"board" : boardBefore,
        "delta" : "Iceland"
       },
@@ -143,15 +149,16 @@ describe("In Risk", function() {
   
   it("player 1 adding one unit on China again after the board is full is(deploy phase(1)) legal", function(){
     
-    boardBefore = board; 
+    var boardBefore = board; 
     _gameLogic.addOneUnitOnEachCountry(boardBefore);
 
     boardAfter = angular.copy(boardBefore);
 
     boardAfter.territory.China.owner = 1;
     boardAfter.territory.China.units = 2;
-    
-    expectMoveOk(1, 
+    boardAfter.players.player1.remainUnits = 8;
+
+    expectMoveOk(null, 1, 
       {"board" : boardBefore,
        "delta" : "Eastern_Australia"
       },
@@ -159,221 +166,562 @@ describe("In Risk", function() {
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "China"}}]);
     });
-   
-  it("player 1 placing one unit on China again after the board is full is(deploy phase(1)) legal", function(){
-    
-    boardBefore = board; 
-    _gameLogic.addOneUnitOnEachCountry(boardBefore);
 
-    boardAfter = angular.copy(boardBefore);
-
-    boardAfter.territory.China.owner = 1;
-    boardAfter.territory.China.units = 2;
-    
-    expectMoveOk(1, 
-      {"board" : boardBefore,
-       "delta" : "Eastern_Australia"
-      },
-    [{"setTurn": {"turnIndex" : 2}},
-     {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}]);
-    });
-   
-  it("player 1 adding one unit on China(which belongs to player 1) (reinforce phase(2)) is legal", function(){
+  it("player1's last move in phase 1", function(){
     
     boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
 
-    boardBefore.phase = 2;
+    boardBefore.territory.China.units = 8;
+    boardBefore.territory.Iceland.units = 8;
+    boardBefore.players.player1.remainUnits = 1;
+    boardBefore.players.player2.remainUnits = 1;
+    boardBefore.phase = 1;
 
     boardAfter = angular.copy(boardBefore);
 
-    boardAfter.territory.China.owner = 1;
-    boardAfter.territory.China.units = 6;
-    
-    expectMoveOk(1, 
-      {"board" : boardBefore},
+    boardAfter.territory.China.units = 9;
+      
+    boardAfter.players.player1.remainUnits = 7;
+
+    expectMoveOk(null, 1, 
+      {"board" : boardBefore,
+       //"delta" : "Iceland"
+      },
     [{"setTurn": {"turnIndex" : 2}},
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "China"}}]);
     });
+
+
+  it("changing from phase 1 to phase 2 \
+     i.e. player 2 adding the last unit on Iceland(which belongs to player 2) after player1 has no remain units in phase 1\
+     is legal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 8;
+    boardBefore.players.player1.remainUnits = 7;
+    boardBefore.players.player2.remainUnits = 1;
+    boardBefore.phase = 1;
+
+    boardAfter = angular.copy(boardBefore);
+    boardAfter.phase = 2;    
+
+    boardAfter.territory.Iceland.units = 9;
+      
+    boardAfter.players.player2.remainUnits = 7;
+    
+
+    expectMoveOk(null, 2, 
+      {"board" : boardBefore,
+       //"delta" : "Iceland"
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Iceland"}}]);
+    });
    
+   
+
   it("player 1 adding one unit on Middle_East(which belongs to player 2) (reinforce phase(2)) is illegal", function(){
     
     boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
-
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.players.player1.remainUnits = 7;
+    boardBefore.players.player2.remainUnits = 7;
     boardBefore.phase = 2;
 
     boardAfter = angular.copy(boardBefore);
 
     boardAfter.territory.Middle_East.owner = 1;
-    boardAfter.territory.Middle_East.units = 6;
-    
-    expectIllegalMove(1, 
+    boardAfter.territory.Middle_East.units = 2;
+    boardAfter.players.player1.remainUnits = 6;
+
+    expectIllegalMove(null, 1, 
       {"board" : boardBefore,
-       "delta" : "Eastern_Australia"
       },
-    [{"setTurn": {"turnIndex" : 2}},
+    [{"setTurn": {"turnIndex" : 1}},
      {"set": {"key":"board", "value" : boardAfter}},
      {"set": {"key":"delta", "value" : "Middle_East"}}]);
     });
+
+  
+
+  it("player 1 adding one unit on Irkutsk(which belongs to player 1) (reinforce phase(2)) is legal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    boardBefore = board;
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.players.player1.remainUnits = 7;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 2;
+
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Irkutsk.units = 2;
+    boardAfter.players.player1.remainUnits = 6;
+
+    expectMoveOk(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Irkutsk"}}]);
+    });
+
+  
+
+  it("player 1 adding two unit on Irkutsk(which belongs to player 1) (reinforce phase(2)) is illegal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.players.player1.remainUnits = 7;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 2;
+
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Irkutsk.units = 3;
+    boardAfter.players.player1.remainUnits = 5;
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Irkutsk"}}]);
+    });
+
+  it("change phase from 2 to 3, i.e: player 1 adding the last remain unit on Irkutsk(which belongs to player 1)\
+      to change phase from 2 to phase 3 is legal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 7;
+
+    boardBefore.players.player1.remainUnits = 1;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 2;
+
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Irkutsk.units = 8;
+    boardAfter.players.player1.remainUnits = 0;
+    boardAfter.phase = 3;
+
+    expectMoveOk(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Irkutsk"}}]);
+    });
+  
+
+  it("change phase from 2 to 3, i.e: player 1 wants to change phase from 2 to phase 3 before he use up all his units\
+     is illegal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 6;
+
+    boardBefore.players.player1.remainUnits = 2;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 2;
+
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Irkutsk.units = 7;
+    boardAfter.players.player1.remainUnits = 1;
+    boardAfter.phase = 3;
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Irkutsk"}}]);
+    });
+  
+  it("player 1 do nothing in phase 2 is illegal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.players.player1.remainUnits = 7;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 2;
+
+    boardAfter = angular.copy(boardBefore);
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Irkutsk"}}]);
+    });
+  
+   it("player 1 wants to end turn in phase 2 is illegal", function(){
+    
+    boardBefore = board;
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.players.player1.remainUnits = 7;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 2;
+
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Irkutsk.units = 2;
+    boardAfter.players.player1.remainUnits = 6;
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 2}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Irkutsk"}}]);
+    });
+
 
   it("player 1 attack Middle_East(belongs to player 2) from China(belongs to player 1) (attack phase(3)) is illegal\
     (because they are not adjacent) ", function(){
     
     boardBefore = board;
 
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
 
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
     boardBefore.phase = 3;
 
     boardAfter = angular.copy(boardBefore);
 
     boardAfter.territory.Middle_East.owner = 1;
-    boardAfter.territory.Middle_East.units = 6;
+    boardAfter.territory.Middle_East.units = 3;
     
-    expectIllegalMove(1, 
+    expectIllegalMove(null, 1, 
       {"board" : boardBefore,
-       "delta" : "Eastern_Australia"
       },
-    [{"setTurn": {"turnIndex" : 2}},
+    [{"setTurn": {"turnIndex" : 1}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "Middle_East");
+     {"set": {"key":"delta", "value" : "China"}}], "Middle_East", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
-  
+
+
   it("player 1 attack India(belongs to player 1) from China(belongs to player 1) (attack phase(3)) is illegal\
     (you cannot attack your own territory) ", function(){
     
     boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
 
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
     boardBefore.phase = 3;
-
 
     boardAfter = angular.copy(boardBefore);
 
-    boardAfter.territory.India.owner = 1;
-    boardAfter.territory.India.units = 6;
+    boardAfter.territory.India.units = 3;
     
-    expectIllegalMove(1, 
+    expectIllegalMove(null, 1, 
       {"board" : boardBefore,
-       "delta" : "Eastern_Australia"
       },
-    [{"setTurn": {"turnIndex" : 2}},
+    [{"setTurn": {"turnIndex" : 1}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "India");
+     {"set": {"key":"delta", "value" : "China"}}], "India", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
-    
-  it("player 1 attack Afghanistan(belongs to player 2, has 5 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
+
+
+  it("player 1 attack Afghanistan(belongs to player 2, has 1 units) from China(belongs to player 1, has 9 units)\
+   (attack phase(3)) is legal", function(){
     
     boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
 
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
     boardBefore.phase = 3;
 
     boardAfter = angular.copy(boardBefore);
-
-    boardAfter.territory.China.owner = 1;
-    boardAfter.territory.China.units = 4;
-
-    boardAfter.territory.Afghanistan.owner = 2;
-    boardAfter.territory.Afghanistan.units = 4;
-    
-    expectMoveOk(1, 
-      {"board" : boardBefore},
-    [{"setTurn": {"turnIndex" : 2}},
-     {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
-    });
-  
-  it("player 1 attack Afghanistan(belongs to player 2, has 1 units) from China(belongs to player 1, has 5 units) (attack phase(3)) is legal", function(){
-    
-    boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
-
-    boardBefore.phase = 3;
-    boardBefore.territory.Afghanistan.units = 1;
-
-    boardAfter = angular.copy(boardBefore);
-
-    boardAfter.territory.China.owner = 1;
-    boardAfter.territory.China.units = 2;
 
     boardAfter.territory.Afghanistan.owner = 1;
     boardAfter.territory.Afghanistan.units = 3;
-    
-    expectMoveOk(1, 
-      {"board" : boardBefore},
-    [{"setTurn": {"turnIndex" : 2}},
+    boardAfter.territory.China.units = 6;
+
+
+    expectMoveOk(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan",  {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
+     {"set": {"key":"delta", "value" : "China"}}], "Afghanistan", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
+    });
+
+  
+  it("player 1 attack Mongolia(belongs to player 2, has 1 units) \
+    from Japan(belongs to player 1, has 1 units) (attack phase(3)) is illegal", function(){
+    
+    boardBefore = board;
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 3;
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Mongolia.owner = 1;
+    boardAfter.territory.Mongolia.units = 1;
+    boardAfter.territory.Japan.units = 0;
+
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Japan"}}], "Mongolia", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
     });
 
 
-  it("player 1 fortify India(belongs to player 1, has 5 units) from China(belongs to player 1, has 5 units) with 3 units (fortify phase(4)) is legal", function(){
-    debugger;
+it("player 1 attack Great_Britain(belongs to player 1, has 1 units) from Iceland(belongs to player 2, has 9 units)\
+   (attack phase(3)) is illegal", function(){
+    
     boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 3;
+
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.Great_Britain.owner = 2;
+    boardAfter.territory.Great_Britain.units = 3;
+    boardAfter.territory.Iceland.units = 6;
+
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Iceland"}}], "Great_Britain", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
+    });
+
+
+  it("player1 change phase from attack(3) to fortify(4) is legal", function(){
+    
+    boardBefore = board;
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
+    boardBefore.phase = 3;
+
+    boardAfter = angular.copy(boardBefore);
+    boardAfter.phase = 4;
+
+    expectMoveOk("endTurn", 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Iceland"}}], "Great_Britain", {"d0":3, "d1":4, "d2":6, "d3":5, "d4":5});
+    });
+
+
+  it("player 1 fortify India(belongs to player 1, has 1 units) from China(belongs to player 1, has 9 units) \
+    with 3 units (fortify phase(4)) is legal", function(){
+     boardBefore = board;
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
     
     boardBefore.phase = 4;
 
     boardAfter = angular.copy(boardBefore);
 
-    boardAfter.territory.China.units = 2;
+    boardAfter.territory.China.units = 6;
+    boardAfter.territory.India.units = 4;
 
-    boardAfter.territory.India.units = 8;
-    
-    expectMoveOk(1, 
-      {"board" : boardBefore},
-    [{"setTurn": {"turnIndex" : 2}},
+    expectMoveOk(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "India", {}, 3);
+     {"set": {"key":"delta", "value" : "China"}}], "India", null, 3);
     });
 
-  it("player 1 fortify India(belongs to player 1, has 5 units) from China(belongs to player 1, has 5 units) with 6 units (fortify phase(4)) is illegal", function(){
-    debugger;
+  it("player 1 fortify China(belongs to player 1, has 9 units) from Afghanistan(belongs to player 2, has 2 units) \
+    with 1 units (fortify phase(4)) is illegal", function(){
+     boardBefore = board;
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 8;
+    boardBefore.territory.Irkutsk.units = 8;
+    boardBefore.territory.Afghanistan.units = 2;  
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
+    
+    boardBefore.phase = 4;
+
+    console.log(boardBefore.territory.Afghanistan.owner);
+    console.log(boardBefore.territory.Afghanistan.units);
+    
+    boardAfter = angular.copy(boardBefore);
+
+    boardAfter.territory.China.units = 10;
+    boardAfter.territory.Afghanistan.units = 1;
+
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "Afghanistan"}}], "China", null, 1);
+    });
+
+  it("player 1 fortify India(belongs to player 1, has 1 units) from China(belongs to player 1, has 9 units)\
+   with 9 units (fortify phase(4)) is illegal", function(){
     boardBefore = board;
-    //add 5 units on each territory on the board
-    for (i = 1; i < 6; i++){ 
-      _gameLogic.addOneUnitOnEachCountry(boardBefore);
-    }
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
     
     boardBefore.phase = 4;
 
     boardAfter = angular.copy(boardBefore);
 
-    boardAfter.territory.China.units = 2;
+    boardAfter.territory.China.units = 0;
+    boardAfter.territory.India.units = 10;
 
-    boardAfter.territory.India.units = 8;
+    expectIllegalMove(null, 1, 
+      {"board" : boardBefore,
+      },
+    [{"setTurn": {"turnIndex" : 1}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "China"}}], "India", null, 10);
+    });
+
+  it("player1 change phase from attack(4) to reinforce(2) for player2 is legal", function(){
+
+    boardBefore = board;
+
+    //add 1 unit on each territory on the board
+    _gameLogic.addOneUnitOnEachCountry(boardBefore);
+
+    boardBefore.territory.China.units = 9;
+    boardBefore.territory.Iceland.units = 9;
+    boardBefore.territory.Irkutsk.units = 8;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
     
-    expectIllegalMove(1, 
-      {"board" : boardBefore},
+    boardBefore.phase = 4;
+
+    boardAfter = angular.copy(boardBefore);
+    
+    boardAfter.phase = 2;
+    boardAfter.players.player1.remainUnits = 7;
+
+
+    expectMoveOk("endTurn", 1, 
+      {"board" : boardBefore,
+      },
     [{"setTurn": {"turnIndex" : 2}},
      {"set": {"key":"board", "value" : boardAfter}},
-     {"set": {"key":"delta", "value" : "China"}}], "India", {}, 6);
-  });
-*/
+     {"set": {"key":"delta", "value" : "China"}}], "India", null, 10);
+    });
+
 
 });
