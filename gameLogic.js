@@ -664,6 +664,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	/* dice is a JSON object representing the current state of the dice
 	 * resrolls is an array representing the dice that need to be rolled (or rolled again)
 	*/
+
+	/*
 	 function createRollMove(board, turnIndexBeforeMove) {
 	    if(board.dice.d1 === undefined){
 	      dice.d1 = null;
@@ -697,7 +699,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	    }
 	    return move;
 	  }
-
+	*/
 
 
 	function createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits){
@@ -853,11 +855,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 				debugger;
 				if(boardAfterMove.territory[targetCountry].owner !== board.territory[targetCountry].owner){
-					console.log("lala");
-					console.log(boardAfterMove.players["player"+(turnIndexBeforeMove)].totalTerritories);
 					boardAfterMove.players["player"+(turnIndexBeforeMove)].totalTerritories++;
 					boardAfterMove.players["player"+(turnIndexBeforeMove === 1 ? 2 : 1)].totalTerritories--;
-
 				}
 
 				var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
@@ -911,7 +910,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					throw new Error("You can only fortify your own territory");
 				}
 
-				if (moveUnits >= board.territory[country] || moveUnits < 0){
+				if (moveUnits >= board.territory[country].units || moveUnits < 0){
 					throw new Error("You can not move units more than you have.");
 				}
 
@@ -947,7 +946,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			var country = move[2].set.value;
 			var board = stateBeforeMove.board;
 			var expectedMove = createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
-			debugger;
+			//debugger;
+
 			if (!angular.equals(move, expectedMove)){
 				return false;
 			}
