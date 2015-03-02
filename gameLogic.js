@@ -595,11 +595,44 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	}
 
 	function getWinner(board){
-		for (var i = 0; i < 2; i++)
-			if (board.players["player"+(i+1)].totalTerritories >= 42)
+		for (var i = 0; i < 2; i++){
+			//console.log(board.players["player"+(i+1)].totalTerritories);
+			if (board.players["player"+(i+1)].totalTerritories === 42){
 				return "player" + (i+1);
-		return null;
+			}
+		}
+		return "";
 	}
+
+	/*
+	function pickRandObject(obj) {
+        var result;
+        var count = 0;
+        for (var prop in obj)
+            if (Math.random() < 1/++count)
+               result = prop;
+        return result;
+    }
+	*/
+	// get all possible moves besides end turn
+
+	function getPossibleMoves(board, turnIndexBeforeMove) {
+		var possibleMoves = [];
+		var dice = {"d0":3, "d1":4, "d2":6, "d3":1, "d4":2};
+		var moveUnits = 1;
+		var moveType = "";
+		for (var country in board.territory){
+			for (var targetCountry in board.territory){
+				try{
+					possibleMoves.push(createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits));
+				} catch (e){
+
+				}
+			}
+		}
+		return possibleMoves;
+	}
+
 
 	/**
 	 * Return true if every country is deployed with units.
@@ -621,6 +654,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			board.territory[key].owner =  index;
 			board.territory[key].units++;	
 		}
+		board.players.player1.totalTerritories = 21;
+		board.players.player2.totalTerritories = 21;
+		
 		board.players.player1.remainUnits = 9;
 		board.players.player2.remainUnits = 9;
 	}
@@ -670,7 +706,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			board = getInitialBoard(2);
 		}
 		//moveType = ["deploy", "reinforce", "attack", "fortify", "endTurn", "endPhase"]
-
+		if (getWinner(board) !== '') {
+			throw new Error("Can only make a move if the game is not over!");
+		}
 
 		if(board.players.player1.remainUnits < 0 || board.players.player2.remainUnits < 0){
 			throw new Error("No enough units!");
@@ -725,6 +763,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 						}
 						
 					}
+
+					
 					return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
 						{"set": {"key": "delta", "value": country}}];
@@ -774,7 +814,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				}
 
 				if(board.players["player"+(turnIndexBeforeMove)].remainUnits > 0){
-					console.log("lalala");
 					throw new Error("You still have some units to reinforce");
 				}
 
@@ -812,9 +851,24 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				boardAfterMove.territory[country].units = result.attacker.units;
 				boardAfterMove.territory[targetCountry].units = result.defender.units;
 
-				
+				debugger;
+				if(boardAfterMove.territory[targetCountry].owner !== board.territory[targetCountry].owner){
+					console.log("lala");
+					console.log(boardAfterMove.players["player"+(turnIndexBeforeMove)].totalTerritories);
+					boardAfterMove.players["player"+(turnIndexBeforeMove)].totalTerritories++;
+					boardAfterMove.players["player"+(turnIndexBeforeMove === 1 ? 2 : 1)].totalTerritories--;
+
+				}
+
 				var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
 				
+				var winner = getWinner(boardAfterMove);
+				if (winner !== '') {
+					// Game over.
+					firstOperation = {endMatch: {endMatchScores:
+					(winner === 'player1' ? [1, 0] : [0, 1])}};
+				} 
+
 				return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
 						{"set": {"key": "delta", "value": country}}];	
@@ -1051,6 +1105,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		isMoveOk: isMoveOk,
 		getWinner: getWinner,
 		boardIsFull: boardIsFull,
-		addOneUnitOnEachCountry: addOneUnitOnEachCountry
+		addOneUnitOnEachCountry: addOneUnitOnEachCountry,
+		getPossibleMoves : getPossibleMoves
 	};
 });

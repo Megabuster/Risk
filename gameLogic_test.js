@@ -30,7 +30,7 @@ describe("In Risk", function() {
       move: move, targetCountry: targetCountry, moveUnits: moveUnits, dice: dice})).toBe(false);
   }
   
-  
+  /*
   it("player 1 placing one unit on China from initial state (deploy phase(1)) is legal", function(){
     boardBefore = board;
     boardAfter = angular.copy(boardBefore);
@@ -693,7 +693,7 @@ it("player 1 attack Great_Britain(belongs to player 1, has 1 units) from Iceland
      {"set": {"key":"delta", "value" : "China"}}], "India", null, 10);
     });
 
-  it("player1 change phase from attack(4) to reinforce(2) for player2 is legal", function(){
+  it("player1 change phase from fortify(4) to reinforce(2) for player2 is legal", function(){
 
     boardBefore = board;
 
@@ -723,5 +723,70 @@ it("player 1 attack Great_Britain(belongs to player 1, has 1 units) from Iceland
      {"set": {"key":"delta", "value" : "China"}}], "India", null, 10);
     });
 
+  
+
+  it("getPossibleMoves returns exactly one possible move", function() {
+
+    boardBefore = board;
+
+    //add 1 unit on each territory on the board
+    var index = boardBefore.totalPlayers;
+    for (var key in boardBefore.territory){
+      boardBefore.territory[key].owner =  1;
+      boardBefore.territory[key].units++; 
+    }
+
+    boardBefore.territory.China.units = 2;
+    boardBefore.territory.Mongolia.owner = 2;
+    boardBefore.territory.Mongolia.units = 2;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
+    
+    boardBefore.phase = 3;
+
+    var possibleMoves = _gameLogic.getPossibleMoves(boardBefore, 1);
+    
+    boardAfter = angular.copy(boardBefore);
+    boardAfter.territory.Mongolia.units = 1;
+
+    var expectedMove = [{"setTurn" : {"turnIndex" : 1}},
+        {"set": {"key": 'board', "value": boardAfter}},
+        {"set": {"key": 'delta', "value": "China"}}];
+    expect(angular.equals(possibleMoves, [expectedMove])).toBe(true);
+  });
+
+*/
+  it("player1 wins by capturing the last territory of player2 is legal", function() {
+    boardBefore = board;
+
+    //add 1 unit on player1's territory on the board
+    var index = boardBefore.totalPlayers;
+    for (var key in boardBefore.territory){
+      boardBefore.territory[key].owner =  1;
+      boardBefore.territory[key].units++; 
+    }
+    boardBefore.players.player1.totalTerritories = 41;
+    boardBefore.players.player2.totalTerritories = 1;
+
+    boardBefore.territory.China.units = 2;
+    boardBefore.territory.Mongolia.owner = 2;
+
+    boardBefore.players.player1.remainUnits = 0;
+    boardBefore.players.player2.remainUnits = 7;
+    
+    boardBefore.phase = 3;
+    
+    boardAfter = angular.copy(boardBefore);
+    boardAfter.territory.Mongolia.units = 1;
+    boardAfter.territory.Mongolia.owner = 1;
+
+    expectMoveOk("", 1,
+      {"board" : boardBefore,
+      },
+    [{"endMatch": {"endMatchScores": [1, 0]}},
+     {"set": {"key":"board", "value" : boardAfter}},
+     {"set": {"key":"delta", "value" : "China"}}], "Mongolia", {"d0":3, "d1":4, "d2":6, "d3":2, "d4":1}, 10);
+  });
 
 });
