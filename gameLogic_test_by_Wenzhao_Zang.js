@@ -122,13 +122,13 @@ describe("In Risk", function() {
             },
             [{"setTurn": {"turnIndex" : 1}},
                 {"set": {"key":"board", "value" : boardAfter}},
-                {"set": {"key":"delta", "value" : "China"}}], "India", null, 3);
+                {"set": {"key":"delta", "value" : "China"}}], "India", null, 8);
     });
 
 
 
     it("player 2 fortify India(belongs to player 1, has 1 units) from China(belongs to player 1, has 9 units) \
-    with 5 units (fortify phase(4)) is legal", function(){
+    with 5 units (fortify phase(4)) is illegal", function(){
         boardBefore = board;
 
         //add 1 unit on each territory on the board
@@ -148,11 +148,11 @@ describe("In Risk", function() {
         boardAfter.territory.China.units = 4;
         boardAfter.territory.India.units = 6;
 
-        expectMoveOk(null, 2,
+        expectIllegalMove(null, 2,
             {"board" : boardBefore
             },
             [{"setTurn": {"turnIndex" : 2}},
                 {"set": {"key":"board", "value" : boardAfter}},
-                {"set": {"key":"delta", "value" : "China"}}], "India", null, 3);
+                {"set": {"key":"delta", "value" : "China"}}], "India", null, 5);
     });
 });
