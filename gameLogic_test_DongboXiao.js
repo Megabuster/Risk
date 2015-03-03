@@ -306,7 +306,7 @@ describe("In Risk", function() {
         boardAfter.territory.Irkutsk.units = 2;
         boardAfter.players.player1.remainUnits = 6;
 
-        expectMoveOk(null, 2,
+        expectIllegalMove(null, 2,
             {"board" : boardBefore
             },
             [{"setTurn": {"turnIndex" : 2}},
