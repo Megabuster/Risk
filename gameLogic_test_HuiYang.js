@@ -89,13 +89,14 @@ describe("In Risk", function() {
       boardAfter = angular.copy(boardBefore);
 
       boardAfter.territory.Afghanistan.units = 1;
+      boardAfter.territory.China.units = 4;
 
       expectMoveOk(null, 1,
         {"board" : boardBefore,
         },
       [{"setTurn": {"turnIndex" : 1}},
        {"set": {"key":"board", "value" : boardAfter}},
-       {"set": {"key":"delta", "value" : "China"}}], "Afghanistan", {"d0":3, "d1":4, "d2":5, "d3":2, "d4":1});
+       {"set": {"key":"delta", "value" : "China"}}], "Afghanistan", {"d0":3, "d1":4, "d2":5, "d3":6, "d4":1});
     });
 
     it("3. player 1 attack Afghanistan(player 2, 2 units) using China(player 1, 3 units)\
@@ -119,6 +120,7 @@ describe("In Risk", function() {
       boardAfter = angular.copy(boardBefore);
 
       boardAfter.territory.China.units = 2;
+      boardAfter.territory.Afghanistan.units = 1;
 
       expectMoveOk(null, 1,
         {"board" : boardBefore,
