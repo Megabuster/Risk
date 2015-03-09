@@ -27,7 +27,7 @@ angular.module('myApp')
     }
 
     // Before getting any updateUI, we show an empty board to a viewer (so you can't perform moves).
-    updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
+    //updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
 
     $scope.countryClicked = function (country) {
       if (!$scope.isYourTurn) {
@@ -38,13 +38,13 @@ angular.module('myApp')
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       } catch (e) {
-        alert('lala');
         $log.info(["country is already full in position:", country]);
         return;
       }
     };
     $scope.shouldShowNumber = function (country) {
-      return $scope.board.territory[country].units !== 0;
+      var unit = $scope.board.territory[country].units;
+      return unit !== 0;
     };
 
     $scope.getNumber = function (country) {

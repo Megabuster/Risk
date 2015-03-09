@@ -7,6 +7,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="gameLogic.js"></script>
 <script src="game.js"></script>
+<script src="http://yoav-zibin.github.io/emulator/alphaBetaService.js"></script>
 <script src="http://yoav-zibin.github.io/emulator/resizeGameAreaService.js"></script>
 <script src="http://yoav-zibin.github.io/emulator/gameService.js"></script>
 <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
@@ -24,9 +25,9 @@
 <div id="gameArea" >
   <img id="img_ID" width="100%" height="100%" src="http://www.badgehungry.com/blog/wp-content/uploads/2010/05/Risk01.jpg" usemap="#map" border="0" alt="" />
   <map name="map" id="map_ID">
-    <area id="Greenland" alt="" title="Greenland" title="Greenland" href="" shape="poly" coords="277,162,283,143,312,125,328,74,310,73,284,61,267,73,233,91,227,104,250,108,258,140,264,160" style="outline:none;" target="_self" ng-click="countryClicked('Greenland')">
-    <p ng-show="shouldShowNumber('Greenland')" id="Greenland_Units" style="position:absolute; top:14%;left:33%">{{getNumber("Greenland")}}</p>
-    </area>
+    <area id="Greenland" alt="" title="Greenland" title="Greenland" href="" shape="poly" coords="277,162,283,143,312,125,328,74,310,73,284,61,267,73,233,91,227,104,250,108,258,140,264,160" style="outline:none;" target="_self" ng-click="countryClicked('Greenland')"  />
+    <p ng-show="shouldShowNumber('Greenland')" id="Greenland_Units" style="position:absolute; top:15%;left:35%">{{getNumber("Greenland")}}</p>
+
     <area id="Northwest_Territory" alt="Northwest_Territory" title="Northwest_Territory" href="javascript:void(0)" shape="poly" coords="178,147,77,145,77,109,117,107,142,120,176,113,184,96,192,90,196,113,206,116,205,127" style="outline:none;" target="_self"     />
     <area id="Alaska" alt="Alaska" title="Alaska" href="javascript:void(0)" shape="poly" coords="77,143,79,108,54,100,31,104,32,124,23,123,19,141,29,152,25,160,60,151,88,175,97,167,85,147" style="outline:none;" target="_self"     />
     <area id="Alberta" alt="Alberta" title="Alberta" href="javascript:void(0)" shape="poly" coords="91,176,98,168,86,149,155,147,156,197,101,199" style="outline:none;" target="_self"     />
