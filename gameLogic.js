@@ -650,7 +650,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	function addOneUnitOnEachCountry(board){
 		var index = board.totalPlayers;
 		for (var key in board.territory){
-			index = (index - 1 ) === 0 ? board.totalPlayers : (index - 1);
+			index = 1 - index;
 			board.territory[key].owner =  index;
 			board.territory[key].units++;	
 		}
@@ -733,10 +733,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.territory[country].owner = turnIndexBeforeMove;
 					boardAfterMove.territory[country].units++;
-					boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits--;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits--;
 
 					// The next player's turn (the turn index minus one).
-					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : (turnIndexBeforeMove - 1)}};
+					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
 					
 					return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
@@ -749,19 +749,19 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					}
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.territory[country].units++;
-					boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits--;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits--;
 
 					// The next player's turn (the turn index minus one).
-					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
 					
-					if(boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits === 0){
+					if(boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits === 0){
 
-						if(turnIndexBeforeMove === 1){
+						if(turnIndexBeforeMove === 0){
 
-							boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+							boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = 7;
 						}else{
 							boardAfterMove.phase = 2;
-							boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+							boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = 7;
 						}
 						
 					}
@@ -786,9 +786,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				
 				var boardAfterMove = angular.copy(board);
 				boardAfterMove.territory[country].units++;
-				boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits--;
+				boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits--;
 
-				if(boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits === 0){
+				if(boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits === 0){
 					boardAfterMove.phase = 3;
 				}
 
@@ -815,7 +815,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 						{"set": {"key": "delta", "value": country}}];	
 				}
 
-				if(board.players["player"+(turnIndexBeforeMove)].remainUnits > 0){
+				if(board.players["player"+(turnIndexBeforeMove+1)].remainUnits > 0){
 					throw new Error("You still have some units to reinforce");
 				}
 
@@ -855,8 +855,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 				debugger;
 				if(boardAfterMove.territory[targetCountry].owner !== board.territory[targetCountry].owner){
-					boardAfterMove.players["player"+(turnIndexBeforeMove)].totalTerritories++;
-					boardAfterMove.players["player"+(turnIndexBeforeMove === 1 ? 2 : 1)].totalTerritories--;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].totalTerritories++;
+					boardAfterMove.players["player"+(turnIndexBeforeMove === 0 ? 2 : 1)].totalTerritories--;
 				}
 
 				var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
@@ -885,10 +885,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				if(moveType === "endTurn"){
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.phase = 2;
-					boardAfterMove.players["player"+(turnIndexBeforeMove)].remainUnits = 7;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = 7;
 					
 					// The next player's turn (the turn index minus one unless it's 0).
-					var firstOperation = {"setTurn" : {"turnIndex" : (turnIndexBeforeMove - 1 ) === 0 ? board.totalPlayers : turnIndexBeforeMove - 1}};
+					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
 					return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
 						{"set": {"key": "delta", "value": country}}];	

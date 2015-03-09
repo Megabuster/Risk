@@ -19,6 +19,9 @@ module.exports = function(config) {
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-mocks.js',
       'gameLogic.js',
       'gameLogic_test',
+      'game.js',
+      'game.html',
+      'game.css'
     ],
 
 
@@ -31,10 +34,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     
     
-    preprocessors: {
-       'gameLogic.js': ['coverage']
-    },
-    
+   
 
     // test results reporter to use
     // possible values: 'dots', 'progress'

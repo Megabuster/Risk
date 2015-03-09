@@ -3,70 +3,58 @@
 angular.module('myApp')
   .controller('Ctrl', function (
       $window, $scope, $log, $timeout,
-      gameService, gameLogic, aiService, resizeGameAreaService) {
-    resizeGameAreaService.setWidthToHeight(1);
+      gameService, gameLogic, resizeGameAreaService) {
+
+    resizeGameAreaService.setWidthToHeight(1.36);
 
     function sendComputerMove() {
       gameService.makeMove(
           aiService.createComputerMove($scope.board, $scope.turnIndex,
               // 0.3 seconds for the AI to choose a move
-              {millisecondsLimit: 300}));
+              {millisecondsLimit: 300 }));
     }
 
     function updateUI(params) {
       $scope.board = params.stateAfterMove.board;
       $scope.delta = params.stateAfterMove.delta;
       if ($scope.board === undefined) {
-        $scope.board = gameLogic.getInitialBoard();
+        $scope.board = gameLogic.getInitialBoard(2);
       }
       $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
         params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
       $scope.turnIndex = params.turnIndexAfterMove;
 
-      // Is it the computer's turn?
-      if ($scope.isYourTurn
-          && params.playersInfo[params.yourPlayerIndex].playerId === '') {
-        $scope.isYourTurn = false; // to make sure the UI won't send another move.
-        // Wait 500 milliseconds until animation ends.
-        $timeout(sendComputerMove, 500);
-      }
     }
 
     // Before getting any updateUI, we show an empty board to a viewer (so you can't perform moves).
     updateUI({stateAfterMove: {}, turnIndexAfterMove: 0, yourPlayerIndex: -2});
 
-    $scope.cellClicked = function (row, col) {
-      $log.info(["Clicked on cell:", row, col]);
+    $scope.countryClicked = function (country) {
       if (!$scope.isYourTurn) {
         return;
       }
       try {
-        var move = gameLogic.createMove($scope.board, row, col, $scope.turnIndex);
+        var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       } catch (e) {
-        $log.info(["Cell is already full in position:", row, col]);
+        alert('lala');
+        $log.info(["country is already full in position:", country]);
         return;
       }
     };
-    $scope.shouldShowImage = function (row, col) {
-      var cell = $scope.board[row][col];
-      return cell !== "";
-    };
-    $scope.getImageSrc = function (row, col) {
-      var cell = $scope.board[row][col];
-      return cell === "X" ? "pieceX.png"
-          : cell === "O" ? "pieceO.png" : "";
-    };
-    $scope.shouldSlowlyAppear = function (row, col) {
-      return $scope.delta !== undefined
-          && $scope.delta.row === row && $scope.delta.col === col;
+    $scope.shouldShowNumber = function (country) {
+      return $scope.board.territory[country].units !== 0;
     };
 
+    $scope.getNumber = function (country) {
+      return $scope.board.territory[country].units;
+    };
+    
     gameService.setGame({
-      gameDeveloperEmail: "yoav.zibin@gmail.com",
+      gameDeveloperEmail: "zl953@nyu.edu",
       minNumberOfPlayers: 2,
-      maxNumberOfPlayers: 2,
+      maxNumberOfPlayers: 6,
       isMoveOk: gameLogic.isMoveOk,
       updateUI: updateUI
     });
