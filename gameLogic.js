@@ -566,6 +566,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		},
 		// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
 		"phase" : 1,
+		"selected" : "",
 		"totalPlayers" : totalPlayers,
 		"players" : {
 			"player1" : {
@@ -648,7 +649,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 
 	function addOneUnitOnEachCountry(board){
-		var index = board.totalPlayers;
+		var index = 1;
 		for (var key in board.territory){
 			index = 1 - index;
 			board.territory[key].owner =  index;
@@ -725,6 +726,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 1:
 			{
+				if(moveType === "endTurn"){
+					throw new Error("You can not end turn because you still have remain units");
+				}
 				if (!boardIsFull(board)){
 					if (board.territory[country].owner !== null){
 						throw new Error("You have to deploy units on blank territory in first deploy phase");
@@ -779,7 +783,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			**/
 			case 2:
 			{
-
+				if(moveType === "endTurn"){
+					throw new Error("You can not end turn because you still have remain units");
+				}
 				if (board.territory[country].owner !== turnIndexBeforeMove){
 					throw new Error("You can not deploy units on other's territory");
 				}
@@ -812,7 +818,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
 					return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];	
+						{"set": {"key": "delta", "value": "end"}}];	
 				}
 
 				if(board.players["player"+(turnIndexBeforeMove+1)].remainUnits > 0){
@@ -891,7 +897,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
 					return [firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];	
+						{"set": {"key": "delta", "value": "end"}}];	
 				}
 
 				if (board.territory[country].owner !== turnIndexBeforeMove){
