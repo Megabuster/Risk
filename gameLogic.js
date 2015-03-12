@@ -605,16 +605,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		return "";
 	}
 
-	/*
-	function pickRandObject(obj) {
-        var result;
-        var count = 0;
-        for (var prop in obj)
-            if (Math.random() < 1/++count)
-               result = prop;
-        return result;
-    }
-	*/
 	// get all possible moves besides end turn
 
 	function getPossibleMoves(board, turnIndexBeforeMove) {
@@ -666,41 +656,33 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	 * resrolls is an array representing the dice that need to be rolled (or rolled again)
 	*/
 
-	/*
-	 function createRollMove(board, turnIndexBeforeMove) {
-	    if(board.dice.d1 === undefined){
-	      dice.d1 = null;
+	
+	 function createRollMove(dice, turnIndex) {
+	    var move = [{set: {key: "diceRoll", value: true}},
+	    			{"setTurn" : {"turnIndex" : turnIndex}}];
+	    if(dice.d0 === undefined){
+	    	dice.d0 = null;
 	    }
-	    if(board.dice.d2 === undefined){
-	      dice.d2 = null;
+	    if(dice.d1 === undefined){
+	    	dice.d1 = null;
 	    }
-	    if(borad.dice.d3 === undefined){
-	      dice.d3 = null;
+	    if(dice.d2 === undefined){
+	    	dice.d2 = null;
 	    }
-	    if(borad.dice.d4 === undefined){
-	      dice.d4 = null;
+	    if(dice.d3 === undefined){
+	    	dice.d3 = null;
 	    }
-	    if(dice.d5 === undefined){
-	      dice.d5 = null;
+	    if(dice.d4 === undefined){
+	    	dice.d4 = null;
 	    }
-
-   	    var move = [{set: {key: "diceRoll", value: true}}, {set: {key: "boradAfter", value: rollNumber}}, {setTurn: {turnIndex: turnIndex}}];
 
 	    var s;
 	    for (s in dice) {
-	      if(rerolls.indexOf(s) !== -1){
 	        move.push({setRandomInteger: {key: s, from: 1, to: 7}});
-	      } else {
-	        var val = dice[s];
-	        if(dice[s] == null){
-	          val = -1;
-	        }
-	        move.push({set: {key: s, value: val}});
-	      }
-	    }
+	    } 
 	    return move;
 	  }
-	*/
+	
 
 
 	function createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits){
@@ -742,9 +724,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					// The next player's turn (the turn index minus one).
 					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
 					
-					return [firstOperation,
+					return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry, "moveUnits":moveUnits}}}];
 				}
 
 				else{
@@ -771,9 +754,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					}
 
 					
-					return [firstOperation,
+					return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry, "moveUnits":moveUnits}}}];
 				}
 			}
 
@@ -800,9 +784,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 				var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
 				
-				return [firstOperation,
+				return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];	
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry, "moveUnits":moveUnits}}}];	
 			}
 
 			/**
@@ -816,9 +801,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					boardAfterMove.phase = 4;
 
 					var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
-					return [firstOperation,
+					return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": "end"}}];	
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry, "moveUnits":moveUnits}}}];	
 				}
 
 				if(board.players["player"+(turnIndexBeforeMove+1)].remainUnits > 0){
@@ -859,7 +845,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				boardAfterMove.territory[country].units = result.attacker.units;
 				boardAfterMove.territory[targetCountry].units = result.defender.units;
 
-				debugger;
+				//debugger;
 				if(boardAfterMove.territory[targetCountry].owner !== board.territory[targetCountry].owner){
 					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].totalTerritories++;
 					boardAfterMove.players["player"+(turnIndexBeforeMove === 0 ? 2 : 1)].totalTerritories--;
@@ -874,9 +860,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					(winner === 'player1' ? [1, 0] : [0, 1])}};
 				} 
 
-				return [firstOperation,
+				return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];	
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry,  "moveUnits":moveUnits}}}];	
 		
 			}
 
@@ -895,9 +882,13 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					
 					// The next player's turn (the turn index minus one unless it's 0).
 					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
-					return [firstOperation,
+					return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": "end"}}];	
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry, "moveUnits":moveUnits}}}];	
+				}
+				if (country === targetCountry){
+					throw new Error("You can not fortify the same country");
 				}
 
 				if (board.territory[country].owner !== turnIndexBeforeMove){
@@ -927,9 +918,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				
 				var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
 
-				return [firstOperation,
+				return [{set: {key: "diceRoll", value: false}},
+						firstOperation,
 						{"set": {"key": "board", "value": boardAfterMove}},
-						{"set": {"key": "delta", "value": country}}];	
+						{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry, "moveUnits":moveUnits}}}];	
 				
 			}
 		}
@@ -940,31 +932,35 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		var move = params.move;
 		var turnIndexBeforeMove = params.turnIndexBeforeMove;
 		var stateBeforeMove = params.stateBeforeMove;
-		var targetCountry = params.targetCountry;
-		var moveUnits = params.moveUnits;
-		var dice = params.dice;
-		var moveType = params.moveType;
+
 		//Here we assume that turnIndexBeforeMove and stateBeforeMove are legal, and we need 
 		//to verify that move is legal
-
 		try{
-			//console.log("la");
-			var country = move[2].set.value;
-			var board = stateBeforeMove.board;
-			var expectedMove = createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
-			//debugger;
-
-			if (!angular.equals(move, expectedMove)){
-				return false;
-			}
-		} catch (e) {
+			if(move[0].set.value){
+				var dice = {d0: stateBeforeMove.d0, d1: stateBeforeMove.d1, d2: stateBeforeMove.d2, d3: stateBeforeMove.d3, d4: stateBeforeMove.d4};
+				var expectedMove = createRollMove(dice, turnIndexBeforeMove);
+				if (!angular.equals(move, expectedMove)) {
+					return false;
+				}
+			}else{
+				var deltaValue = move[3].set.value;
+				var targetCountry = deltaValue.targetCountry;
+				var moveUnits = deltaValue.moveUnits;
+ 				var dice = {d0: stateBeforeMove.d0, d1: stateBeforeMove.d1, d2: stateBeforeMove.d2, d3: stateBeforeMove.d3, d4: stateBeforeMove.d4};				var moveType = deltaValue.moveType;
+				var country = deltaValue.country;
+				var board = stateBeforeMove.board;
+				var expectedMove = createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits);
+				if (!angular.equals(move, expectedMove)){
+					return false;
+				}
+			} 
+		}catch (e) {
 			// if there are any exceptions then move is illegal
-		  //console.log(e);
-		  return false;
+	        console.log(e);
+		    return false;
 		}
 		return true;
 	}
-
 
 
 	function getReusltAfterAttack(attackerUnits, attackerOwner, defenderUnits, defenderOwner, dice){
@@ -1108,6 +1104,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	return {
 		getInitialBoard: getInitialBoard,
 		createMove: createMove,
+		createRollMove: createRollMove,
 		isMoveOk: isMoveOk,
 		getWinner: getWinner,
 		boardIsFull: boardIsFull,
