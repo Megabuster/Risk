@@ -110,7 +110,7 @@ angular.module('myApp')
     };
 
     $scope.shouldShowUnits = function(){
-      return ($scope.board.pahse === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex)
+      return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex)
     }
 
     $scope.shouldShowNumber = function (country) {
