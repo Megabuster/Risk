@@ -6,14 +6,6 @@ html, body {
   overflow: hidden;
   position: fixed!important;
 }
-<<<<<<< HEAD
-=======
-
-#Greenland{
-  background: blue;
-}
-
->>>>>>> gh-pages
 /* To prevent long-press that will bring up copy-paste dialog. */
 * {
   -webkit-user-select: none;
