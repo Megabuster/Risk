@@ -81,13 +81,11 @@ angular.module('myApp')
         if ($scope.board.selected === ""){
           $scope.board.selected = country;
         }else{
-          $( "#dialog" ).dialog( "open" );
-          if ($("#dialog").dialog( "isOpen" )===false) { 
-            var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, null, moveUnits);
-            $scope.isYourTurn = false; // to prevent making another move
-            gameService.makeMove(move);            
-            $scope.board.selected = "";
-          }
+          $scope.moveUnits = parseInt(document.getElementById("units").value);
+          var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, null, $scope.moveUnits);
+          $scope.isYourTurn = false; // to prevent making another move
+          gameService.makeMove(move);            
+          $scope.board.selected = "";
         }
       }
 
@@ -111,6 +109,9 @@ angular.module('myApp')
       }
     };
 
+    $scope.shouldShowUnits = function(){
+      return ($scope.board.pahse === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex)
+    }
 
     $scope.shouldShowNumber = function (country) {
       var unit = $scope.board.territory[country].units;
@@ -146,32 +147,7 @@ angular.module('myApp')
       return $scope.board.territory[country].owner === 0 ? "red.png" : "green.png";
     };
 
-    // for the dialog box
-    $(function() {  
-      $( "#dialog" ).dialog({
-
-        autoOpen: false,
-        modal: true,
-        show: {
-          effect: "blind",
-          duration: 1000
-        },
-        hide: {
-          effect: "explode",
-          duration: 1000
-        },
-        buttons: {
-          "Move": function() {      
-            moveUnits = parseInt(document.getElementById("units").value);
-            $( this ).dialog( "close" );
-          },
-          "Cancel": function() {
-            $( this ).dialog( "close" );
-          }
-        }
-      });
-    });
-
+    
     gameService.setGame({
       gameDeveloperEmail: "zl953@nyu.edu",
       minNumberOfPlayers: 2,
