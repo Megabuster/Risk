@@ -707,7 +707,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			 * in the first phase.  
 			**/
 			case 1:
-			{
+			{	
 				if(moveType === "endTurn"){
 					throw new Error("You can not end turn because you still have remain units");
 				}
@@ -720,6 +720,12 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					boardAfterMove.territory[country].owner = turnIndexBeforeMove;
 					boardAfterMove.territory[country].units++;
 					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits--;
+					//alert(boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits);
+					var remainUnits = getRemainUnits(boardAfterMove, turnIndexBeforeMove);
+
+					var continent = boardAfterMove.territory[country].continent;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)][continent]++;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].totalTerritories++;
 
 					// The next player's turn (the turn index minus one).
 					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
@@ -742,13 +748,14 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
 					
 					if(boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits === 0){
-
+						console.log("lala");
 						if(turnIndexBeforeMove === 0){
-
-							boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = 7;
+							console.log("lala");
+							var remainUnits = getRemainUnits(boardAfterMove, turnIndexBeforeMove);
+							boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = getRemainUnits(boardAfterMove, turnIndexBeforeMove);
 						}else{
 							boardAfterMove.phase = 2;
-							boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = 7;
+							boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = getRemainUnits(boardAfterMove, turnIndexBeforeMove);
 						}
 						
 					}
@@ -848,7 +855,11 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				//debugger;
 				if(boardAfterMove.territory[targetCountry].owner !== board.territory[targetCountry].owner){
 					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].totalTerritories++;
+					var continent = boardAfterMove.territory[targetCountry].continent;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)][continent]++;
+
 					boardAfterMove.players["player"+(turnIndexBeforeMove === 0 ? 2 : 1)].totalTerritories--;
+					boardAfterMove.players["player"+(turnIndexBeforeMove === 0 ? 2 : 1)][continent]--;
 				}
 
 				var firstOperation = {"setTurn" : {"turnIndex" : turnIndexBeforeMove}};
@@ -878,7 +889,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				if(moveType === "endTurn"){
 					var boardAfterMove = angular.copy(board);
 					boardAfterMove.phase = 2;
-					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = 7;
+					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].remainUnits = getRemainUnits(boardAfterMove, turnIndexBeforeMove);
 					
 					// The next player's turn (the turn index minus one unless it's 0).
 					var firstOperation = {"setTurn" : {"turnIndex" : 1 - turnIndexBeforeMove}};
@@ -960,6 +971,29 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		    return false;
 		}
 		return true;
+	}
+
+
+	function getRemainUnits(board, turnIndex){
+		var basicUnits;
+		if(board.players["player"+(turnIndex+1)].totalTerritories / 3 < 3)
+			basicUnits = 3;
+		else
+			basicUnits = Math.floor(board.players["player"+(turnIndex+1)].totalTerritories / 3 );
+		if (board.players["player"+(turnIndex+1)].Asia === 12)
+			basicUnits += 7;
+		if (board.players["player"+(turnIndex+1)].Australia === 4)
+			basicUnits += 2;
+		if (board.players["player"+(turnIndex+1)].Africa === 6)
+			basicUnits += 3;
+		if (board.players["player"+(turnIndex+1)].Europe === 7)
+			basicUnits += 5;
+		if (board.players["player"+(turnIndex+1)].North_America === 9)
+			basicUnits += 5;
+		if (board.players["player"+(turnIndex+1)].South_America === 4)
+			basicUnits += 2;
+		return basicUnits;
+
 	}
 
 

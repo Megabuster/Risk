@@ -110,6 +110,7 @@ angular.module('myApp')
     };
 
     $scope.shouldShowUnits = function(){
+      //return true;
       return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex)
     }
 
