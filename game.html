@@ -14,7 +14,6 @@
   <script src="http://yoav-zibin.github.io/emulator/messageService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
   <script src="http://yoav-zibin.github.io/emulator/examples/resizeMapArea.js"></script>
-  <script src="http://172.16.189.129:8080/target/target-script-min.js#anonymous"></script>
   
   <script>
     resizeMapArea({imageId: "img_ID", mapId: "map_ID", originalWidth: 815, originalHeight: 600});
@@ -72,111 +71,108 @@
       <area id="Eastern_Australia" alt="Eastern_Australia" title="Eastern_Australia" shape="poly" coords="709,416,709,453,741,460,741,499,766,496,784,455,758,413,725,408" ng-click="countryClicked('Eastern_Australia')"  />
       <area id="Western_Australia" alt="Western_Australia" title="Western_Australia" shape="poly" coords="708,417,657,443,655,495,696,486,716,477,738,501,741,456,709,456" ng-click="countryClicked('Western_Australia')"  />
 
-      <p ng-show="shouldShowNumber('Greenland')" id="Greenland_Units" style="position:absolute; top:18.0%;left:34.0%">{{getNumber("Greenland")}}</p>
-      <p ng-show="shouldShowNumber('Northwest_Territory')" id="Northwest_Territory_Units" style="position:absolute; top:19.0%;left:20.0%">{{getNumber("Northwest_Territory")}}</p>
-      <p ng-show="shouldShowNumber('Alaska')" id="Alaska_Units" style="position:absolute; top:20.0%;left:7.0%">{{getNumber("Alaska")}}</p>
-      <p ng-show="shouldShowNumber('Alberta')" id="Alberta_Units" style="position:absolute; top:27.0%;left:14.0%">{{getNumber("Alberta")}}</p>
-      <p ng-show="shouldShowNumber('Ontario')" id="Ontario_Units" style="position:absolute; top:29.0%;left:23.0%">{{getNumber("Ontario")}}</p>
-      <p ng-show="shouldShowNumber('Eastern_Canada')" id="Eastern_Canada_Units" style="position:absolute; top:30.0%;left:28.0%">{{getNumber("Eastern_Canada")}}</p>
-      <p ng-show="shouldShowNumber('Eastern_United_States')" id="Eastern_United_States_Units" style="position:absolute; top:40.0%;left:19.0%">{{getNumber("Eastern_United_States")}}</p>
-      <p ng-show="shouldShowNumber('Western_United_States')" id="Western_United_States_Units" style="position:absolute; top:35.0%;left:16.0%">{{getNumber("Western_United_States")}}</p>
-      <p ng-show="shouldShowNumber('Central_America')" id="Central_America_Units" style="position:absolute; top:48.0%;left:18.0%">{{getNumber("Central_America")}}</p>
-      <p ng-show="shouldShowNumber('Venezuela')" id="Venezuela_Units" style="position:absolute; top:54.0%;left:22.0%">{{getNumber("Venezuela")}}</p>
-      <p ng-show="shouldShowNumber('Brazil')" id="Brazil_Units" style="position:absolute; top:65.0%;left:30.0%">{{getNumber("Brazil")}}</p>
-      <p ng-show="shouldShowNumber('Peru')" id="Peru_Units" style="position:absolute; top:65.0%;left:26.0%">{{getNumber("Peru")}}</p>
-      <p ng-show="shouldShowNumber('Argentina')" id="Argentina_Units" style="position:absolute; top:72.0%;left:27.0%">{{getNumber("Argentina")}}</p>
-      <p ng-show="shouldShowNumber('Iceland')" id="Iceland_Units" style="position:absolute; top:23.0%;left:43.0%">{{getNumber("Iceland")}}</p>
-      <p ng-show="shouldShowNumber('Great_Britain')" id="Great_Britain_Units" style="position:absolute; top:34.0%;left:43.0%">{{getNumber("Great_Britain")}}</p>
-      <p ng-show="shouldShowNumber('Scandinavia')" id="Scandinavia_Units" style="position:absolute; top:26.0%;left:48.0%">{{getNumber("Scandinavia")}}</p>
-      <p ng-show="shouldShowNumber('Russia')" id="Russia_Units" style="position:absolute; top:34.0%;left:59.0%">{{getNumber("Russia")}}</p>
-      <p ng-show="shouldShowNumber('Northern_Europe')" id="Northern_Europe_Units" style="position:absolute; top:34.0%;left:51.0%">{{getNumber("Northern_Europe")}}</p>
-      <p ng-show="shouldShowNumber('Western_Europe')" id="Western_Europe_Units" style="position:absolute; top:46.0%;left:41.0%">{{getNumber("Western_Europe")}}</p>
-      <p ng-show="shouldShowNumber('Southern_Europe')" id="Southern_Europe_Units" style="position:absolute; top:44.0%;left:52.0%">{{getNumber("Southern_Europe")}}</p>
-      <p ng-show="shouldShowNumber('North_Africa')" id="North_Africa_Units" style="position:absolute; top:57.0%;left:50.0%">{{getNumber("North_Africa")}}</p>
-      <p ng-show="shouldShowNumber('Egypt')" id="Egypt_Units" style="position:absolute; top:55.0%;left:55.0%">{{getNumber("Egypt")}}</p>
-      <p ng-show="shouldShowNumber('East_Africa')" id="East_Africa_Units" style="position:absolute; top:65.0%;left:59.0%">{{getNumber("East_Africa")}}</p>
-      <p ng-show="shouldShowNumber('Central_Africa')" id="Central_Africa_Units" style="position:absolute; top:65.0%;left:53.0%">{{getNumber("Central_Africa")}}</p>
-      <p ng-show="shouldShowNumber('South_Africa')" id="South_Africa_Units" style="position:absolute; top:72.0%;left:53.0%">{{getNumber("South_Africa")}}</p>
-      <p ng-show="shouldShowNumber('Madagascar')" id="Madagascar_Units" style="position:absolute; top:81.0%;left:63.0%">{{getNumber("Madagascar")}}</p>
-      <p ng-show="shouldShowNumber('Middle_East')" id="Middle_East_Units" style="position:absolute; top:54.0%;left:63.0%">{{getNumber("Middle_East")}}</p>
-      <p ng-show="shouldShowNumber('India')" id="India_Units" style="position:absolute; top:51.0%;left:73.0%">{{getNumber("India")}}</p>
-      <p ng-show="shouldShowNumber('Afghanistan')" id="Afghanistan_Units" style="position:absolute; top:40.0%;left:67.0%">{{getNumber("Afghanistan")}}</p>
-      <p ng-show="shouldShowNumber('Ural')" id="Ural_Units" style="position:absolute; top:24.0%;left:69.0%">{{getNumber("Ural")}}</p>
-      <p ng-show="shouldShowNumber('China')" id="China_Units" style="position:absolute; top:44.0%;left:80.0%">{{getNumber("China")}}</p>
-      <p ng-show="shouldShowNumber('Siberia')" id="Siberia_Units" style="position:absolute; top:20.0%;left:76.0%">{{getNumber("Siberia")}}</p>
-      <p ng-show="shouldShowNumber('Yakutsk')" id="Yakutsk_Units" style="position:absolute; top:16.0%;left:83.0%">{{getNumber("Yakutsk")}}</p>
-      <p ng-show="shouldShowNumber('Kamchatka')" id="Kamchatka_Units" style="position:absolute; top:17.0%;left:89.0%">{{getNumber("Kamchatka")}}</p>
-      <p ng-show="shouldShowNumber('Irkutsk')" id="Irkutsk_Units" style="position:absolute; top:26.0%;left:82.0%">{{getNumber("Irkutsk")}}</p>
-      <p ng-show="shouldShowNumber('Mongolia')" id="Mongolia_Units" style="position:absolute; top:35.0%;left:83.0%">{{getNumber("Mongolia")}}</p>
-      <p ng-show="shouldShowNumber('Japan')" id="Japan_Units" style="position:absolute; top:36.0%;left:92.0%">{{getNumber("Japan")}}</p>
-      <p ng-show="shouldShowNumber('Southeast_Asia')" id="Southeast_Asia_Units" style="position:absolute; top:54.0%;left:81.0%">{{getNumber("Southeast_Asia")}}</p>
-      <p ng-show="shouldShowNumber('Indonesia')" id="Indonesia_Units" style="position:absolute; top:65.0%;left:81.0%">{{getNumber("Indonesia")}}</p>
-      <p ng-show="shouldShowNumber('New_Guinea')" id="New_Guinea_Units" style="position:absolute; top:60.0%;left:89.0%">{{getNumber("New_Guinea")}}</p>
-      <p ng-show="shouldShowNumber('Eastern_Australia')" id="Eastern_Australia_Units" style="position:absolute; top:75.0%;left:93.0%">{{getNumber("Eastern_Australia")}}</p>
-      <p ng-show="shouldShowNumber('Western_Australia')" id="Western_Australia_Units" style="position:absolute; top:75.0%;left:86.0%">{{getNumber("Western_Australia")}}</p>
+      <p class="country" ng-show="shouldShowNumber('Greenland')" id="Greenland_Units" style="position:absolute; top:16.0%;left:34.0%">{{getNumber("Greenland")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Northwest_Territory')" id="Northwest_Territory_Units" style="position:absolute; top:19.0%;left:20.0%">{{getNumber("Northwest_Territory")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Alaska')" id="Alaska_Units" style="position:absolute; top:20.0%;left:7.0%">{{getNumber("Alaska")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Alberta')" id="Alberta_Units" style="position:absolute; top:27.0%;left:14.0%">{{getNumber("Alberta")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Ontario')" id="Ontario_Units" style="position:absolute; top:29.0%;left:23.0%">{{getNumber("Ontario")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Eastern_Canada')" id="Eastern_Canada_Units" style="position:absolute; top:30.0%;left:26.0%">{{getNumber("Eastern_Canada")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Eastern_United_States')" id="Eastern_United_States_Units" style="position:absolute; top:39.0%;left:19.0%">{{getNumber("Eastern_United_States")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Western_United_States')" id="Western_United_States_Units" style="position:absolute; top:35.0%;left:16.0%">{{getNumber("Western_United_States")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Central_America')" id="Central_America_Units" style="position:absolute; top:48.0%;left:18.0%">{{getNumber("Central_America")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Venezuela')" id="Venezuela_Units" style="position:absolute; top:54.0%;left:22.0%">{{getNumber("Venezuela")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Brazil')" id="Brazil_Units" style="position:absolute; top:65.0%;left:30.0%">{{getNumber("Brazil")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Peru')" id="Peru_Units" style="position:absolute; top:64.0%;left:27.0%">{{getNumber("Peru")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Argentina')" id="Argentina_Units" style="position:absolute; top:72.0%;left:27.0%">{{getNumber("Argentina")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Iceland')" id="Iceland_Units" style="position:absolute; top:23.0%;left:43.0%">{{getNumber("Iceland")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Great_Britain')" id="Great_Britain_Units" style="position:absolute; top:34.0%;left:43.0%">{{getNumber("Great_Britain")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Scandinavia')" id="Scandinavia_Units" style="position:absolute; top:26.0%;left:49.5%">{{getNumber("Scandinavia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Russia')" id="Russia_Units" style="position:absolute; top:34.0%;left:59.0%">{{getNumber("Russia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Northern_Europe')" id="Northern_Europe_Units" style="position:absolute; top:34.0%;left:51.0%">{{getNumber("Northern_Europe")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Western_Europe')" id="Western_Europe_Units" style="position:absolute; top:46.0%;left:41.0%">{{getNumber("Western_Europe")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Southern_Europe')" id="Southern_Europe_Units" style="position:absolute; top:44.0%;left:52.0%">{{getNumber("Southern_Europe")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('North_Africa')" id="North_Africa_Units" style="position:absolute; top:57.0%;left:50.0%">{{getNumber("North_Africa")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Egypt')" id="Egypt_Units" style="position:absolute; top:54.0%;left:55.0%">{{getNumber("Egypt")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('East_Africa')" id="East_Africa_Units" style="position:absolute; top:65.0%;left:59.0%">{{getNumber("East_Africa")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Central_Africa')" id="Central_Africa_Units" style="position:absolute; top:65.0%;left:53.0%">{{getNumber("Central_Africa")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('South_Africa')" id="South_Africa_Units" style="position:absolute; top:80.0%;left:53.0%">{{getNumber("South_Africa")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Madagascar')" id="Madagascar_Units" style="position:absolute; top:80.0%;left:62.0%">{{getNumber("Madagascar")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Middle_East')" id="Middle_East_Units" style="position:absolute; top:54.0%;left:63.0%">{{getNumber("Middle_East")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('India')" id="India_Units" style="position:absolute; top:51.0%;left:73.0%">{{getNumber("India")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Afghanistan')" id="Afghanistan_Units" style="position:absolute; top:40.0%;left:67.0%">{{getNumber("Afghanistan")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Ural')" id="Ural_Units" style="position:absolute; top:24.0%;left:69.0%">{{getNumber("Ural")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('China')" id="China_Units" style="position:absolute; top:44.0%;left:80.0%">{{getNumber("China")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Siberia')" id="Siberia_Units" style="position:absolute; top:20.0%;left:76.0%">{{getNumber("Siberia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Yakutsk')" id="Yakutsk_Units" style="position:absolute; top:16.0%;left:83.0%">{{getNumber("Yakutsk")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Kamchatka')" id="Kamchatka_Units" style="position:absolute; top:17.0%;left:89.0%">{{getNumber("Kamchatka")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Irkutsk')" id="Irkutsk_Units" style="position:absolute; top:26.0%;left:82.0%">{{getNumber("Irkutsk")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Mongolia')" id="Mongolia_Units" style="position:absolute; top:35.0%;left:83.0%">{{getNumber("Mongolia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Japan')" id="Japan_Units" style="position:absolute; top:35.0%;left:92.0%">{{getNumber("Japan")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Southeast_Asia')" id="Southeast_Asia_Units" style="position:absolute; top:54.0%;left:81.0%">{{getNumber("Southeast_Asia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Indonesia')" id="Indonesia_Units" style="position:absolute; top:65.0%;left:81.0%">{{getNumber("Indonesia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('New_Guinea')" id="New_Guinea_Units" style="position:absolute; top:60.0%;left:89.0%">{{getNumber("New_Guinea")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Eastern_Australia')" id="Eastern_Australia_Units" style="position:absolute; top:75.0%;left:93.0%">{{getNumber("Eastern_Australia")}}</p> 
+      <p class="country" ng-show="shouldShowNumber('Western_Australia')" id="Western_Australia_Units" style="position:absolute; top:75.0%;left:86.0%">{{getNumber("Western_Australia")}}</p> 
 
-      <img ng-show="shouldShowNumber('Greenland')" id="Greenland_Owner" style="position:absolute; top:13.0%;left:34.0%; height:" ng-src="{{getImageSrc('Greenland')}}">
-      <img ng-show="shouldShowNumber('Northwest_Territory')" id="Northwest_Territory_Owner" style="position:absolute; top:19.0%;left:15.0%" ng-src="{{getImageSrc('Northwest_Territory')}}">
-      <img ng-show="shouldShowNumber('Alaska')" id="Alaska_Owner" style="position:absolute; top:17.0%;left:5.0%" ng-src="{{getImageSrc('Alaska')}}">
-      <img ng-show="shouldShowNumber('Alberta')" id="Alberta_Owner" style="position:absolute; top:24.0%;left:14.0%" ng-src="{{getImageSrc('Alberta')}}">
-      <img ng-show="shouldShowNumber('Ontario')" id="Ontario_Owner" style="position:absolute; top:27.0%;left:20.0%" ng-src="{{getImageSrc('Ontario')}}">
-      <img ng-show="shouldShowNumber('Eastern_Canada')" id="Eastern_Canada_Owner" style="position:absolute; top:27.0%;left:28.0%" ng-src="{{getImageSrc('Eastern_Canada')}}">
-      <img ng-show="shouldShowNumber('Eastern_United_States')" id="Eastern_United_States_Owner" style="position:absolute; top:39.0%;left:22.0%" ng-src="{{getImageSrc('Eastern_United_States')}}">
-      <img ng-show="shouldShowNumber('Western_United_States')" id="Western_United_States_Owner" style="position:absolute; top:35.0%;left:13.0%" ng-src="{{getImageSrc('Western_United_States')}}">
-      <img ng-show="shouldShowNumber('Central_America')" id="Central_America_Owner" style="position:absolute; top:45.0%;left:15.0%" ng-src="{{getImageSrc('Central_America')}}">
 
-      <img ng-show="shouldShowNumber('Venezuela')" id="Venezuela_Owner" style="position:absolute; top:53.0%;left:24.0%" ng-src="{{getImageSrc('Venezuela')}}">
-      <img ng-show="shouldShowNumber('Brazil')" id="Brazil_Owner" style="position:absolute; top:62.0%;left:31.0%" ng-src="{{getImageSrc('Brazil')}}">
-      <img ng-show="shouldShowNumber('Peru')" id="Peru_Owner" style="position:absolute; top:62.5%;left:23.0%" ng-src="{{getImageSrc('Peru')}}">
-      <img ng-show="shouldShowNumber('Argentina')" id="Argentina_Owner" style="position:absolute; top:72.0%;left:24.0%" ng-src="{{getImageSrc('Argentina')}}">
-      <img ng-show="shouldShowNumber('Iceland')" id="Iceland_Owner" style="position:absolute; top:23.0%;left:40.0%" ng-src="{{getImageSrc('Iceland')}}">
+      <img ng-show="shouldShowNumber('Greenland')" id="Greenland_Owner" style="position:absolute; top:13.0%;left:34.0%; height:4%;" ng-src="{{getImageSrc('Greenland')}}">
+      <img ng-show="shouldShowNumber('Northwest_Territory')" id="Northwest_Territory_Owner" style="position:absolute; top:19.0%;left:15.0% ;height:4%;" ng-src="{{getImageSrc('Northwest_Territory')}}">
+      <img ng-show="shouldShowNumber('Alaska')" id="Alaska_Owner" style="position:absolute; top:17.0%;left:5.0% ;height:4%;" ng-src="{{getImageSrc('Alaska')}}">
+      <img ng-show="shouldShowNumber('Alberta')" id="Alberta_Owner" style="position:absolute; top:24.0%;left:14.0% ;height:4%;" ng-src="{{getImageSrc('Alberta')}}">
+      <img ng-show="shouldShowNumber('Ontario')" id="Ontario_Owner" style="position:absolute; top:27.0%;left:20.0% ;height:4%;" ng-src="{{getImageSrc('Ontario')}}">
+      <img ng-show="shouldShowNumber('Eastern_Canada')" id="Eastern_Canada_Owner" style="position:absolute; top:27.0%;left:28.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Canada')}}">
+      <img ng-show="shouldShowNumber('Eastern_United_States')" id="Eastern_United_States_Owner" style="position:absolute; top:39.0%;left:22.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_United_States')}}">
+      <img ng-show="shouldShowNumber('Western_United_States')" id="Western_United_States_Owner" style="position:absolute; top:35.0%;left:13.0% ;height:4%;" ng-src="{{getImageSrc('Western_United_States')}}">
+      <img ng-show="shouldShowNumber('Central_America')" id="Central_America_Owner" style="position:absolute; top:45.0%;left:15.0% ;height:4%;" ng-src="{{getImageSrc('Central_America')}}">
+      <img ng-show="shouldShowNumber('Venezuela')" id="Venezuela_Owner" style="position:absolute; top:53.0%;left:24.0% ;height:4%;" ng-src="{{getImageSrc('Venezuela')}}">
+      <img ng-show="shouldShowNumber('Brazil')" id="Brazil_Owner" style="position:absolute; top:62.0%;left:31.0% ;height:4%;" ng-src="{{getImageSrc('Brazil')}}">
+      <img ng-show="shouldShowNumber('Peru')" id="Peru_Owner" style="position:absolute; top:62.5%;left:23.0% ;height:4%;" ng-src="{{getImageSrc('Peru')}}">
+      <img ng-show="shouldShowNumber('Argentina')" id="Argentina_Owner" style="position:absolute; top:72.0%;left:24.0% ;height:4%;" ng-src="{{getImageSrc('Argentina')}}">
+      <img ng-show="shouldShowNumber('Iceland')" id="Iceland_Owner" style="position:absolute; top:23.0%;left:40.0% ;height:4%;" ng-src="{{getImageSrc('Iceland')}}">
+      <img ng-show="shouldShowNumber('Great_Britain')" id="Great_Britain_Owner" style="position:absolute; top:33.0%;left:39.0% ;height:4%;" ng-src="{{getImageSrc('Great_Britain')}}">
+      <img ng-show="shouldShowNumber('Scandinavia')" id="Scandinavia_Owner" style="position:absolute; top:23.0%;left:51.0% ;height:4%;" ng-src="{{getImageSrc('Scandinavia')}}">
+      <img ng-show="shouldShowNumber('Russia')" id="Russia_Owner" style="position:absolute; top:30.0%;left:59.0% ;height:4%;" ng-src="{{getImageSrc('Russia')}}">
+      <img ng-show="shouldShowNumber('Northern_Europe')" id="Northern_Europe_Owner" style="position:absolute; top:34.0%;left:47.0% ;height:4%;" ng-src="{{getImageSrc('Northern_Europe')}}">
+      <img ng-show="shouldShowNumber('Western_Europe')" id="Western_Europe_Owner" style="position:absolute; top:43.0%;left:44.0% ;height:4%;" ng-src="{{getImageSrc('Western_Europe')}}">
+      <img ng-show="shouldShowNumber('Southern_Europe')" id="Southern_Europe_Owner" style="position:absolute; top:41.0%;left:50.0% ;height:4%;" ng-src="{{getImageSrc('Southern_Europe')}}">
+      <img ng-show="shouldShowNumber('North_Africa')" id="North_Africa_Owner" style="position:absolute; top:57.0%;left:46.0% ;height:4%;" ng-src="{{getImageSrc('North_Africa')}}">
+      <img ng-show="shouldShowNumber('Egypt')" id="Egypt_Owner" style="position:absolute; top:53.0%;left:52.0% ;height:4%;" ng-src="{{getImageSrc('Egypt')}}">
+      <img ng-show="shouldShowNumber('East_Africa')" id="East_Africa_Owner" style="position:absolute; top:62.0%;left:57.0% ;height:4%;" ng-src="{{getImageSrc('East_Africa')}}">
+      <img ng-show="shouldShowNumber('Central_Africa')" id="Central_Africa_Owner" style="position:absolute; top:68.0%;left:55.0% ;height:4%;" ng-src="{{getImageSrc('Central_Africa')}}">
+      <img ng-show="shouldShowNumber('South_Africa')" id="South_Africa_Owner" style="position:absolute; top:76.0%;left:53.0% ;height:4%;" ng-src="{{getImageSrc('South_Africa')}}">
+      <img ng-show="shouldShowNumber('Madagascar')" id="Madagascar_Owner" style="position:absolute; top:78.0%;left:63.0% ;height:4%;" ng-src="{{getImageSrc('Madagascar')}}">
+      <img ng-show="shouldShowNumber('Middle_East')" id="Middle_East_Owner" style="position:absolute; top:50.0%;left:61.0% ;height:4%;" ng-src="{{getImageSrc('Middle_East')}}">
+      <img ng-show="shouldShowNumber('India')" id="India_Owner" style="position:absolute; top:48.0%;left:73.0% ;height:4%;" ng-src="{{getImageSrc('India')}}">
+      <img ng-show="shouldShowNumber('Afghanistan')" id="Afghanistan_Owner" style="position:absolute; top:36.0%;left:67.0% ;height:4%;" ng-src="{{getImageSrc('Afghanistan')}}">
+      <img ng-show="shouldShowNumber('Ural')" id="Ural_Owner" style="position:absolute; top:29.0%;left:70.0% ;height:4%;" ng-src="{{getImageSrc('Ural')}}">
+      <img ng-show="shouldShowNumber('China')" id="China_Owner" style="position:absolute; top:41.0%;left:77.0% ;height:4%;" ng-src="{{getImageSrc('China')}}">
+      <img ng-show="shouldShowNumber('Siberia')" id="Siberia_Owner" style="position:absolute; top:17.0%;left:73.0% ;height:4%;" ng-src="{{getImageSrc('Siberia')}}">
+      <img ng-show="shouldShowNumber('Yakutsk')" id="Yakutsk_Owner" style="position:absolute; top:13.0%;left:83.0% ;height:4%;" ng-src="{{getImageSrc('Yakutsk')}}">
+      <img ng-show="shouldShowNumber('Kamchatka')" id="Kamchatka_Owner" style="position:absolute; top:14.0%;left:92.0% ;height:4%;" ng-src="{{getImageSrc('Kamchatka')}}">
+      <img ng-show="shouldShowNumber('Irkutsk')" id="Irkutsk_Owner" style="position:absolute; top:23.0%;left:80.0% ;height:4%;" ng-src="{{getImageSrc('Irkutsk')}}">
+      <img ng-show="shouldShowNumber('Mongolia')" id="Mongolia_Owner" style="position:absolute; top:32.0%;left:83.0% ;height:4%;" ng-src="{{getImageSrc('Mongolia')}}">
+      <img ng-show="shouldShowNumber('Japan')" id="Japan_Owner" style="position:absolute; top:31.0%;left:92.0% ;height:4%;" ng-src="{{getImageSrc('Japan')}}">
+      <img ng-show="shouldShowNumber('Southeast_Asia')" id="Southeast_Asia_Owner" style="position:absolute; top:50.0%;left:81.0% ;height:4%;" ng-src="{{getImageSrc('Southeast_Asia')}}">
+      <img ng-show="shouldShowNumber('Indonesia')" id="Indonesia_Owner" style="position:absolute; top:62.0%;left:79.0% ;height:4%;" ng-src="{{getImageSrc('Indonesia')}}">
+      <img ng-show="shouldShowNumber('New_Guinea')" id="New_Guinea_Owner" style="position:absolute; top:58.0%;left:86.0% ;height:4%;" ng-src="{{getImageSrc('New_Guinea')}}">
+      <img ng-show="shouldShowNumber('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Australia')}}">
+      <img ng-show="shouldShowNumber('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0% ;height:4%;" ng-src="{{getImageSrc('Western_Australia')}}">
 
-      <img ng-show="shouldShowNumber('Great_Britain')" id="Great_Britain_Owner" style="position:absolute; top:33.0%;left:39.0%" ng-src="{{getImageSrc('Great_Britain')}}">
-      <img ng-show="shouldShowNumber('Scandinavia')" id="Scandinavia_Owner" style="position:absolute; top:23.0%;left:51.0%" ng-src="{{getImageSrc('Scandinavia')}}">
-      <img ng-show="shouldShowNumber('Russia')" id="Russia_Owner" style="position:absolute; top:30.0%;left:59.0%" ng-src="{{getImageSrc('Russia')}}">
-      <img ng-show="shouldShowNumber('Northern_Europe')" id="Northern_Europe_Owner" style="position:absolute; top:34.0%;left:47.0%" ng-src="{{getImageSrc('Northern_Europe')}}">
-      <img ng-show="shouldShowNumber('Western_Europe')" id="Western_Europe_Owner" style="position:absolute; top:43.0%;left:44.0%" ng-src="{{getImageSrc('Western_Europe')}}">
-      <img ng-show="shouldShowNumber('Southern_Europe')" id="Southern_Europe_Owner" style="position:absolute; top:41.0%;left:50.0%" ng-src="{{getImageSrc('Southern_Europe')}}">
 
-      <img ng-show="shouldShowNumber('North_Africa')" id="North_Africa_Owner" style="position:absolute; top:57.0%;left:46.0%" ng-src="{{getImageSrc('North_Africa')}}">
-      <img ng-show="shouldShowNumber('Egypt')" id="Egypt_Owner" style="position:absolute; top:53.0%;left:52.0%" ng-src="{{getImageSrc('Egypt')}}">
-      <img ng-show="shouldShowNumber('East_Africa')" id="East_Africa_Owner" style="position:absolute; top:62.0%;left:57.0%" ng-src="{{getImageSrc('East_Africa')}}">
-      <img ng-show="shouldShowNumber('Central_Africa')" id="Central_Africa_Owner" style="position:absolute; top:68.0%;left:53.0%" ng-src="{{getImageSrc('Central_Africa')}}">
-      <img ng-show="shouldShowNumber('South_Africa')" id="South_Africa_Owner" style="position:absolute; top:76.0%;left:53.0%" ng-src="{{getImageSrc('South_Africa')}}">
-      <img ng-show="shouldShowNumber('Madagascar')" id="Madagascar_Owner" style="position:absolute; top:78.0%;left:63.0%" ng-src="{{getImageSrc('Madagascar')}}">
-
-      <img ng-show="shouldShowNumber('Middle_East')" id="Middle_East_Owner" style="position:absolute; top:50.0%;left:61.0%" ng-src="{{getImageSrc('Middle_East')}}">
-      <img ng-show="shouldShowNumber('India')" id="India_Owner" style="position:absolute; top:48.0%;left:73.0%" ng-src="{{getImageSrc('India')}}">
-      <img ng-show="shouldShowNumber('Afghanistan')" id="Afghanistan_Owner" style="position:absolute; top:36.0%;left:67.0%" ng-src="{{getImageSrc('Afghanistan')}}">
-      <img ng-show="shouldShowNumber('Ural')" id="Ural_Owner" style="position:absolute; top:29.0%;left:70.0%" ng-src="{{getImageSrc('Ural')}}">
-      <img ng-show="shouldShowNumber('China')" id="China_Owner" style="position:absolute; top:41.0%;left:77.0%" ng-src="{{getImageSrc('China')}}">
-      <img ng-show="shouldShowNumber('Siberia')" id="Siberia_Owner" style="position:absolute; top:17.0%;left:73.0%" ng-src="{{getImageSrc('Siberia')}}">
-      <img ng-show="shouldShowNumber('Yakutsk')" id="Yakutsk_Owner" style="position:absolute; top:13.0%;left:83.0%" ng-src="{{getImageSrc('Yakutsk')}}">
-      <img ng-show="shouldShowNumber('Kamchatka')" id="Kamchatka_Owner" style="position:absolute; top:14.0%;left:92.0%" ng-src="{{getImageSrc('Kamchatka')}}">
-      <img ng-show="shouldShowNumber('Irkutsk')" id="Irkutsk_Owner" style="position:absolute; top:23.0%;left:80.0%" ng-src="{{getImageSrc('Irkutsk')}}">
-      <img ng-show="shouldShowNumber('Mongolia')" id="Mongolia_Owner" style="position:absolute; top:32.0%;left:83.0%" ng-src="{{getImageSrc('Mongolia')}}">
-      <img ng-show="shouldShowNumber('Japan')" id="Japan_Owner" style="position:absolute; top:31.0%;left:92.0%" ng-src="{{getImageSrc('Japan')}}">
-      <img ng-show="shouldShowNumber('Southeast_Asia')" id="Southeast_Asia_Owner" style="position:absolute; top:50.0%;left:81.0%" ng-src="{{getImageSrc('Southeast_Asia')}}">
-
-      <img ng-show="shouldShowNumber('Indonesia')" id="Indonesia_Owner" style="position:absolute; top:62.0%;left:77.0%" ng-src="{{getImageSrc('Indonesia')}}">
-      <img ng-show="shouldShowNumber('New_Guinea')" id="New_Guinea_Owner" style="position:absolute; top:58.0%;left:86.0%" ng-src="{{getImageSrc('New_Guinea')}}">
-      <img ng-show="shouldShowNumber('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0%" ng-src="{{getImageSrc('Eastern_Australia')}}">
-      <img ng-show="shouldShowNumber('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0%" ng-src="{{getImageSrc('Western_Australia')}}">
-
-      <p id="Player_Remain_Units" style="position:absolute; top:1.0%;left:7%">Player1 remain units:{{getUnit("player1")}}</p>
-      <p id="Player_Remain_Units" style="position:absolute; top:1.0%;left:73%">Player2 remain units:{{getUnit("player2")}}</p>
-      <p id="phase" style="position:absolute; top:1.0%;left:41%">Current phase:{{getPhase()}}</p>       
-      <p id="turnIndex" style="position:absolute; top:92.0%;left:7%">It's player{{getTurn()+1}}'s turn</p>       
-      <p id="chose country" style="position:absolute; top:92.0%;left:73%">You have chosen {{getCountry()}}</p>       
-      <p ng-show="shouldShowUnits()" style="position:absolute; top:73.0%;left:32%; width:20%">Please select how many units you want to move.</p>
-      <input ng-show="shouldShowUnits()" style="position:absolute; top:83.0%;left:32%; width:5%" type="text" id="units" value="5" />
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:1.0%;left:7%">Player1 remain units:{{getUnit("player1")}}</p>
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:1.0%;left:73%">Player2 remain units:{{getUnit("player2")}}</p>
+      <p class="help" id="phase" style="position:absolute; top:1.0%;left:40%">Current phase:{{getPhase()}}</p>       
+      <p class="help" id="turnIndex" style="position:absolute; top:92.0%;left:7%">It's player{{getTurn()+1}}'s turn</p>       
+      <p class="help" id="chose country" style="position:absolute; top:92.0%;left:73%">You have chosen {{getCountry()}}</p>       
+      <p class="input" ng-show="shouldShowUnits()" style="position:absolute; top:74.0%;left:31%; width:20%">Please enter how many units you want to move.</p>
+      <input ng-show="shouldShowUnits()" style="font-weight: bold; font-size: 100%; font-family: Arial, Helvetica, sans-serif; font-style: italic; text-shadow: 1px 2px 5px #000; border: none; background-color: transparent; position:absolute; top:83.0%;left:32%; width:5%" type="text" id="units" value="0" />
 
     </map>
-    <img id="endTurn" style="position:absolute; top:92.0%;left:35.0%" src="button.gif" ng-click="endTurnClicked()" />
+    <img id="endTurn" style="position:absolute; top:92.0%;left:34.5%;width:30%" src="button.gif" ng-click="endTurnClicked()" />
   </div>
-    <script>
-    
-    </script>
+  <script>
+
+  </script>
 </body>
 
 </html>
