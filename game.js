@@ -61,6 +61,7 @@ angular.module('myApp')
     }
     try {
       if ($scope.board.phase === 1 || $scope.board.phase === 2){
+        
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
@@ -81,7 +82,7 @@ angular.module('myApp')
         if ($scope.board.selected === ""){
           $scope.board.selected = country;
         }else{
-          $scope.moveUnits = parseInt(document.getElementById("units").value);
+          $scope.moveUnits = parseInt(prompt('Enter how many units you want to move','3'));
           var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, null, $scope.moveUnits);
           $scope.isYourTurn = false; // to prevent making another move
           gameService.makeMove(move);            
