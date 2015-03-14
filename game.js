@@ -61,7 +61,6 @@ angular.module('myApp')
     }
     try {
       if ($scope.board.phase === 1 || $scope.board.phase === 2){
-        
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
@@ -131,6 +130,7 @@ angular.module('myApp')
     $scope.getUnit = function (player) {
       return $scope.board.players[player].remainUnits;
     };
+   
     $scope.getPhase = function () {
       if ($scope.board.phase === 1)
         return 'deploy';
