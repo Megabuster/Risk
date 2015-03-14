@@ -375,6 +375,7 @@
 						"China" : 1,
 						"Mongolia" : 1,
 						"Irkutsk" : 1,
+						"Yakutsk" : 1,
 					},
 					"continent" : "Asia",
 					"owner" : null,
