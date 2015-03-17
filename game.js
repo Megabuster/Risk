@@ -9,10 +9,8 @@ angular.module('myApp')
 
   var moveUnits;
   function sendComputerMove() {
-    gameService.makeMove(
-      aiService.createComputerMove($scope.board, $scope.turnIndex,
-              // 0.3 seconds for the AI to choose a move
-              {millisecondsLimit: 300 }));
+    var items = gameLogic.getPossibleMoves($scope.board, $scope.turnIndex);
+    gameService.makeMove(items[Math.floor(Math.random()*items.length)]);
   }
 
   function updateUI(params) {
@@ -52,6 +50,12 @@ angular.module('myApp')
     $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
     params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
     $scope.turnIndex = params.turnIndexAfterMove;
+
+    // Is it the computer's turn?
+    if($scope.isYourTurn && params.playersInfo[params.yourPlayerIndex].playerId === ''){
+      $scope.isYourTurn = false;
+      $timeout(sendComputerMove, 500);
+    }
   }
 
 
@@ -81,7 +85,7 @@ angular.module('myApp')
         if ($scope.board.selected === ""){
           $scope.board.selected = country;
         }else{
-          $scope.moveUnits = parseInt(document.getElementById("units").value);
+          $scope.moveUnits = parseInt(prompt('Enter how many units you want to move','3'));
           var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, null, $scope.moveUnits);
           $scope.isYourTurn = false; // to prevent making another move
           gameService.makeMove(move);            
@@ -100,7 +104,7 @@ angular.module('myApp')
     if (!$scope.isYourTurn)
       return;
     try {
-        var move = gameLogic.createMove('endTurn', $scope.board, $scope.turnIndex, null, null, null, null);
+      var move = gameLogic.createMove('endTurn', $scope.board, $scope.turnIndex, null, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       } catch (e) {
@@ -130,6 +134,7 @@ angular.module('myApp')
     $scope.getUnit = function (player) {
       return $scope.board.players[player].remainUnits;
     };
+
     $scope.getPhase = function () {
       if ($scope.board.phase === 1)
         return 'deploy';
