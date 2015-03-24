@@ -2,8 +2,6 @@
  * Created by Wenzhao on 3/24/15.
  */
 
-
-
 describe('Risk', function() {
 
     'use strict';
