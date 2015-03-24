@@ -1,606 +1,606 @@
 /*
-	Created by Zhuoran on 2/24/14
-	*/
-	'use strict'
+Created by Zhuoran on 3/23/14
+*/
 
-	angular.module('myApp',[]).factory('gameLogic', function(){
+angular.module('myApp',[]).factory('gameLogic', function(){
 
-
-		function getInitialBoard(totalPlayers) {
-			return {"territory" : 
-
-			{
-				"Alaska" : {
-					"name" : "Alaska" ,
-					"neighbors" : {
-						"Northwest_Territory" : 1,
-						"Alberta" : 1,
-						"Kamachatka" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
+	'use strict';
+	// Return the initial Risk board
+	function getInitialBoard(totalPlayers) {
+		
+		return {"territory" : 
+		{
+			"Alaska" : {
+				"name" : "Alaska" ,
+				"neighbors" : {
+					"Northwest_Territory" : 1,
+					"Alberta" : 1,
+					"Kamachatka" : 1
 				},
-
-				"Northwest_Territory" : {
-					"name" : "Northwest_Territory" ,
-					"neighbors" : {
-						"Alaska" : 1,
-						"Alberta" : 1,
-						"Ontario" : 1,
-						"Greenland" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Greenland" : {
-					"name" : "Greenland" ,
-					"neighbors" : {
-						"Northwest_Territory" : 1,
-						"Ontario" : 1,
-						"Eastern_Canada" : 1,
-						"Iceland" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Alberta" : {
-					"name" : "Alberta" ,
-					"neighbors" : {
-						"Alaska" : 1,
-						"Northwest_Territory" : 1,
-						"Ontario" : 1,
-						"Western_United_States" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Ontario" : {
-					"name" : "Ontario" ,
-					"neighbors" : {
-						"Northwest_Territory" : 1,
-						"Alberta" : 1,
-						"Western_United_States" : 1,
-						"Eastern_United_States" : 1,
-						"Eastern_Canada" : 1,
-						"Greenland" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Eastern_Canada" : {
-					"name" : "Eastern_Canada" ,
-					"neighbors" : {
-						"Ontario" : 1,
-						"Eastern_United_States" : 1,
-						"Greenland" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Western_United_States" : {
-					"name" : "Western_United_States" ,
-					"neighbors" : {
-						"Ontario" : 1,
-						"Alberta" : 1,
-						"Central_America" : 1,
-						"Eastern_United_States" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Eastern_United_States" : {
-					"name" : "Eastern_United_States" ,
-					"neighbors" : {
-						"Western_United_States" : 1,
-						"Central_America" : 1,
-						"Ontario" : 1,
-						"Eastern_Canada" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Central_America" : {
-					"name" : "Central_America" ,
-					"neighbors" : {
-						"Western_United_States" : 1,
-						"Eastern_United_States" : 1,
-						"Venezuela" : 1
-					},
-					"continent" : "North_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-
-
-				"Venezuela" : {
-					"name" : "Venezuela" ,
-					"neighbors" : {
-						"Central_America" : 1,
-						"Peru" : 1,
-						"Brazil" : 1
-					},
-					"continent" : "South_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Peru" : {
-					"name" : "Peru" ,
-					"neighbors" : {
-						"Venezuela" : 1,
-						"Brazil" : 1,
-						"Argentina" : 1
-					},
-					"continent" : "South_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Brazil" : {
-					"name" : "Brazil" ,
-					"neighbors" : {
-						"Venezuela" : 1,
-						"Peru" : 1,
-						"Argentina" : 1,
-						"North_Africa" : 1
-					},
-					"continent" : "South_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Argentina" : {
-					"name" : "Argentina" ,
-					"neighbors" : {
-						"Peru" : 1,
-						"Brazil" : 1
-					},
-					"continent" : "South_America",
-					"owner" : null,
-					"units" : 0
-				},
-
-
-
-				"Iceland" : {
-					"name" : "Iceland" ,
-					"neighbors" : {
-						"Greenland" : 1,
-						"Great_Britain" : 1,
-						"Scandinavia" : 1
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Scandinavia" : {
-					"name" : "Scandinavia" ,
-					"neighbors" : {
-						"Iceland" : 1,
-						"Great_Britain" : 1,
-						"Northern_Europe" : 1,
-						"Russia" : 1,
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Russia" : {
-					"name" : "Russia" ,
-					"neighbors" : {
-						"Scandinavia" : 1,
-						"Northern_Europe" : 1,
-						"Southern_Europe" : 1,
-						"Ural" : 1,
-						"Afghanistan" : 1,
-						"Middle_East" : 1
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-
-				"Great_Britain" : {
-					"name" : "Great_Britain" ,
-					"neighbors" : {
-						"Iceland" : 1,
-						"Scandinavia" : 1,
-						"Northern_Europe" : 1,
-						"Western_Europe" : 1
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Northern_Europe" : {
-					"name" : "Northern_Europe" ,
-					"neighbors" : {
-						"Great_Britain" : 1,
-						"Western_Europe" : 1,
-						"Southern_Europe" : 1,
-						"Russia" : 1,
-						"Scandinavia" : 1,
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Western_Europe" : {
-					"name" : "Western_Europe" ,
-					"neighbors" : {
-						"Great_Britain" : 1,
-						"Northern_Europe" : 1,
-						"Southern_Europe" : 1,
-						"North_Africa" : 1
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Southern_Europe" : {
-					"name" : "Southern_Europe" ,
-					"neighbors" : {
-						"Western_Europe" : 1,
-						"Northern_Europe" : 1,
-						"Russia" : 1,
-						"North_Africa" : 1,
-						"Egypt" : 1,
-						"Middle_East" :1
-					},
-					"continent" : "Europe",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"North_Africa" : {
-					"name" : "North_Africa" ,
-					"neighbors" : {
-						"Southern_Europe" : 1,
-						"Western_Europe" : 1,
-						"Brazil" : 1,
-						"Central_Africa" : 1,
-						"East_Africa" : 1,
-						"Egypt" : 1
-					},
-					"continent" : "Africa",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Egypt" : {
-					"name" : "Egypt" ,
-					"neighbors" : {
-						"Southern_Europe" : 1,
-						"Western_Europe" : 1,
-						"North_Africa" : 1,
-						"East_Africa" : 1,
-						"Middle_East" : 1
-					},
-					"continent" : "Africa",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"East_Africa" : {
-					"name" : "East_Africa" ,
-					"neighbors" : {
-						"Egypt" : 1,
-						"North_Africa" : 1,
-						"Central_Africa" : 1,
-						"South_Africa" : 1,
-						"Madagascar" : 1,
-						"Middle_East" : 1
-					},
-					"continent" : "Africa",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Central_Africa" : {
-					"name" : "Central_Africa" ,
-					"neighbors" : {
-						"North_Africa" : 1,
-						"South_Africa" : 1,
-						"East_Africa" : 1
-					},
-					"continent" : "Africa",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"South_Africa" : {
-					"name" : "South_Africa" ,
-					"neighbors" : {
-						"Central_Africa" : 1,
-						"East_Africa" : 1,
-						"Madagascar" : 1
-					},
-					"continent" : "Africa",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Madagascar" : {
-					"name" : "Madagascar" ,
-					"neighbors" : {
-						"South_Africa" : 1,
-						"East_Africa" : 1
-					},
-					"continent" : "Africa",
-					"owner" : null,
-					"units" : 0
-				},
-
-
-
-				"Ural" : {
-					"name" : "Ural" ,
-					"neighbors" : {
-						"Russia" : 1,
-						"Afghanistan" : 1,
-						"China" : 1,
-						"Siberia" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Siberia" : {
-					"name" : "Siberia" ,
-					"neighbors" : {
-						"Ural" : 1,
-						"China" : 1,
-						"Mongolia" : 1,
-						"Irkutsk" : 1,
-						"Yakutsk" : 1,
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Yakutsk" : {
-					"name" : "Yakutsk" ,
-					"neighbors" : {
-						"Siberia" : 1,
-						"Irkutsk" : 1,
-						"Kamchatka" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Kamchatka" : {
-					"name" : "Kamchatka" ,
-					"neighbors" : {
-						"Yakutsk" : 1,
-						"Irkutsk" : 1,
-						"Mongolia" : 1,
-						"Japan" : 1,
-						"Alaska" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Irkutsk" : {
-					"name" : "Irkutsk" ,
-					"neighbors" : {
-						"Siberia" : 1,
-						"Mongolia" : 1,
-						"Kamchatka" : 1,
-						"Yakutsk" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Mongolia" : {
-					"name" : "Mongolia" ,
-					"neighbors" : {
-						"Siberia" : 1,
-						"China" : 1,
-						"Japan" : 1,
-						"Kamchatka" : 1,
-						"Irkutsk" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Japan" : {
-					"name" : "Japan" ,
-					"neighbors" : {
-						"Mongolia" : 1,
-						"Kamchatka" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Afghanistan" : {
-					"name" : "Afghanistan" ,
-					"neighbors" : {
-						"Russia" : 1,
-						"Middle_East" : 1,
-						"India" : 1,
-						"China" : 1,
-						"Ural" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"China" : {
-					"name" : "China" ,
-					"neighbors" : {
-						"Afghanistan" : 1,
-						"India" : 1,
-						"Southeast_Asia" : 1,
-						"Mongolia" : 1,
-						"Siberia" : 1,
-						"Ural" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Middle_East" : {
-					"name" : "Middle_East" ,
-					"neighbors" : {
-						"Russia" : 1,
-						"Southern_Europe" : 1,
-						"Egypt" : 1,
-						"East_Africa" : 1,
-						"India" : 1,
-						"Afghanistan" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"India" : {
-					"name" : "India" ,
-					"neighbors" : {
-						"Middle_East" : 1,
-						"Southeast_Asia" : 1,
-						"China" : 1,
-						"Afghanistan" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Southeast_Asia" : {
-					"name" : "Southeast_Asia" ,
-					"neighbors" : {
-						"India" : 1,
-						"China" : 1,
-						"Indonesia" : 1
-					},
-					"continent" : "Asia",
-					"owner" : null,
-					"units" : 0
-				},
-
-
-
-				"Indonesia" : {
-					"name" : "Indonesia" ,
-					"neighbors" : {
-						"Southeast_Asia" : 1,
-						"New_Guinea" : 1,
-						"Western_Australia" : 1
-					},
-					"continent" : "Australia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"New_Guinea" : {
-					"name" : "New_Guinea" ,
-					"neighbors" : {
-						"Indonesia" : 1,
-						"Western_Australia" : 1,
-						"Eastern_Australia" : 1
-					},
-					"continent" : "Australia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Western_Australia" : {
-					"name" : "Western_Australia" ,
-					"neighbors" : {
-						"Indonesia" : 1,
-						"New_Guinea" : 1,
-						"Eastern_Australia" : 1
-					},
-					"continent" : "Australia",
-					"owner" : null,
-					"units" : 0
-				},
-
-				"Eastern_Australia" : {
-					"name" : "Eastern_Australia" ,
-					"neighbors" : {
-						"New_Guinea" : 1,
-						"Western_Australia" : 1
-					},
-					"continent" : "Australia",
-					"owner" : null,
-					"units" : 0
-				}
-
-			},
-		// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
-		"phase" : 1,
-		"selected" : "",
-		"totalPlayers" : totalPlayers,
-		" temp" : 0,
-		"players" : {
-			"player1" : {
-				"totalTerritories" : 0,
-				"remainUnits" : 30,
-				"Australia" : 0,
-				"Asia" : 0,
-				"Africa" : 0,
-				"Europe" : 0,
-				"South_America" : 0,
-				"North_America" : 0
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
 			},
 
-			"player2" : {
-				"totalTerritories" : 0,
-				"remainUnits" : 30,
-				"Australia" : 0,
-				"Asia" : 0,
-				"Africa" : 0,
-				"Europe" : 0,
-				"South_America" : 0,
-				"North_America" : 0
+			"Northwest_Territory" : {
+				"name" : "Northwest_Territory" ,
+				"neighbors" : {
+					"Alaska" : 1,
+					"Alberta" : 1,
+					"Ontario" : 1,
+					"Greenland" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Greenland" : {
+				"name" : "Greenland" ,
+				"neighbors" : {
+					"Northwest_Territory" : 1,
+					"Ontario" : 1,
+					"Eastern_Canada" : 1,
+					"Iceland" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Alberta" : {
+				"name" : "Alberta" ,
+				"neighbors" : {
+					"Alaska" : 1,
+					"Northwest_Territory" : 1,
+					"Ontario" : 1,
+					"Western_United_States" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Ontario" : {
+				"name" : "Ontario" ,
+				"neighbors" : {
+					"Northwest_Territory" : 1,
+					"Alberta" : 1,
+					"Western_United_States" : 1,
+					"Eastern_United_States" : 1,
+					"Eastern_Canada" : 1,
+					"Greenland" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Eastern_Canada" : {
+				"name" : "Eastern_Canada" ,
+				"neighbors" : {
+					"Ontario" : 1,
+					"Eastern_United_States" : 1,
+					"Greenland" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Western_United_States" : {
+				"name" : "Western_United_States" ,
+				"neighbors" : {
+					"Ontario" : 1,
+					"Alberta" : 1,
+					"Central_America" : 1,
+					"Eastern_United_States" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Eastern_United_States" : {
+				"name" : "Eastern_United_States" ,
+				"neighbors" : {
+					"Western_United_States" : 1,
+					"Central_America" : 1,
+					"Ontario" : 1,
+					"Eastern_Canada" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Central_America" : {
+				"name" : "Central_America" ,
+				"neighbors" : {
+					"Western_United_States" : 1,
+					"Eastern_United_States" : 1,
+					"Venezuela" : 1
+				},
+				"continent" : "North_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+
+
+			"Venezuela" : {
+				"name" : "Venezuela" ,
+				"neighbors" : {
+					"Central_America" : 1,
+					"Peru" : 1,
+					"Brazil" : 1
+				},
+				"continent" : "South_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Peru" : {
+				"name" : "Peru" ,
+				"neighbors" : {
+					"Venezuela" : 1,
+					"Brazil" : 1,
+					"Argentina" : 1
+				},
+				"continent" : "South_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Brazil" : {
+				"name" : "Brazil" ,
+				"neighbors" : {
+					"Venezuela" : 1,
+					"Peru" : 1,
+					"Argentina" : 1,
+					"North_Africa" : 1
+				},
+				"continent" : "South_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Argentina" : {
+				"name" : "Argentina" ,
+				"neighbors" : {
+					"Peru" : 1,
+					"Brazil" : 1
+				},
+				"continent" : "South_America",
+				"owner" : null,
+				"units" : 0
+			},
+
+
+
+			"Iceland" : {
+				"name" : "Iceland" ,
+				"neighbors" : {
+					"Greenland" : 1,
+					"Great_Britain" : 1,
+					"Scandinavia" : 1
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Scandinavia" : {
+				"name" : "Scandinavia" ,
+				"neighbors" : {
+					"Iceland" : 1,
+					"Great_Britain" : 1,
+					"Northern_Europe" : 1,
+					"Russia" : 1,
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Russia" : {
+				"name" : "Russia" ,
+				"neighbors" : {
+					"Scandinavia" : 1,
+					"Northern_Europe" : 1,
+					"Southern_Europe" : 1,
+					"Ural" : 1,
+					"Afghanistan" : 1,
+					"Middle_East" : 1
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+
+			"Great_Britain" : {
+				"name" : "Great_Britain" ,
+				"neighbors" : {
+					"Iceland" : 1,
+					"Scandinavia" : 1,
+					"Northern_Europe" : 1,
+					"Western_Europe" : 1
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Northern_Europe" : {
+				"name" : "Northern_Europe" ,
+				"neighbors" : {
+					"Great_Britain" : 1,
+					"Western_Europe" : 1,
+					"Southern_Europe" : 1,
+					"Russia" : 1,
+					"Scandinavia" : 1,
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Western_Europe" : {
+				"name" : "Western_Europe" ,
+				"neighbors" : {
+					"Great_Britain" : 1,
+					"Northern_Europe" : 1,
+					"Southern_Europe" : 1,
+					"North_Africa" : 1
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Southern_Europe" : {
+				"name" : "Southern_Europe" ,
+				"neighbors" : {
+					"Western_Europe" : 1,
+					"Northern_Europe" : 1,
+					"Russia" : 1,
+					"North_Africa" : 1,
+					"Egypt" : 1,
+					"Middle_East" :1
+				},
+				"continent" : "Europe",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"North_Africa" : {
+				"name" : "North_Africa" ,
+				"neighbors" : {
+					"Southern_Europe" : 1,
+					"Western_Europe" : 1,
+					"Brazil" : 1,
+					"Central_Africa" : 1,
+					"East_Africa" : 1,
+					"Egypt" : 1
+				},
+				"continent" : "Africa",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Egypt" : {
+				"name" : "Egypt" ,
+				"neighbors" : {
+					"Southern_Europe" : 1,
+					"Western_Europe" : 1,
+					"North_Africa" : 1,
+					"East_Africa" : 1,
+					"Middle_East" : 1
+				},
+				"continent" : "Africa",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"East_Africa" : {
+				"name" : "East_Africa" ,
+				"neighbors" : {
+					"Egypt" : 1,
+					"North_Africa" : 1,
+					"Central_Africa" : 1,
+					"South_Africa" : 1,
+					"Madagascar" : 1,
+					"Middle_East" : 1
+				},
+				"continent" : "Africa",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Central_Africa" : {
+				"name" : "Central_Africa" ,
+				"neighbors" : {
+					"North_Africa" : 1,
+					"South_Africa" : 1,
+					"East_Africa" : 1
+				},
+				"continent" : "Africa",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"South_Africa" : {
+				"name" : "South_Africa" ,
+				"neighbors" : {
+					"Central_Africa" : 1,
+					"East_Africa" : 1,
+					"Madagascar" : 1
+				},
+				"continent" : "Africa",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Madagascar" : {
+				"name" : "Madagascar" ,
+				"neighbors" : {
+					"South_Africa" : 1,
+					"East_Africa" : 1
+				},
+				"continent" : "Africa",
+				"owner" : null,
+				"units" : 0
+			},
+
+
+
+			"Ural" : {
+				"name" : "Ural" ,
+				"neighbors" : {
+					"Russia" : 1,
+					"Afghanistan" : 1,
+					"China" : 1,
+					"Siberia" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Siberia" : {
+				"name" : "Siberia" ,
+				"neighbors" : {
+					"Ural" : 1,
+					"China" : 1,
+					"Mongolia" : 1,
+					"Irkutsk" : 1,
+					"Yakutsk" : 1,
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Yakutsk" : {
+				"name" : "Yakutsk" ,
+				"neighbors" : {
+					"Siberia" : 1,
+					"Irkutsk" : 1,
+					"Kamchatka" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Kamchatka" : {
+				"name" : "Kamchatka" ,
+				"neighbors" : {
+					"Yakutsk" : 1,
+					"Irkutsk" : 1,
+					"Mongolia" : 1,
+					"Japan" : 1,
+					"Alaska" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Irkutsk" : {
+				"name" : "Irkutsk" ,
+				"neighbors" : {
+					"Siberia" : 1,
+					"Mongolia" : 1,
+					"Kamchatka" : 1,
+					"Yakutsk" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Mongolia" : {
+				"name" : "Mongolia" ,
+				"neighbors" : {
+					"Siberia" : 1,
+					"China" : 1,
+					"Japan" : 1,
+					"Kamchatka" : 1,
+					"Irkutsk" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Japan" : {
+				"name" : "Japan" ,
+				"neighbors" : {
+					"Mongolia" : 1,
+					"Kamchatka" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Afghanistan" : {
+				"name" : "Afghanistan" ,
+				"neighbors" : {
+					"Russia" : 1,
+					"Middle_East" : 1,
+					"India" : 1,
+					"China" : 1,
+					"Ural" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"China" : {
+				"name" : "China" ,
+				"neighbors" : {
+					"Afghanistan" : 1,
+					"India" : 1,
+					"Southeast_Asia" : 1,
+					"Mongolia" : 1,
+					"Siberia" : 1,
+					"Ural" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Middle_East" : {
+				"name" : "Middle_East" ,
+				"neighbors" : {
+					"Russia" : 1,
+					"Southern_Europe" : 1,
+					"Egypt" : 1,
+					"East_Africa" : 1,
+					"India" : 1,
+					"Afghanistan" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"India" : {
+				"name" : "India" ,
+				"neighbors" : {
+					"Middle_East" : 1,
+					"Southeast_Asia" : 1,
+					"China" : 1,
+					"Afghanistan" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Southeast_Asia" : {
+				"name" : "Southeast_Asia" ,
+				"neighbors" : {
+					"India" : 1,
+					"China" : 1,
+					"Indonesia" : 1
+				},
+				"continent" : "Asia",
+				"owner" : null,
+				"units" : 0
+			},
+
+
+
+			"Indonesia" : {
+				"name" : "Indonesia" ,
+				"neighbors" : {
+					"Southeast_Asia" : 1,
+					"New_Guinea" : 1,
+					"Western_Australia" : 1
+				},
+				"continent" : "Australia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"New_Guinea" : {
+				"name" : "New_Guinea" ,
+				"neighbors" : {
+					"Indonesia" : 1,
+					"Western_Australia" : 1,
+					"Eastern_Australia" : 1
+				},
+				"continent" : "Australia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Western_Australia" : {
+				"name" : "Western_Australia" ,
+				"neighbors" : {
+					"Indonesia" : 1,
+					"New_Guinea" : 1,
+					"Eastern_Australia" : 1
+				},
+				"continent" : "Australia",
+				"owner" : null,
+				"units" : 0
+			},
+
+			"Eastern_Australia" : {
+				"name" : "Eastern_Australia" ,
+				"neighbors" : {
+					"New_Guinea" : 1,
+					"Western_Australia" : 1
+				},
+				"continent" : "Australia",
+				"owner" : null,
+				"units" : 0
 			}
+
 		},
+			// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
+			"phase" : 1,
+			"selected" : "",
+			"totalPlayers" : totalPlayers,
+			"temp" : 0,
+			"players" : {
+				"player1" : {
+					"totalTerritories" : 0,
+					"remainUnits" : 30,
+					"Australia" : 0,
+					"Asia" : 0,
+					"Africa" : 0,
+					"Europe" : 0,
+					"South_America" : 0,
+					"North_America" : 0
+				},
+
+				"player2" : {
+					"totalTerritories" : 0,
+					"remainUnits" : 30,
+					"Australia" : 0,
+					"Asia" : 0,
+					"Africa" : 0,
+					"Europe" : 0,
+					"South_America" : 0,
+					"North_America" : 0
+				}
+			},
+		}
 	}
-	
-}
-var temp = 0;
-var temp1 = 0;
-function getWinner(board){
-	for (var i = 0; i < 2; i++){
-			//console.log(board.players["player"+(i+1)].totalTerritories);
+
+	var temp = 0;
+	var temp1 = 0;
+	// get winner of the game
+	function getWinner(board){
+		for (var i = 0; i < 2; i++){
 			if (board.players["player"+(i+1)].totalTerritories === 42){
 				return "player" + (i+1);
 			}
@@ -609,7 +609,6 @@ function getWinner(board){
 	}
 
 	// get all possible moves besides end turn
-
 	function getPossibleMoves(board, turnIndexBeforeMove) {
 		var possibleMoves = [];
 		var dice = {"d0":3, "d1":4, "d2":6, "d3":1, "d4":2};
@@ -627,11 +626,9 @@ function getWinner(board){
 		return possibleMoves;
 	}
 
-
 	/**
 	 * Return true if every country is deployed with units.
 	 **/
-
 	 function boardIsFull(board){
 	 	for (var key in board.territory){
 	 		if (board.territory[key].owner === null)
@@ -1130,7 +1127,7 @@ function getWinner(board){
 		if(defenderUnits === 0){
 			if (temp === 0){
 				temp1 = attackerUnits-1;
-	            temp = parseInt(prompt('Enter how many units you want to move','At least '+attackerDices+' units, at most '+ temp1));
+				temp = parseInt(prompt('Enter how many units you want to move','At least '+attackerDices+' units, at most '+ temp1));
 				if(isNaN(temp) || temp < attackerDices || temp >= attackerUnits){
 					temp = attackerDices;
 				}
@@ -1160,4 +1157,175 @@ function getWinner(board){
 		addOneUnitOnEachCountry: addOneUnitOnEachCountry,
 		getPossibleMoves : getPossibleMoves
 	};
+});
+;
+angular.module('myApp')
+.controller('Ctrl', function (
+  $window, $scope, $log, $timeout,
+  gameService, gameLogic, resizeGameAreaService) {
+
+  resizeGameAreaService.setWidthToHeight(1.36);
+
+  var moveUnits;
+  function sendComputerMove() {
+    var items = gameLogic.getPossibleMoves($scope.board, $scope.turnIndex);
+    gameService.makeMove(items[Math.floor(Math.random()*items.length)]);
+  }
+
+  function updateUI(params) {
+    $scope.board = params.stateAfterMove.board;
+    $scope.delta = params.stateAfterMove.delta;
+    $scope.dice = {};
+
+    if(params.stateAfterMove.d0 !== undefined){
+      $scope.dice.d0 = params.stateAfterMove.d0;
+    }else {
+      $scope.dice.d0 = null;
+    }
+    if(params.stateAfterMove.d1 !== undefined){
+      $scope.dice.d1 = params.stateAfterMove.d1;
+    }else {
+      $scope.dice.d1 = null;
+    }
+    if(params.stateAfterMove.d2 !== undefined){
+      $scope.dice.d2 = params.stateAfterMove.d2;
+    }else {
+      $scope.dice.d2 = null;
+    }
+    if(params.stateAfterMove.d3 !== undefined){
+      $scope.dice.d3 = params.stateAfterMove.d3;
+    }else {
+      $scope.dice.d3 = null;
+    }
+    if(params.stateAfterMove.d4 !== undefined){
+      $scope.dice.d4 = params.stateAfterMove.d4;
+    }else {
+      $scope.dice.d4 = null;
+    }
+
+    if ($scope.board === undefined) {
+      $scope.board = gameLogic.getInitialBoard(2);
+    }
+    $scope.isYourTurn = params.turnIndexAfterMove >= 0 && // game is ongoing
+    params.yourPlayerIndex === params.turnIndexAfterMove; // it's my turn
+    $scope.turnIndex = params.turnIndexAfterMove;
+
+    // Is it the computer's turn?
+    if($scope.isYourTurn && params.playersInfo[params.yourPlayerIndex].playerId === ''){
+      $scope.isYourTurn = false;
+      $timeout(sendComputerMove, 500);
+    }
+  }
+
+
+  $scope.countryClicked = function (country) {
+    if (!$scope.isYourTurn) {
+      return;
+    }
+    try {
+      if ($scope.board.phase === 1 || $scope.board.phase === 2){
+        var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
+        $scope.isYourTurn = false; // to prevent making another move
+        gameService.makeMove(move);
+      }
+      else if ($scope.board.phase === 3){
+        if ($scope.board.selected === ""){
+          $scope.board.selected = country;
+        }else{
+          var move = gameLogic.createRollMove($scope.dice, $scope.turnIndex);
+          gameService.makeMove(move);
+          var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, $scope.dice, null);
+          $scope.isYourTurn = false; // to prevent making another move
+          gameService.makeMove(move);
+          $scope.board.selected = "";
+        }
+      }
+      else{
+        if ($scope.board.selected === ""){
+          $scope.board.selected = country;
+        }else{
+          $scope.moveUnits = parseInt(prompt('Enter how many units you want to move','3'));
+          var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, null, $scope.moveUnits);
+          $scope.isYourTurn = false; // to prevent making another move
+          gameService.makeMove(move);            
+          $scope.board.selected = "";
+        }
+      }
+
+    } catch (e) {
+      $scope.board.selected = "";
+      $log.info(["country is already full in position:", country]);
+      return;
+    }
+  };
+
+ 	$scope.endTurnClicked = function() {
+    if (!$scope.isYourTurn)
+      return;
+    try {
+      var move = gameLogic.createMove('endTurn', $scope.board, $scope.turnIndex, null, null, null, null);
+        $scope.isYourTurn = false; // to prevent making another move
+        gameService.makeMove(move);
+      } catch (e) {
+        $log.info(["You can not end turn because you still have remain units"]);
+        return;
+      }
+    };
+
+    $scope.shouldShowUnits = function(){
+      //return true;
+      return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex)
+    }
+
+    $scope.shouldShowNumber = function (country) {
+      var unit = $scope.board.territory[country].units;
+      return unit !== 0;
+    };
+
+    $scope.isPieceRed = function (country) {
+      return $scope.board.territory[country].owner === 0;
+    };
+
+    $scope.isPieceRed = function (country) {
+      return $scope.board.territory[country].owner === 0;
+    };    
+
+    $scope.getCountry = function(){
+      return $scope.board.selected;
+    }
+    $scope.getTurn = function () {
+      return $scope.turnIndex;
+    };
+    $scope.getNumber = function (country) {
+      return $scope.board.territory[country].units;
+    };
+    $scope.getUnit = function (player) {
+      return $scope.board.players[player].remainUnits;
+    };
+
+    $scope.getPhase = function () {
+      if ($scope.board.phase === 1)
+        return 'deploy';
+      else if ($scope.board.phase === 2)
+        return 'reinforce';
+      else if ($scope.board.phase === 3)
+        return 'attack';
+      else
+        return 'fortify';
+    };
+    $scope.getDices = function(){
+      return $scope.dice;
+    }
+
+    $scope.getImageSrc = function(country) {
+      return $scope.board.territory[country].owner === 0 ? "red.png" : "green.png";
+    };
+    
+    gameService.setGame({
+      gameDeveloperEmail: "zl953@nyu.edu",
+      minNumberOfPlayers: 2,
+      maxNumberOfPlayers: 6,
+      isMoveOk: gameLogic.isMoveOk,
+      updateUI: updateUI
+    });
 });

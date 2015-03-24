@@ -1,3 +1,7 @@
+/*
+  Created by Zhuoran on 3/01/14
+*/
+
 'use strict';
 
 angular.module('myApp')
@@ -122,6 +126,15 @@ angular.module('myApp')
       var unit = $scope.board.territory[country].units;
       return unit !== 0;
     };
+
+    $scope.isPieceRed = function (country) {
+      return $scope.board.territory[country].owner === 0;
+    };
+
+    $scope.isPieceRed = function (country) {
+      return $scope.board.territory[country].owner === 0;
+    };    
+
     $scope.getCountry = function(){
       return $scope.board.selected;
     }
