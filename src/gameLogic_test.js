@@ -1,10 +1,10 @@
 /*
   Created by Zhuoran on 2/24/14
 */
-
-'use strict'
-
 describe("In Risk", function() {
+
+  'use strict';
+
   var _gameLogic;
   var board;
   var boardAfter;

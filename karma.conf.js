@@ -2,6 +2,8 @@
 // Generated on Wed Feb 18 2015 16:45:24 GMT-0500 (EST)
 
 module.exports = function(config) {
+  'use strict';
+
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -18,7 +20,7 @@ module.exports = function(config) {
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js',
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-mocks.js',
       'gameLogic.js',
-      'gameLogic_test_ChenZhu.js'
+      //'gameLogic_test_ChenZhu.js'
     ],
 
 

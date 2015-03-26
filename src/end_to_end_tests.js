@@ -1,5 +1,5 @@
 /*
-  Created by Zhuoran on 3/19/14
+Created by Zhuoran on 3/19/14
 */
 /* https://github.com/angular/protractor/blob/master/docs/toc.md */
 
@@ -7,8 +7,6 @@ describe('Risk', function() {
 
   'use strict';
   var board;
-  var boardAfter;
-  var boardBefore;
 
   beforeEach(function() {
     browser.get('http://localhost:9000/game.html');
@@ -600,7 +598,7 @@ describe('Risk', function() {
           "North_America" : 0
         }
       },
-    }
+    };
   }
 
   function getArea(country) {
@@ -616,9 +614,8 @@ describe('Risk', function() {
   }
 
   function expectBoard(board) {
-    console.log('lala');
     for (var key in board.territory){
-      expectPiece(key, board.territory[key].owner);
+        expectPiece(key, board.territory[key].owner);
     }
   }
 
@@ -627,12 +624,16 @@ describe('Risk', function() {
     expectPiece(country, pieceKind);
   }
 
+  function clickEndTurn(){
+    element(by.id('endTurn')).click();
+  }
+
   function addOneUnitOnEachCountry(board){
     var index = 1;
     for (var key in board.territory){
-      index = 1 - index;
-      board.territory[key].owner =  index;
-      board.territory[key].units++; 
+        index = 1 - index;
+        board.territory[key].owner =  index;
+        board.territory[key].units++; 
     }
     board.players.player1.totalTerritories = 21;
     board.players.player2.totalTerritories = 21;
@@ -641,7 +642,7 @@ describe('Risk', function() {
     board.players.player2.remainUnits = 9;
 
     board.players.player1.North_America = 5;
-    board.players.player1.North_America = 4;
+    board.players.player2.North_America = 4;
 
     board.players.player1.South_America = 2;
     board.players.player2.South_America = 2;
@@ -653,17 +654,45 @@ describe('Risk', function() {
     board.players.player2.Africa = 3;
     
     board.players.player1.Asia = 6;
-    board.players.player1.Asia = 6;
+    board.players.player2.Asia = 6;
     
     board.players.player1.Australia = 2;
     board.players.player2.Australia = 2;
   }
 
+  function helper(board){
+    for (var key in board.territory){
+        board.territory[key].owner =  0;
+        board.territory[key].units++; 
+    }
+    board.territory.New_Guinea.owner = 1;
+    board.territory.Western_Australia.units = 14;
+    board.territory.Eastern_Australia.units = 3;
+
+    board.players.player1.totalTerritories = 41;
+    board.players.player2.totalTerritories = 1;
+
+    board.players.player1.remainUnits = 1;
+    board.players.player2.remainUnits = 5;
+
+    board.players.player1.North_America = 9;
+
+    board.players.player1.South_America = 4;
+
+    board.players.player1.Europe = 7;
+    
+    board.players.player1.Africa = 6;
+    
+    board.players.player1.Asia = 12;
+    
+    board.players.player1.Australia = 3;
+    board.players.player2.Australia = 1;
+    board.phase = 2;
+  }
+
   // playMode is either: 'passAndPlay', 'playAgainstTheComputer', 'onlyAIs',
   // or a number representing the playerIndex (-2 for viewer, 0 for white player, 1 for black player, etc)
   function setMatchState(matchState, playMode) {
-    //var s = window.e2e_test_stateService;
-
     browser.executeScript(function(matchStateInJson, playMode) {
       var stateService = window.e2e_test_stateService;
       stateService.setMatchState(angular.fromJson(matchStateInJson));
@@ -671,7 +700,6 @@ describe('Risk', function() {
       angular.element(document).scope().$apply(); // to tell angular that things changes.
     }, JSON.stringify(matchState), JSON.stringify(playMode));
   }
-  
   
   it('should have a title', function () {
     expect(browser.getTitle()).toEqual('Risk');
@@ -707,63 +735,64 @@ describe('Risk', function() {
     var index =  0;
     
     for (var key in board.territory){
-      clickAreaAndExpectPiece(key, index);
-      index = 1 - index;
+        clickAreaAndExpectPiece(key, index);
+        index = 1 - index;
     }
     
     index = 0;
-    for (var key in board.territory){
-      board.territory[key].owner = index;
-      board.territory[key].units = 1;
-      index = 1 - index;
+    for (key in board.territory){
+        board.territory[key].owner = index;
+        board.territory[key].units = 1;
+        index = 1 - index;
     }
     expectBoard(board);
   });
-
+  
   it('should ignore clicking on other players country', function () {
     board = getInitialBoard(2);
     var index =  0;
     
     for (var key in board.territory){
-      clickAreaAndExpectPiece(key, index);
-      index = 1 - index;
+        clickAreaAndExpectPiece(key, index);
+        index = 1 - index;
     }
     clickAreaAndExpectPiece("China", 0);
     
     index = 0;
-    for (var key in board.territory){
-      board.territory[key].owner = index;
-      board.territory[key].units = 1;
-      index = 1 - index;
+    for (key in board.territory){
+        board.territory[key].owner = index;
+        board.territory[key].units = 1;
+        index = 1 - index;
     }
     board.territory.China.units = 2;
     expectBoard(board);
   });
   
+
   var delta1 = {"moveType": null, "country": "Eastern_Australia", "targetCountry":"", "moveUnits":0};
   var board1 = getInitialBoard(2);
   addOneUnitOnEachCountry(board1);
 
-  var delta2 = {"moveType": null, "country": "China", "targetCountry":"", "moveUnits":0}
+  var delta2 = {"moveType": null, "country": "China", "targetCountry":"", "moveUnits":0};
   var board2 = getInitialBoard(2);
   addOneUnitOnEachCountry(board2);
   board2.territory.China.units = 2;
   board2.players.player1.remainUnits = 8;
 
-  var delta3 = {"moveType": null, "country": "Russia", "targetCountry":"", "moveUnits":0}
+  //var delta3 = {"moveType": null, "country": "Mongolia", "targetCountry":"", "moveUnits":0};
   var board3 = getInitialBoard(2);
   addOneUnitOnEachCountry(board3);
-  board3.territory.Russia.units = 2;
+  board3.territory.Mongolia.units = 2;
   board3.territory.China.units = 2;
   board3.players.player1.remainUnits = 8;
   board3.players.player2.remainUnits = 8;
   
   var matchState2 = {
-    turnIndexBeforeMove: 1,
-    turnIndex: 0,
+    turnIndexBeforeMove: 0,
+    turnIndex: 1,
     endMatchScores: null,
     lastMove: [{set: {key: "diceRoll", value: false}},
-          {setTurn: {turnIndex: 0}},
+          {setTurn: {turnIndex: 1}},
           {set: {key: 'board', value: board2}},
           {set: {key: 'delta', value: delta2}}],
     lastState: {board: board1, delta: delta1},
@@ -772,13 +801,125 @@ describe('Risk', function() {
     currentVisibleTo: {},
   };
 
-  /*
-  it('clicking on Russia after fill the board in the first phase', function () {
+  it('clicking on Mongolia after fill the board in the first phase', function () {
     setMatchState(matchState2, 'passAndPlay');
     expectBoard(board2);
-    //clickAreaAndExpectPiece("Russia", 1); //  click on Russia
+    clickAreaAndExpectPiece("Mongolia", 1);
+    expectBoard(board3);
+  });
+  
+
+  var delta4 = {"moveType": null, "country": "Eastern_Australia", "targetCountry":"", "moveUnits":0};
+  var board4 = getInitialBoard(2);
+  helper(board4);
+
+  var delta5 = {"moveType": null, "country": "Eastern_Australia", "targetCountry":"", "moveUnits":0};
+  var board5 = getInitialBoard(2);
+  helper(board5);
+  board5.territory.Eastern_Australia.units = 4;
+  board5.players.player1.remainUnits = 0;
+  board5.phase = 3;
+
+  var matchState3 = {
+    turnIndexBeforeMove: 0,
+    turnIndex: 0,
+    endMatchScores: null,
+    lastMove: [{set: {key: "diceRoll", value: false}},
+          {setTurn: {turnIndex: 0}},
+          {set: {key: 'board', value: board5}},
+          {set: {key: 'delta', value: delta5}}],
+    lastState: {board: board4, delta: delta4},
+    currentState: {board: board5, delta: delta5},
+    lastVisibleTo: {},
+    currentVisibleTo: {},
+  };
+
+  
+  it('click to win', function () {
+    setMatchState(matchState3, 'passAndPlay');
+    expectBoard(board5);
+    clickAreaAndExpectPiece("Western_Australia", 1);
+    clickAreaAndExpectPiece("New_Guinea", 1); 
     //expectBoard(board3);
   });
-  */
+  
+  var delta7 = {"moveType": null, "country": "Alaska", "targetCountry":"", "moveUnits":0};
+  var board7 = getInitialBoard(2);
+  addOneUnitOnEachCountry(board7);
+  board7.territory.Alaska.units = 16;
+  board7.players.player1.remainUnits = 1;
+  board7.territory.Northwest_Territory.units = 10;
+  board7.players.player2.remainUnits = 7;
+  board7.phase = 2;
 
+  var delta8 = {"moveType": null, "country": "Alaska", "targetCountry":"", "moveUnits":0};
+  var board8 = getInitialBoard(2);
+  addOneUnitOnEachCountry(board8);
+  board8.territory.Alaska.units = 17;
+  board8.players.player1.remainUnits = 0;
+  board8.territory.Northwest_Territory.units = 10;
+  board8.players.player2.remainUnits = 7;
+  board8.phase = 3;
+
+  var matchState4 = {
+    turnIndexBeforeMove: 0,
+    turnIndex: 0,
+    endMatchScores: null,
+    lastMove: [{set: {key: "diceRoll", value: false}},
+          {setTurn: {turnIndex: 0}},
+          {set: {key: 'board', value: board8}},
+          {set: {key: 'delta', value: delta8}}],
+    lastState: {board: board7, delta: delta7},
+    currentState: {board: board8, delta: delta8},
+    lastVisibleTo: {},
+    currentVisibleTo: {},
+  };
+
+  var delta9 = {"moveType": "endTurn", "country": "Alaska", "targetCountry":"", "moveUnits":0};
+  var board9 = getInitialBoard(2);
+  addOneUnitOnEachCountry(board9);
+  board9.territory.Alaska.units = 17;
+  board9.players.player1.remainUnits = 0;
+  board9.territory.Northwest_Territory.units = 10;
+  board9.players.player2.remainUnits = 7;
+  board9.phase = 4;
+
+  
+  it('player 1 click end turn to change phase to 4 in phase 3', function(){
+    setMatchState(matchState4, 'passAndPlay');
+    expectBoard(board8);
+    clickEndTurn();
+    expectBoard(board9);
+  });
+  
+
+  var matchState5 = {
+    turnIndexBeforeMove: 0,
+    turnIndex: 0,
+    endMatchScores: null,
+    lastMove: [{set: {key: "diceRoll", value: false}},
+          {setTurn: {turnIndex: 0}},
+          {set: {key: 'board', value: board9}},
+          {set: {key: 'delta', value: delta9}}],
+    lastState: {board: board8, delta: delta8},
+    currentState: {board: board9, delta: delta9},
+    lastVisibleTo: {},
+    currentVisibleTo: {},
+  };
+
+  var board10 = getInitialBoard(2);
+  addOneUnitOnEachCountry(board10);
+  board10.territory.Alaska.units = 17;
+  board10.players.player1.remainUnits = 7;
+  board10.territory.Northwest_Territory.units = 10;
+  board10.players.player2.remainUnits = 7;
+  board10.phase = 2;
+
+  it('click to end turn to player2 in phase4', function(){
+    setMatchState(matchState5, 'passAndPlay');
+    expectBoard(board9);
+    clickEndTurn();
+    expectBoard(board10);
+  });
+  
 });

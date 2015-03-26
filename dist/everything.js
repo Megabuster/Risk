@@ -1,11 +1,10 @@
 /*
-Created by Zhuoran on 3/23/14
+	Created by Zhuoran on 2/24/14
 */
-
 angular.module('myApp',[]).factory('gameLogic', function(){
 
 	'use strict';
-	// Return the initial Risk board
+
 	function getInitialBoard(totalPlayers) {
 		
 		return {"territory" : 
@@ -515,8 +514,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				"units" : 0
 			},
 
-
-
 			"Indonesia" : {
 				"name" : "Indonesia" ,
 				"neighbors" : {
@@ -568,6 +565,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
 			"phase" : 1,
 			"selected" : "",
+			"target" : "",
 			"totalPlayers" : totalPlayers,
 			"temp" : 0,
 			"players" : {
@@ -593,12 +591,9 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 					"North_America" : 0
 				}
 			},
-		}
+		};
 	}
 
-	var temp = 0;
-	var temp1 = 0;
-	// get winner of the game
 	function getWinner(board){
 		for (var i = 0; i < 2; i++){
 			if (board.players["player"+(i+1)].totalTerritories === 42){
@@ -609,6 +604,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	}
 
 	// get all possible moves besides end turn
+
 	function getPossibleMoves(board, turnIndexBeforeMove) {
 		var possibleMoves = [];
 		var dice = {"d0":3, "d1":4, "d2":6, "d3":1, "d4":2};
@@ -626,13 +622,16 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		return possibleMoves;
 	}
 
+
 	/**
 	 * Return true if every country is deployed with units.
 	 **/
+
 	 function boardIsFull(board){
 	 	for (var key in board.territory){
-	 		if (board.territory[key].owner === null)
+	 		if (board.territory[key].owner === null){
 	 			return false;
+	 		}
 	 	}
 	 	return true;
 	 }
@@ -826,14 +825,12 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 
 			 	if (board.territory[country].units === 1){
-			 		throw new Error("You have to choose a country with units more than one")
+			 		throw new Error("You have to choose a country with units more than one");
 			 	}
 
-			 	if (!(Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) > -1)){
+			 	if ((Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) <= -1)){
 			 		throw new Error("You can only attack adjacent countries");
 			 	}
-
-
 
 			 	if (board.territory[targetCountry].owner === turnIndexBeforeMove){
 			 		throw new Error("You can not attack your own territory");
@@ -844,16 +841,13 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 				// the result after an attack including the owner and the units info, it depends on players sometime.
 				var result = getReusltAfterAttack(board, board.territory[country].units, board.territory[country].owner,
-					board.territory[targetCountry].units, board.territory[targetCountry].owner, dice);
+					board.territory[targetCountry].units, board.territory[targetCountry].owner, dice, moveUnits);
 				
-				//console.log(result);
-
 				boardAfterMove.territory[country].owner = result.attacker.owner;
 				boardAfterMove.territory[targetCountry].owner = result.defender.owner;
 				boardAfterMove.territory[country].units = result.attacker.units;
 				boardAfterMove.territory[targetCountry].units = result.defender.units;
 
-				//debugger;
 				if(boardAfterMove.territory[targetCountry].owner !== board.territory[targetCountry].owner){
 					boardAfterMove.players["player"+(turnIndexBeforeMove+1)].totalTerritories++;
 					var continent = boardAfterMove.territory[targetCountry].continent;
@@ -872,12 +866,12 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 						(winner === 'player1' ? [1, 0] : [0, 1])}};
 					} 
 
-					return [{set: {key: "diceRoll", value: false}},
-					firstOperation,
-					{"set": {"key": "board", "value": boardAfterMove}},
-					{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry,  "moveUnits":moveUnits}}}];	
+				return [{set: {key: "diceRoll", value: false}},
+				firstOperation,
+				{"set": {"key": "board", "value": boardAfterMove}},
+				{"set": {"key": "delta", "value": {"moveType": moveType, "country": country, "targetCountry":targetCountry,  "moveUnits":moveUnits}}}];	
 
-				}
+			}
 
 			/**
 			 * Return the move that should be performed when player with index turnIndexBeforeMove makes a
@@ -908,7 +902,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				}
 
 				if (board.territory[country].units === 1){
-					throw new Error("You have to choose a country with units more than one")
+					throw new Error("You have to choose a country with units more than one");
 				}
 
 				if (!(Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) > -1)){
@@ -977,28 +971,35 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 	function getRemainUnits(board, turnIndex){
 		var basicUnits;
-		if(board.players["player"+(turnIndex+1)].totalTerritories / 3 < 3)
+		if(board.players["player"+(turnIndex+1)].totalTerritories / 3 < 3){
 			basicUnits = 3;
-		else
+		}
+		else{
 			basicUnits = Math.floor(board.players["player"+(turnIndex+1)].totalTerritories / 3 );
-		if (board.players["player"+(turnIndex+1)].Asia === 12)
+		}
+		if (board.players["player"+(turnIndex+1)].Asia === 12){
 			basicUnits += 7;
-		if (board.players["player"+(turnIndex+1)].Australia === 4)
+		}
+		if (board.players["player"+(turnIndex+1)].Australia === 4){
 			basicUnits += 2;
-		if (board.players["player"+(turnIndex+1)].Africa === 6)
+		}
+		if (board.players["player"+(turnIndex+1)].Africa === 6){
 			basicUnits += 3;
-		if (board.players["player"+(turnIndex+1)].Europe === 7)
+		}
+		if (board.players["player"+(turnIndex+1)].Europe === 7){
 			basicUnits += 5;
-		if (board.players["player"+(turnIndex+1)].North_America === 9)
+		}
+		if (board.players["player"+(turnIndex+1)].North_America === 9){
 			basicUnits += 5;
-		if (board.players["player"+(turnIndex+1)].South_America === 4)
+		}
+		if (board.players["player"+(turnIndex+1)].South_America === 4){
 			basicUnits += 2;
+		}
 		return basicUnits;
 
 	}
 
-
-	function getReusltAfterAttack(board, attackerUnits, attackerOwner, defenderUnits, defenderOwner, dice){
+	function getReusltAfterAttack(board, attackerUnits, attackerOwner, defenderUnits, defenderOwner, dice, moveUnits){
 		var i;
 		var res;
 		var attackerDices;
@@ -1032,8 +1033,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			defenderDices = 2;
 		}
 
-		
-
+	
 		for(i = 0; i < attackerDices; i++){
 			attackerIndex[i] = dice["d" + i];
 		}
@@ -1053,25 +1053,31 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			defenderIndex.splice(defenderIndex.indexOf(defenderHighest), 1);
 			var defenderSecondHighest = defenderIndex[0];
 
-			if(attackerHighest > defenderHighest)
+			if(attackerHighest > defenderHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 
-			if(attackerSecondHighest > defenderSecondHighest)
+			if(attackerSecondHighest > defenderSecondHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 		}
 
 		else if(attackerDices === 3 && defenderDices === 1){
 			var attackerHighest = Math.max.apply(null, attackerIndex);
 			var defenderHighest = defenderIndex[0];
 
-			if(attackerHighest > defenderHighest)
+			if(attackerHighest > defenderHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 		}
 
 		else if(attackerDices === 2 && defenderDices === 2){
@@ -1083,68 +1089,235 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 			defenderIndex.splice(defenderIndex.indexOf(defenderHighest), 1);
 			var defenderSecondHighest = defenderIndex[0];
 
-			if(attackerHighest > defenderHighest)
+			if(attackerHighest > defenderHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 
-			if(attackerSecondHighest > defenderSecondHighest)
+			if(attackerSecondHighest > defenderSecondHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 		}
 
 		else if(attackerDices === 2 && defenderDices === 1){
 			var attackerHighest = Math.max.apply(null, attackerIndex);
 			var defenderHighest = defenderIndex[0];
 
-			if(attackerHighest > defenderHighest)
+			if(attackerHighest > defenderHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 		}
 
 		else if(attackerDices === 1 && defenderDices === 2){
 			var attackerHighest = attackerIndex[0];
 			var defenderHighest = Math.max.apply(null, defenderIndex);
 
-			if(attackerHighest > defenderHighest)
+			if(attackerHighest > defenderHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 		}
 
 		else if(attackerDices === 1 && defenderDices === 1){
 			var attackerHighest = attackerIndex[0];
 			var defenderHighest = defenderIndex[0];
 
-			if(attackerHighest > defenderHighest)
+			if(attackerHighest > defenderHighest){
 				defenderUnits--;
-			else
+			}
+			else{
 				attackerUnits--;
+			}
 		}
 
 		if(defenderUnits === 0){
-			if (temp === 0){
-				temp1 = attackerUnits-1;
-				temp = parseInt(prompt('Enter how many units you want to move','At least '+attackerDices+' units, at most '+ temp1));
-				if(isNaN(temp) || temp < attackerDices || temp >= attackerUnits){
-					temp = attackerDices;
-				}
-				defenderOwner = attackerOwner;
-				defenderUnits = temp;
-				attackerUnits -= temp;	
-			}else{
-				defenderOwner = attackerOwner;
-				defenderUnits = temp;
-				attackerUnits -= temp;	
-				temp = 0;
-			}
+			defenderOwner = attackerOwner;
+			defenderUnits = moveUnits;
+			attackerUnits -= moveUnits;	
 		}
 
 		res = {"attacker":{"owner": attackerOwner, "units": attackerUnits},
 		"defender":{"owner": defenderOwner, "units": defenderUnits}};
 		return res;
+	}
+
+	function checkIfWin(board, turnIndexBeforeMove, country, targetCountry, dice){
+		var i;
+		var res;
+		var attackerDices;
+		var defenderDices;
+		var attackerIndex = [];
+		var defenderIndex = [];
+		var attackerUnits = board.territory[country].units;
+		var attackerOwner = board.territory[country].owner;
+		var defenderUnits = board.territory[targetCountry].units;
+		var defenderOwner = board.territory[targetCountry].owner;
+		//console.log(dice);
+
+		if(board.players["player"+(turnIndexBeforeMove+1)].remainUnits > 0){
+	 		throw new Error("You still have some units to reinforce");
+	 	}
+
+
+	 	if (board.territory[country].owner !== turnIndexBeforeMove){
+	 		throw new Error("You have to choose your own unit");
+	 	}
+
+
+	 	if (board.territory[country].units === 1){
+	 		throw new Error("You have to choose a country with units more than one");
+	 	}
+
+	 	if ((Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) <= -1)){
+	 		throw new Error("You can only attack adjacent countries");
+	 	}
+
+	 	if (board.territory[targetCountry].owner === turnIndexBeforeMove){
+	 		throw new Error("You can not attack your own territory");
+	 	}
+
+		if(Object.keys(dice).length !== 5){
+			throw new Error("Need 5 dices to perform an attack!");
+		}
+
+		if (attackerUnits === 1){
+			return res;
+		}
+		else if (attackerUnits === 2){
+			attackerDices = 1;
+		}
+		else if (attackerUnits === 3){
+			attackerDices = 2;
+		}
+		else{
+			attackerDices = 3;
+		}
+
+
+		if (defenderUnits === 1){
+			defenderDices = 1;
+		}
+		else{
+			defenderDices = 2;
+		}
+
+	
+		for(i = 0; i < attackerDices; i++){
+			attackerIndex[i] = dice["d" + i];
+		}
+
+		for(i = 0; i < defenderDices; i++){
+			defenderIndex[i] = dice["d" + (i+3)];
+		}
+
+		if(attackerDices === 3 && defenderDices === 2){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+
+			attackerIndex.splice(attackerIndex.indexOf(attackerHighest), 1); // remove max from the array
+
+			var attackerSecondHighest = Math.max.apply(null, attackerIndex);
+
+			var defenderHighest = Math.max.apply(null, defenderIndex);
+			defenderIndex.splice(defenderIndex.indexOf(defenderHighest), 1);
+			var defenderSecondHighest = defenderIndex[0];
+
+			if(attackerHighest > defenderHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+
+			if(attackerSecondHighest > defenderSecondHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+		}
+
+		else if(attackerDices === 3 && defenderDices === 1){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+			var defenderHighest = defenderIndex[0];
+
+			if(attackerHighest > defenderHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+		}
+
+		else if(attackerDices === 2 && defenderDices === 2){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+			attackerIndex.splice(attackerIndex.indexOf(attackerHighest), 1); // remove max from the array
+			var attackerSecondHighest = attackerIndex[0];
+
+			var defenderHighest = Math.max.apply(null, defenderIndex);
+			defenderIndex.splice(defenderIndex.indexOf(defenderHighest), 1);
+			var defenderSecondHighest = defenderIndex[0];
+
+			if(attackerHighest > defenderHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+
+			if(attackerSecondHighest > defenderSecondHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+		}
+
+		else if(attackerDices === 2 && defenderDices === 1){
+			var attackerHighest = Math.max.apply(null, attackerIndex);
+			var defenderHighest = defenderIndex[0];
+
+			if(attackerHighest > defenderHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+		}
+
+		else if(attackerDices === 1 && defenderDices === 2){
+			var attackerHighest = attackerIndex[0];
+			var defenderHighest = Math.max.apply(null, defenderIndex);
+
+			if(attackerHighest > defenderHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+		}
+
+		else if(attackerDices === 1 && defenderDices === 1){
+			var attackerHighest = attackerIndex[0];
+			var defenderHighest = defenderIndex[0];
+
+			if(attackerHighest > defenderHighest){
+				defenderUnits--;
+			}
+			else{
+				attackerUnits--;
+			}
+		}
+		return (defenderUnits === 0);
 	}
 
 	return {
@@ -1155,14 +1328,19 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		getWinner: getWinner,
 		boardIsFull: boardIsFull,
 		addOneUnitOnEachCountry: addOneUnitOnEachCountry,
-		getPossibleMoves : getPossibleMoves
+		getPossibleMoves : getPossibleMoves,
+		checkIfWin: checkIfWin
 	};
-});
-;
+});;/*
+  Created by Zhuoran on 3/01/14
+*/
+
 angular.module('myApp')
 .controller('Ctrl', function (
   $window, $scope, $log, $timeout,
-  gameService, gameLogic, resizeGameAreaService) {
+  gameService, stateService, gameLogic, resizeGameAreaService) {
+
+  'use strict';
 
   resizeGameAreaService.setWidthToHeight(1.36);
 
@@ -1217,6 +1395,7 @@ angular.module('myApp')
     }
   }
 
+  window.e2e_test_stateService = stateService; // to allow us to load any state in our e2e tests.
 
   $scope.countryClicked = function (country) {
     if (!$scope.isYourTurn) {
@@ -1230,38 +1409,92 @@ angular.module('myApp')
       }
       else if ($scope.board.phase === 3){
         if ($scope.board.selected === ""){
-          $scope.board.selected = country;
-        }else{
+          if ($scope.board.territory[country].owner === $scope.turnIndex){
+            $scope.board.selected = country;
+            var div = document.getElementById(country+"_Owner");
+            div.style.height = "6%";
+            for (var neighbor in $scope.board.territory[country].neighbors){
+              if ($scope.board.territory[neighbor].owner !== $scope.turnIndex){
+                div = document.getElementById(neighbor+"_Owner");
+                div.style["-webkit-animation-iteration-count"] = "3";
+              }
+            }
+          }
+        }
+        else{
           var move = gameLogic.createRollMove($scope.dice, $scope.turnIndex);
           gameService.makeMove(move);
-          var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, $scope.dice, null);
-          $scope.isYourTurn = false; // to prevent making another move
-          gameService.makeMove(move);
-          $scope.board.selected = "";
+          $scope.board.target = country;
+          var attackerUnits = $scope.board.territory[$scope.board.selected].units;
+          var attackerOwner = $scope.board.territory[$scope.board.selected].owner;
+          var defenderUnits = $scope.board.territory[$scope.board.target].units;
+          var defenderOwner = $scope.board.territory[$scope.board.target].owner;
+
+          if (gameLogic.checkIfWin($scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice)){
+            isModalShowing.signinModal = true;
+          }
+          else{
+            $scope.moveUnits = 0;
+            var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice, $scope.moveUnits);
+            $scope.isYourTurn = false; // to prevent making another move
+            gameService.makeMove(move);            
+            var div = document.getElementById($scope.board.selected+"_Owner");
+            div.style.height = "4%";
+            $scope.board.selected = "";
+            $scope.board.target = "";
+            for (var temp in $scope.board.territory){
+                var div = document.getElementById(temp+"_Owner");
+                div.style["-webkit-animation-iteration-count"] = "0";
+            }
+          }
         }
       }
       else{
         if ($scope.board.selected === ""){
           $scope.board.selected = country;
+          var div = document.getElementById(country+"_Owner");
+          div.style.height = "6%";
         }else{
-          $scope.moveUnits = parseInt(prompt('Enter how many units you want to move','3'));
-          var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, country, null, $scope.moveUnits);
-          $scope.isYourTurn = false; // to prevent making another move
-          gameService.makeMove(move);            
-          $scope.board.selected = "";
+          $scope.board.target = country;
+          isModalShowing.signinModal = true;
+          var div = document.getElementById($scope.board.selected+"_Owner");
+          div.style.height = "4%";
         }
       }
-
     } catch (e) {
+      var div = document.getElementById($scope.board.selected+"_Owner");
+      div.style.height = "4%";
       $scope.board.selected = "";
+      $scope.board.target = "";
+      for (var temp in $scope.board.territory){
+          var div = document.getElementById(temp+"_Owner");
+          div.style["-webkit-animation-iteration-count"] = "0";
+      }
       $log.info(["country is already full in position:", country]);
       return;
     }
   };
 
- 	$scope.endTurnClicked = function() {
-    if (!$scope.isYourTurn)
+  $scope.move = function() {
+    $scope.moveUnits = parseInt(document.getElementById("moveUnits").value);
+    var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice, $scope.moveUnits);
+    $scope.isYourTurn = false; // to prevent making another move
+    gameService.makeMove(move);            
+    var div = document.getElementById($scope.board.selected+"_Owner");
+    div.style.height = "4%";
+    $scope.board.selected = "";
+    $scope.board.target = "";
+    for (var temp in $scope.board.territory){
+      div = document.getElementById(temp+"_Owner");
+      div.style["-webkit-animation-iteration-count"] = "0";
+    }
+    isModalShowing.signinModal = false;
+  };
+
+  $scope.endTurnClicked = function() {
+    if (!$scope.isYourTurn){
       return;
+    }
     try {
       var move = gameLogic.createMove('endTurn', $scope.board, $scope.turnIndex, null, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
@@ -1272,60 +1505,118 @@ angular.module('myApp')
       }
     };
 
-    $scope.shouldShowUnits = function(){
-      //return true;
-      return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex)
+  $scope.shouldShowUnits = function(){
+    //return true;
+    return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex);
+  };
+
+  $scope.shouldShowNumber = function (country) {
+    var unit = $scope.board.territory[country].units;
+    return unit !== 0;
+  };
+
+  $scope.isPieceRed = function (country) {
+    return $scope.board.territory[country].owner === 0;
+  };
+
+  $scope.isPieceRed = function (country) {
+    return $scope.board.territory[country].owner === 0;
+  };    
+
+  $scope.getCountry = function(){
+    return $scope.board.selected;
+  };
+  $scope.getTurn = function () {
+    return $scope.turnIndex;
+  };
+  $scope.getNumber = function (country) {
+    return $scope.board.territory[country].units;
+  };
+  $scope.getUnit = function (player) {
+    return $scope.board.players[player].remainUnits;
+  };
+  $scope.getMovableUnits = function () {
+    if ($scope.board.selected !== ""){
+      var country = $scope.board.selected;
+      return $scope.board.territory[country].units-1;
+    }else{
+      return 0;
     }
+  };
 
-    $scope.shouldShowNumber = function (country) {
-      var unit = $scope.board.territory[country].units;
-      return unit !== 0;
-    };
-
-    $scope.isPieceRed = function (country) {
-      return $scope.board.territory[country].owner === 0;
-    };
-
-    $scope.isPieceRed = function (country) {
-      return $scope.board.territory[country].owner === 0;
-    };    
-
-    $scope.getCountry = function(){
-      return $scope.board.selected;
+  $scope.getMinMovableUnits = function () {
+    if ($scope.board.selected !== "" && $scope.board.phase === 3){
+      var country = $scope.board.selected;
+      if ($scope.board.territory[country].units >= 4){
+        return 3;
+      }
+      else if ($scope.board.territory[country].units === 3){
+        return 2;
+      }
+      else if ($scope.board.territory[country].units === 2){
+        return 1;
+      }
+      else{
+        return 0;
+      }
+    }else{
+      return 0;
     }
-    $scope.getTurn = function () {
-      return $scope.turnIndex;
-    };
-    $scope.getNumber = function (country) {
-      return $scope.board.territory[country].units;
-    };
-    $scope.getUnit = function (player) {
-      return $scope.board.players[player].remainUnits;
-    };
+  };
 
-    $scope.getPhase = function () {
-      if ($scope.board.phase === 1)
-        return 'deploy';
-      else if ($scope.board.phase === 2)
-        return 'reinforce';
-      else if ($scope.board.phase === 3)
-        return 'attack';
-      else
-        return 'fortify';
-    };
-    $scope.getDices = function(){
-      return $scope.dice;
+  $scope.getPhase = function () {
+    if ($scope.board.phase === 1){
+      return 'deploy';
     }
+    else if ($scope.board.phase === 2){
+      return 'reinforce';
+    }
+    else if ($scope.board.phase === 3){
+      return 'attack';
+    }
+    else{
+      return 'fortify';
+    }
+  };
+  $scope.getDices = function(){
+    return $scope.dice;
+  };
 
-    $scope.getImageSrc = function(country) {
-      return $scope.board.territory[country].owner === 0 ? "red.png" : "green.png";
-    };
-    
-    gameService.setGame({
-      gameDeveloperEmail: "zl953@nyu.edu",
-      minNumberOfPlayers: 2,
-      maxNumberOfPlayers: 6,
-      isMoveOk: gameLogic.isMoveOk,
-      updateUI: updateUI
-    });
+  $scope.getImageSrc = function(country) {
+    return $scope.board.territory[country].owner === 0 ? "red.png" : "green.png";
+  };
+
+  var isModalShowing = {};
+  $scope.isModalShown = function (modalName) {
+    return isModalShowing[modalName];
+  };
+  $scope.dismissModal = function (modalName) {
+    delete isModalShowing[modalName];
+  };
+
+  /*
+  var gameArea = document.getElementById("gameArea");
+  var draggingStartedRowCol = null; 
+  var nextZIndex = 61;
+
+  window.handleDragEvent = handleDragEvent;
+  function handleDragEvent(type, clientX, clientY) {
+    var x = clientX - gameArea.offsetLeft;
+    var y = clientY - gameArea.offsetTop;
+    var row, col;
+    console.log('x is '+ x/gameArea.clientWidth);
+    console.log('y is '+y/gameArea.clientHeight);
+    console.log(gameArea.clientWidth);
+
+    var country;
+    if 
+  }
+  */
+  gameService.setGame({
+    gameDeveloperEmail: "zl953@nyu.edu",
+    minNumberOfPlayers: 2,
+    maxNumberOfPlayers: 2,
+    isMoveOk: gameLogic.isMoveOk,
+    updateUI: updateUI
+  });
 });
