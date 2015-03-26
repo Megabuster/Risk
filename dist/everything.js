@@ -1151,6 +1151,30 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		return res;
 	}
 
+	function checkIfMovable(board, turnIndexBeforeMove, country, targetCountry){
+		if (country === targetCountry){
+			return false;
+		}
+
+		if (board.territory[country].owner !== turnIndexBeforeMove){
+			return false;
+		}
+
+		if (board.territory[country].units === 1){
+			return false;
+		}
+
+		if (!(Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) > -1)){
+			return false;
+		}
+
+		if (board.territory[targetCountry].owner !== turnIndexBeforeMove){
+			return false;
+		}	
+		return true;
+	}
+
+
 	function checkIfWin(board, turnIndexBeforeMove, country, targetCountry, dice){
 		var i;
 		var res;
@@ -1329,7 +1353,8 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		boardIsFull: boardIsFull,
 		addOneUnitOnEachCountry: addOneUnitOnEachCountry,
 		getPossibleMoves : getPossibleMoves,
-		checkIfWin: checkIfWin
+		checkIfWin: checkIfWin,
+		checkIfMovable: checkIfMovable
 	};
 });;/*
   Created by Zhuoran on 3/01/14
@@ -1443,8 +1468,8 @@ angular.module('myApp')
             $scope.board.selected = "";
             $scope.board.target = "";
             for (var temp in $scope.board.territory){
-                var div = document.getElementById(temp+"_Owner");
-                div.style["-webkit-animation-iteration-count"] = "0";
+              var div = document.getElementById(temp+"_Owner");
+              div.style["-webkit-animation-iteration-count"] = "";
             }
           }
         }
@@ -1454,11 +1479,27 @@ angular.module('myApp')
           $scope.board.selected = country;
           var div = document.getElementById(country+"_Owner");
           div.style.height = "6%";
+          for (var neighbor in $scope.board.territory[country].neighbors){
+            if ($scope.board.territory[neighbor].owner === $scope.turnIndex){
+              div = document.getElementById(neighbor+"_Owner");
+              div.style["-webkit-animation-iteration-count"] = "3";
+            }
+          }
         }else{
           $scope.board.target = country;
-          isModalShowing.signinModal = true;
-          var div = document.getElementById($scope.board.selected+"_Owner");
-          div.style.height = "4%";
+          if (gameLogic.checkIfMovable($scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target)){
+            isModalShowing.signinModal = true;
+          }
+          else{
+            var div = document.getElementById($scope.board.selected+"_Owner");
+            div.style.height = "4%";
+            $scope.board.selected = "";
+            $scope.board.target = "";
+            for (var temp in $scope.board.territory){
+              var div = document.getElementById(temp+"_Owner");
+              div.style["-webkit-animation-iteration-count"] = "";
+            }
+          }
         }
       }
     } catch (e) {
@@ -1466,9 +1507,10 @@ angular.module('myApp')
       div.style.height = "4%";
       $scope.board.selected = "";
       $scope.board.target = "";
+      
       for (var temp in $scope.board.territory){
-          var div = document.getElementById(temp+"_Owner");
-          div.style["-webkit-animation-iteration-count"] = "0";
+        var div = document.getElementById(temp+"_Owner");
+        div.style["-webkit-animation-iteration-count"] = "";
       }
       $log.info(["country is already full in position:", country]);
       return;
@@ -1476,19 +1518,33 @@ angular.module('myApp')
   };
 
   $scope.move = function() {
-    $scope.moveUnits = parseInt(document.getElementById("moveUnits").value);
-    var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice, $scope.moveUnits);
-    $scope.isYourTurn = false; // to prevent making another move
-    gameService.makeMove(move);            
-    var div = document.getElementById($scope.board.selected+"_Owner");
-    div.style.height = "4%";
-    $scope.board.selected = "";
-    $scope.board.target = "";
-    for (var temp in $scope.board.territory){
-      div = document.getElementById(temp+"_Owner");
-      div.style["-webkit-animation-iteration-count"] = "0";
+    try{
+      for (var temp in $scope.board.territory){
+        div = document.getElementById(temp+"_Owner");
+        div.style["-webkit-animation-iteration-count"] = "";
+      }
+      $scope.moveUnits = parseInt(document.getElementById("moveUnits").value);
+      var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice, $scope.moveUnits);
+      $scope.isYourTurn = false; // to prevent making another move
+      gameService.makeMove(move);            
+      var div = document.getElementById($scope.board.selected+"_Owner");
+      div.style.height = "4%";
+      $scope.board.selected = "";
+      $scope.board.target = "";
+      isModalShowing.signinModal = false;
+    } catch (e) {
+      var div = document.getElementById($scope.board.selected+"_Owner");
+      div.style.height = "4%";
+      $scope.board.selected = "";
+      $scope.board.target = "";
+      
+      for (var temp in $scope.board.territory){
+          var div = document.getElementById(temp+"_Owner");
+          div.style["-webkit-animation-iteration-count"] = "";
+      }
+      $log.info(["You can not move to ", country]);
+      return;
     }
-    isModalShowing.signinModal = false;
   };
 
   $scope.endTurnClicked = function() {
@@ -1506,7 +1562,6 @@ angular.module('myApp')
     };
 
   $scope.shouldShowUnits = function(){
-    //return true;
     return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex);
   };
 
@@ -1594,24 +1649,6 @@ angular.module('myApp')
     delete isModalShowing[modalName];
   };
 
-  /*
-  var gameArea = document.getElementById("gameArea");
-  var draggingStartedRowCol = null; 
-  var nextZIndex = 61;
-
-  window.handleDragEvent = handleDragEvent;
-  function handleDragEvent(type, clientX, clientY) {
-    var x = clientX - gameArea.offsetLeft;
-    var y = clientY - gameArea.offsetTop;
-    var row, col;
-    console.log('x is '+ x/gameArea.clientWidth);
-    console.log('y is '+y/gameArea.clientHeight);
-    console.log(gameArea.clientWidth);
-
-    var country;
-    if 
-  }
-  */
   gameService.setGame({
     gameDeveloperEmail: "zl953@nyu.edu",
     minNumberOfPlayers: 2,
