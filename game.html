@@ -13,7 +13,7 @@
   <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
   <script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 
-  <!-- build:js dist/everything.min.js -->
+  <!-- build:js dist/everything.js -->
   <script src="src/gameLogic.js"></script>
   <script src="src/game.js"></script>
   <!-- /build -->
@@ -27,7 +27,7 @@
   <!-- /build -->
 
   <script src="http://yoav-zibin.github.io/emulator/examples/resizeMapArea.js"></script>
-  <script src="dragAndDropListeners.js"></script>
+  <!--script src="dragAndDropListeners.js"></script-->
 
   <script>
     resizeMapArea({imageId: "img_ID", mapId: "map_ID", originalWidth: 815, originalHeight: 600});
@@ -96,6 +96,10 @@
       <area id="New_Guinea" alt="New_Guinea" title="New_Guinea" shape="poly" coords="696,360,725,363,753,387,738,392,712,388" ng-click="countryClicked('New_Guinea')"  />
       <area id="Eastern_Australia" alt="Eastern_Australia" title="Eastern_Australia" shape="poly" coords="709,416,709,453,741,460,741,499,766,496,784,455,758,413,725,408" ng-click="countryClicked('Eastern_Australia')"  />
       <area id="Western_Australia" alt="Western_Australia" title="Western_Australia" shape="poly" coords="708,417,657,443,655,495,696,486,716,477,738,501,741,456,709,456" ng-click="countryClicked('Western_Australia')"  />
+
+
+
+
 
       <p class="country" ng-show="shouldShowNumber('Greenland')" id="Greenland_Units" style="position:absolute; top:16.0%;left:34.0%">{{getNumber("Greenland")}}</p> 
       <p class="country" ng-show="shouldShowNumber('Northwest_Territory')" id="Northwest_Territory_Units" style="position:absolute; top:19.0%;left:20.0%">{{getNumber("Northwest_Territory")}}</p> 
@@ -192,6 +196,10 @@
       
     </map>
     <img id="endTurn" style="position:absolute; top:92.0%;left:34.5%;width:30%" src="button.gif" ng-click="endTurnClicked()" />
+    
+    <!--div id="invisibleDivAboveAreaMap" style="position:absolute; left:0; top:0; width:100%; height:100%;"
+    onmousedown="handleInvisibleDivEvent(event, 'start')" onmouseup="handleInvisibleDivEvent(event, 'end')" onmousemove="handleInvisibleDivEvent(event, 'move')"
+    ontouchstart="handleInvisibleDivEvent(event, 'start')" ontouchend="handleInvisibleDivEvent(event, 'end')" ontouchemove="handleInvisibleDivEvent(event, 'move')"></div-->
   </div>
  
   <div class="overlayModal" ng-show="isModalShown('signinModal')" aria-hidden="true">

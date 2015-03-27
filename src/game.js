@@ -12,6 +12,9 @@ angular.module('myApp')
   resizeGameAreaService.setWidthToHeight(1.36);
 
   var moveUnits;
+  var draggingPiece = null;
+  var beforePiece = null;
+
   function sendComputerMove() {
     var items = gameLogic.getPossibleMoves($scope.board, $scope.turnIndex);
     gameService.makeMove(items[Math.floor(Math.random()*items.length)]);
@@ -65,16 +68,63 @@ angular.module('myApp')
   window.e2e_test_stateService = stateService; // to allow us to load any state in our e2e tests.
 
   $scope.countryClicked = function (country) {
-    if (!$scope.isYourTurn) {
-      return;
-    }
     try {
-      if ($scope.board.phase === 1 || $scope.board.phase === 2){
+      /*
+      if (clicking === false && startOrEnd === "move"){
+        console.log("lala");
+        return;
+      }
+      if (startOrEnd === "move"){
+          console.log("lala");
+      }
+      */
+      if ($scope.board.phase === 1){
+        /*
+        if (startOrEnd === "start"){  
+          dragFromCountry = country;
+        }
+        else if (startOrEnd === "move"){
+          console.log("lala");
+          beforePiece = document.getElementById(dragFromCountry+"_Owner");
+          beforePiece[ng-show] = false;
+          draggingPiece = document.getElementById(country+"_Owner");
+          draggingPiece[ng-show] = true;
+          dragFromCountry = country;
+        }
+        else if (startOrEnd === "end"){
+        */
+        var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
+        $scope.isYourTurn = false; // to prevent making another move
+        gameService.makeMove(move);
+      }
+
+      else if ($scope.board.phase === 2){
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       }
       else if ($scope.board.phase === 3){
+        /*
+        console.log("Clicked on country " + country + " startOrEnd=" + startOrEnd);
+        if (clicking === true && startOrEnd === "move"){
+          if (draggingPiece !== null){
+            var top = document.getElementById(country+"_Owner").style.top;
+            var left = document.getElementById(country+"_Owner").style.top;
+            console.log(top);
+            draggingPiece.style.top = top;
+            draggingPiece.style.left = left;
+          }
+          return;
+        }
+        if (startOrEnd === "start"){
+          dragFromCountry = country;
+          draggingPiece = document.getElementById(country+"_Owner");
+          return;
+        }
+        if (startOrEnd === "move"){
+          return;
+        }
+        */
         if ($scope.board.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
             $scope.board.selected = country;
@@ -146,6 +196,9 @@ angular.module('myApp')
       }
     } catch (e) {
       var div = document.getElementById($scope.board.selected+"_Owner");
+      if (div === null){
+        return;
+      }
       div.style.height = "4%";
       $scope.board.selected = "";
       $scope.board.target = "";
@@ -291,6 +344,37 @@ angular.module('myApp')
     delete isModalShowing[modalName];
   };
 
+  var startOrEnd = null;
+  var dragFromCountry = null;
+  var invisibleDivAboveAreaMap = document.getElementById("invisibleDivAboveAreaMap");
+  var myimageId = document.getElementById("img_ID");
+  var clicking = false;
+
+  $scope.dragMessage = "Drag from one color to another";
+  /*
+  window.handleInvisibleDivEvent = function (event, _startOrEnd) {
+    startOrEnd = _startOrEnd;
+    if (startOrEnd === "start"){
+      clicking = true;
+    }
+    else if (startOrEnd === "end"){
+      clicking = false;
+    }
+    console.log("handleInvisibleDivEvent:", event, startOrEnd);
+    event.preventDefault();
+
+    var touch = event.changedTouches ? event.changedTouches[0] : event;
+    var simulatedEvent = document.createEvent("MouseEvent");
+    simulatedEvent.initMouseEvent("click", true, true, window, 1,
+        touch.screenX, touch.screenY,
+        touch.clientX, touch.clientY, false,
+        false, false, false, 0, null);
+
+    invisibleDivAboveAreaMap.style.display = "none"; // Making it invisible to we find the correct elementFromPoint
+    document.elementFromPoint(touch.clientX,touch.clientY).dispatchEvent(simulatedEvent);
+    invisibleDivAboveAreaMap.style.display = "block";
+  };
+  */
   gameService.setGame({
     gameDeveloperEmail: "zl953@nyu.edu",
     minNumberOfPlayers: 2,
