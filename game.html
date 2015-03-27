@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Risk</title>
   <meta name="description" content="Risk Game">
- 
+  
   <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script> <!-- /build -->
 
@@ -32,15 +32,15 @@
   <script>
     resizeMapArea({imageId: "img_ID", mapId: "map_ID", originalWidth: 815, originalHeight: 600});
     $(document).ready(function () {
-    var holdWidth = $('#gameArea').width();
-    var holdHeight = $('#gameArea').height();
-    $(window).on('resize', function () {
+      var holdWidth = $('#gameArea').width();
+      var holdHeight = $('#gameArea').height();
+      $(window).on('resize', function () {
         temp = Math.min(($(window).width() / holdWidth), ($(window).height() / holdHeight));
         newPercentage = (temp * 100) + "%";
         $("p").css("font-size", newPercentage)
+      });
     });
-  });
-  
+    
   </script>
   <link rel="stylesheet" type="text/css" href="game.css">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
@@ -145,48 +145,48 @@
       <p class="country" ng-show="shouldShowNumber('Western_Australia')" id="Western_Australia_Units" style="position:absolute; top:75.0%;left:86.0%">{{getNumber("Western_Australia")}}</p> 
 
 
-      <img ng-show="shouldShowNumber('Greenland')" id="Greenland_Owner" style="position:absolute; top:13.0%;left:34.0%; height:4%;" ng-src="{{getImageSrc('Greenland')}}">
-      <img ng-show="shouldShowNumber('Northwest_Territory')" id="Northwest_Territory_Owner" style="position:absolute; top:19.0%;left:15.0% ;height:4%;" ng-src="{{getImageSrc('Northwest_Territory')}}">
-      <img ng-show="shouldShowNumber('Alaska')" id="Alaska_Owner" style="position:absolute; top:17.0%;left:5.0% ;height:4%;" ng-src="{{getImageSrc('Alaska')}}">
-      <img ng-show="shouldShowNumber('Alberta')" id="Alberta_Owner" style="position:absolute; top:24.0%;left:14.0% ;height:4%;" ng-src="{{getImageSrc('Alberta')}}">
-      <img ng-show="shouldShowNumber('Ontario')" id="Ontario_Owner" style="position:absolute; top:27.0%;left:20.0% ;height:4%;" ng-src="{{getImageSrc('Ontario')}}">
-      <img ng-show="shouldShowNumber('Eastern_Canada')" id="Eastern_Canada_Owner" style="position:absolute; top:27.0%;left:28.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Canada')}}">
-      <img ng-show="shouldShowNumber('Eastern_United_States')" id="Eastern_United_States_Owner" style="position:absolute; top:39.0%;left:22.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_United_States')}}">
-      <img ng-show="shouldShowNumber('Western_United_States')" id="Western_United_States_Owner" style="position:absolute; top:35.0%;left:13.0% ;height:4%;" ng-src="{{getImageSrc('Western_United_States')}}">
-      <img ng-show="shouldShowNumber('Central_America')" id="Central_America_Owner" style="position:absolute; top:45.0%;left:15.0% ;height:4%;" ng-src="{{getImageSrc('Central_America')}}">
-      <img ng-show="shouldShowNumber('Venezuela')" id="Venezuela_Owner" style="position:absolute; top:53.0%;left:24.0% ;height:4%;" ng-src="{{getImageSrc('Venezuela')}}">
-      <img ng-show="shouldShowNumber('Brazil')" id="Brazil_Owner" style="position:absolute; top:62.0%;left:31.0% ;height:4%;" ng-src="{{getImageSrc('Brazil')}}">
-      <img ng-show="shouldShowNumber('Peru')" id="Peru_Owner" style="position:absolute; top:62.5%;left:23.0% ;height:4%;" ng-src="{{getImageSrc('Peru')}}">
-      <img ng-show="shouldShowNumber('Argentina')" id="Argentina_Owner" style="position:absolute; top:72.0%;left:24.0% ;height:4%;" ng-src="{{getImageSrc('Argentina')}}">
-      <img ng-show="shouldShowNumber('Iceland')" id="Iceland_Owner" style="position:absolute; top:23.0%;left:40.0% ;height:4%;" ng-src="{{getImageSrc('Iceland')}}">
-      <img ng-show="shouldShowNumber('Great_Britain')" id="Great_Britain_Owner" style="position:absolute; top:33.0%;left:39.0% ;height:4%;" ng-src="{{getImageSrc('Great_Britain')}}">
-      <img ng-show="shouldShowNumber('Scandinavia')" id="Scandinavia_Owner" style="position:absolute; top:23.0%;left:51.0% ;height:4%;" ng-src="{{getImageSrc('Scandinavia')}}">
-      <img ng-show="shouldShowNumber('Russia')" id="Russia_Owner" style="position:absolute; top:30.0%;left:59.0% ;height:4%;" ng-src="{{getImageSrc('Russia')}}">
-      <img ng-show="shouldShowNumber('Northern_Europe')" id="Northern_Europe_Owner" style="position:absolute; top:34.0%;left:47.0% ;height:4%;" ng-src="{{getImageSrc('Northern_Europe')}}">
-      <img ng-show="shouldShowNumber('Western_Europe')" id="Western_Europe_Owner" style="position:absolute; top:43.0%;left:44.0% ;height:4%;" ng-src="{{getImageSrc('Western_Europe')}}">
-      <img ng-show="shouldShowNumber('Southern_Europe')" id="Southern_Europe_Owner" style="position:absolute; top:41.0%;left:50.0% ;height:4%;" ng-src="{{getImageSrc('Southern_Europe')}}">
-      <img ng-show="shouldShowNumber('North_Africa')" id="North_Africa_Owner" style="position:absolute; top:57.0%;left:46.0% ;height:4%;" ng-src="{{getImageSrc('North_Africa')}}">
-      <img ng-show="shouldShowNumber('Egypt')" id="Egypt_Owner" style="position:absolute; top:53.0%;left:52.0% ;height:4%;" ng-src="{{getImageSrc('Egypt')}}">
-      <img ng-show="shouldShowNumber('East_Africa')" id="East_Africa_Owner" style="position:absolute; top:62.0%;left:57.0% ;height:4%;" ng-src="{{getImageSrc('East_Africa')}}">
-      <img ng-show="shouldShowNumber('Central_Africa')" id="Central_Africa_Owner" style="position:absolute; top:68.0%;left:55.0% ;height:4%;" ng-src="{{getImageSrc('Central_Africa')}}">
-      <img ng-show="shouldShowNumber('South_Africa')" id="South_Africa_Owner" style="position:absolute; top:76.0%;left:53.0% ;height:4%;" ng-src="{{getImageSrc('South_Africa')}}">
-      <img ng-show="shouldShowNumber('Madagascar')" id="Madagascar_Owner" style="position:absolute; top:78.0%;left:63.0% ;height:4%;" ng-src="{{getImageSrc('Madagascar')}}">
-      <img ng-show="shouldShowNumber('Middle_East')" id="Middle_East_Owner" style="position:absolute; top:50.0%;left:61.0% ;height:4%;" ng-src="{{getImageSrc('Middle_East')}}">
-      <img ng-show="shouldShowNumber('India')" id="India_Owner" style="position:absolute; top:48.0%;left:73.0% ;height:4%;" ng-src="{{getImageSrc('India')}}">
-      <img ng-show="shouldShowNumber('Afghanistan')" id="Afghanistan_Owner" style="position:absolute; top:36.0%;left:67.0% ;height:4%;" ng-src="{{getImageSrc('Afghanistan')}}">
-      <img ng-show="shouldShowNumber('Ural')" id="Ural_Owner" style="position:absolute; top:29.0%;left:70.0% ;height:4%;" ng-src="{{getImageSrc('Ural')}}">
-      <img ng-show="shouldShowNumber('China')" id="China_Owner" style="position:absolute; top:41.0%;left:77.0% ;height:4%;" ng-src="{{getImageSrc('China')}}">
-      <img ng-show="shouldShowNumber('Siberia')" id="Siberia_Owner" style="position:absolute; top:17.0%;left:73.0% ;height:4%;" ng-src="{{getImageSrc('Siberia')}}">
-      <img ng-show="shouldShowNumber('Yakutsk')" id="Yakutsk_Owner" style="position:absolute; top:13.0%;left:83.0% ;height:4%;" ng-src="{{getImageSrc('Yakutsk')}}">
-      <img ng-show="shouldShowNumber('Kamchatka')" id="Kamchatka_Owner" style="position:absolute; top:14.0%;left:92.0% ;height:4%;" ng-src="{{getImageSrc('Kamchatka')}}">
-      <img ng-show="shouldShowNumber('Irkutsk')" id="Irkutsk_Owner" style="position:absolute; top:23.0%;left:80.0% ;height:4%;" ng-src="{{getImageSrc('Irkutsk')}}">
-      <img ng-show="shouldShowNumber('Mongolia')" id="Mongolia_Owner" style="position:absolute; top:32.0%;left:83.0% ;height:4%;" ng-src="{{getImageSrc('Mongolia')}}">
-      <img ng-show="shouldShowNumber('Japan')" id="Japan_Owner" style="position:absolute; top:31.0%;left:92.0% ;height:4%;" ng-src="{{getImageSrc('Japan')}}">
-      <img ng-show="shouldShowNumber('Southeast_Asia')" id="Southeast_Asia_Owner" style="position:absolute; top:50.0%;left:81.0% ;height:4%;" ng-src="{{getImageSrc('Southeast_Asia')}}">
-      <img ng-show="shouldShowNumber('Indonesia')" id="Indonesia_Owner" style="position:absolute; top:62.0%;left:79.0% ;height:4%;" ng-src="{{getImageSrc('Indonesia')}}">
-      <img ng-show="shouldShowNumber('New_Guinea')" id="New_Guinea_Owner" style="position:absolute; top:58.0%;left:86.0% ;height:4%;" ng-src="{{getImageSrc('New_Guinea')}}">
-      <img ng-show="shouldShowNumber('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Australia')}}">
-      <img ng-show="shouldShowNumber('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0% ;height:4%;" ng-src="{{getImageSrc('Western_Australia')}}">
+      <img ng-show="shouldShowImg('Greenland')" id="Greenland_Owner" style="position:absolute; top:13.0%;left:34.0%; height:4%;" ng-src="{{getImageSrc('Greenland')}}">
+      <img ng-show="shouldShowImg('Northwest_Territory')" id="Northwest_Territory_Owner" style="position:absolute; top:19.0%;left:15.0% ;height:4%;" ng-src="{{getImageSrc('Northwest_Territory')}}">
+      <img ng-show="shouldShowImg('Alaska')" id="Alaska_Owner" style="position:absolute; top:17.0%;left:5.0% ;height:4%;" ng-src="{{getImageSrc('Alaska')}}">
+      <img ng-show="shouldShowImg('Alberta')" id="Alberta_Owner" style="position:absolute; top:24.0%;left:14.0% ;height:4%;" ng-src="{{getImageSrc('Alberta')}}">
+      <img ng-show="shouldShowImg('Ontario')" id="Ontario_Owner" style="position:absolute; top:27.0%;left:20.0% ;height:4%;" ng-src="{{getImageSrc('Ontario')}}">
+      <img ng-show="shouldShowImg('Eastern_Canada')" id="Eastern_Canada_Owner" style="position:absolute; top:27.0%;left:28.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Canada')}}">
+      <img ng-show="shouldShowImg('Eastern_United_States')" id="Eastern_United_States_Owner" style="position:absolute; top:39.0%;left:22.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_United_States')}}">
+      <img ng-show="shouldShowImg('Western_United_States')" id="Western_United_States_Owner" style="position:absolute; top:35.0%;left:13.0% ;height:4%;" ng-src="{{getImageSrc('Western_United_States')}}">
+      <img ng-show="shouldShowImg('Central_America')" id="Central_America_Owner" style="position:absolute; top:45.0%;left:15.0% ;height:4%;" ng-src="{{getImageSrc('Central_America')}}">
+      <img ng-show="shouldShowImg('Venezuela')" id="Venezuela_Owner" style="position:absolute; top:53.0%;left:24.0% ;height:4%;" ng-src="{{getImageSrc('Venezuela')}}">
+      <img ng-show="shouldShowImg('Brazil')" id="Brazil_Owner" style="position:absolute; top:62.0%;left:31.0% ;height:4%;" ng-src="{{getImageSrc('Brazil')}}">
+      <img ng-show="shouldShowImg('Peru')" id="Peru_Owner" style="position:absolute; top:62.5%;left:23.0% ;height:4%;" ng-src="{{getImageSrc('Peru')}}">
+      <img ng-show="shouldShowImg('Argentina')" id="Argentina_Owner" style="position:absolute; top:72.0%;left:24.0% ;height:4%;" ng-src="{{getImageSrc('Argentina')}}">
+      <img ng-show="shouldShowImg('Iceland')" id="Iceland_Owner" style="position:absolute; top:23.0%;left:40.0% ;height:4%;" ng-src="{{getImageSrc('Iceland')}}">
+      <img ng-show="shouldShowImg('Great_Britain')" id="Great_Britain_Owner" style="position:absolute; top:33.0%;left:39.0% ;height:4%;" ng-src="{{getImageSrc('Great_Britain')}}">
+      <img ng-show="shouldShowImg('Scandinavia')" id="Scandinavia_Owner" style="position:absolute; top:23.0%;left:51.0% ;height:4%;" ng-src="{{getImageSrc('Scandinavia')}}">
+      <img ng-show="shouldShowImg('Russia')" id="Russia_Owner" style="position:absolute; top:30.0%;left:59.0% ;height:4%;" ng-src="{{getImageSrc('Russia')}}">
+      <img ng-show="shouldShowImg('Northern_Europe')" id="Northern_Europe_Owner" style="position:absolute; top:34.0%;left:47.0% ;height:4%;" ng-src="{{getImageSrc('Northern_Europe')}}">
+      <img ng-show="shouldShowImg('Western_Europe')" id="Western_Europe_Owner" style="position:absolute; top:43.0%;left:44.0% ;height:4%;" ng-src="{{getImageSrc('Western_Europe')}}">
+      <img ng-show="shouldShowImg('Southern_Europe')" id="Southern_Europe_Owner" style="position:absolute; top:41.0%;left:50.0% ;height:4%;" ng-src="{{getImageSrc('Southern_Europe')}}">
+      <img ng-show="shouldShowImg('North_Africa')" id="North_Africa_Owner" style="position:absolute; top:57.0%;left:46.0% ;height:4%;" ng-src="{{getImageSrc('North_Africa')}}">
+      <img ng-show="shouldShowImg('Egypt')" id="Egypt_Owner" style="position:absolute; top:53.0%;left:52.0% ;height:4%;" ng-src="{{getImageSrc('Egypt')}}">
+      <img ng-show="shouldShowImg('East_Africa')" id="East_Africa_Owner" style="position:absolute; top:62.0%;left:57.0% ;height:4%;" ng-src="{{getImageSrc('East_Africa')}}">
+      <img ng-show="shouldShowImg('Central_Africa')" id="Central_Africa_Owner" style="position:absolute; top:68.0%;left:55.0% ;height:4%;" ng-src="{{getImageSrc('Central_Africa')}}">
+      <img ng-show="shouldShowImg('South_Africa')" id="South_Africa_Owner" style="position:absolute; top:76.0%;left:53.0% ;height:4%;" ng-src="{{getImageSrc('South_Africa')}}">
+      <img ng-show="shouldShowImg('Madagascar')" id="Madagascar_Owner" style="position:absolute; top:78.0%;left:63.0% ;height:4%;" ng-src="{{getImageSrc('Madagascar')}}">
+      <img ng-show="shouldShowImg('Middle_East')" id="Middle_East_Owner" style="position:absolute; top:50.0%;left:61.0% ;height:4%;" ng-src="{{getImageSrc('Middle_East')}}">
+      <img ng-show="shouldShowImg('India')" id="India_Owner" style="position:absolute; top:48.0%;left:73.0% ;height:4%;" ng-src="{{getImageSrc('India')}}">
+      <img ng-show="shouldShowImg('Afghanistan')" id="Afghanistan_Owner" style="position:absolute; top:36.0%;left:67.0% ;height:4%;" ng-src="{{getImageSrc('Afghanistan')}}">
+      <img ng-show="shouldShowImg('Ural')" id="Ural_Owner" style="position:absolute; top:29.0%;left:70.0% ;height:4%;" ng-src="{{getImageSrc('Ural')}}">
+      <img ng-show="shouldShowImg('China')" id="China_Owner" style="position:absolute; top:41.0%;left:77.0% ;height:4%;" ng-src="{{getImageSrc('China')}}">
+      <img ng-show="shouldShowImg('Siberia')" id="Siberia_Owner" style="position:absolute; top:17.0%;left:73.0% ;height:4%;" ng-src="{{getImageSrc('Siberia')}}">
+      <img ng-show="shouldShowImg('Yakutsk')" id="Yakutsk_Owner" style="position:absolute; top:13.0%;left:83.0% ;height:4%;" ng-src="{{getImageSrc('Yakutsk')}}">
+      <img ng-show="shouldShowImg('Kamchatka')" id="Kamchatka_Owner" style="position:absolute; top:14.0%;left:92.0% ;height:4%;" ng-src="{{getImageSrc('Kamchatka')}}">
+      <img ng-show="shouldShowImg('Irkutsk')" id="Irkutsk_Owner" style="position:absolute; top:23.0%;left:80.0% ;height:4%;" ng-src="{{getImageSrc('Irkutsk')}}">
+      <img ng-show="shouldShowImg('Mongolia')" id="Mongolia_Owner" style="position:absolute; top:32.0%;left:83.0% ;height:4%;" ng-src="{{getImageSrc('Mongolia')}}">
+      <img ng-show="shouldShowImg('Japan')" id="Japan_Owner" style="position:absolute; top:31.0%;left:92.0% ;height:4%;" ng-src="{{getImageSrc('Japan')}}">
+      <img ng-show="shouldShowImg('Southeast_Asia')" id="Southeast_Asia_Owner" style="position:absolute; top:50.0%;left:81.0% ;height:4%;" ng-src="{{getImageSrc('Southeast_Asia')}}">
+      <img ng-show="shouldShowImg('Indonesia')" id="Indonesia_Owner" style="position:absolute; top:62.0%;left:79.0% ;height:4%;" ng-src="{{getImageSrc('Indonesia')}}">
+      <img ng-show="shouldShowImg('New_Guinea')" id="New_Guinea_Owner" style="position:absolute; top:58.0%;left:86.0% ;height:4%;" ng-src="{{getImageSrc('New_Guinea')}}">
+      <img ng-show="shouldShowImg('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Australia')}}">
+      <img ng-show="shouldShowImg('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0% ;height:4%;" ng-src="{{getImageSrc('Western_Australia')}}">
 
       <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">Player1 remain units:{{getUnit("player1")}}</p>
       <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">Player2 remain units:{{getUnit("player2")}}</p>
@@ -197,11 +197,11 @@
     </map>
     <img id="endTurn" style="position:absolute; top:92.0%;left:34.5%;width:30%" src="button.gif" ng-click="endTurnClicked()" />
     
-    <!--div id="invisibleDivAboveAreaMap" style="position:absolute; left:0; top:0; width:100%; height:100%;"
+    <div id="invisibleDivAboveAreaMap" style="position:absolute; left:0; top:0; width:100%; height:100%;"
     onmousedown="handleInvisibleDivEvent(event, 'start')" onmouseup="handleInvisibleDivEvent(event, 'end')" onmousemove="handleInvisibleDivEvent(event, 'move')"
-    ontouchstart="handleInvisibleDivEvent(event, 'start')" ontouchend="handleInvisibleDivEvent(event, 'end')" ontouchemove="handleInvisibleDivEvent(event, 'move')"></div-->
+    ontouchstart="handleInvisibleDivEvent(event, 'start')" ontouchend="handleInvisibleDivEvent(event, 'end')" ontouchemove="handleInvisibleDivEvent(event, 'move')"></div>
   </div>
- 
+  
   <div class="overlayModal" ng-show="isModalShown('signinModal')" aria-hidden="true">
     <div class="modal-backdrop in"></div>
     <div class="modal-dialog">
@@ -212,15 +212,15 @@
         </div>
         <div class="modal-footer">
           <form oninput="amount.value=moveUnits.value">
-          Move units: <input type="range" id="moveUnits"  min={{getMinMovableUnits()}} max={{getMovableUnits()}}>
-          <output name="amount" for="rangeInput">0</output>
-          <button type="button" class="btn btn-primary" ng-click="move()">
-            Move
-          </button>
+            Move units: <input type="range" id="moveUnits"  min={{getMinMovableUnits()}} max={{getMovableUnits()}}>
+            <output name="amount" for="rangeInput">0</output>
+            <button type="button" class="btn btn-primary" ng-click="move()">
+              Move
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-</body>
-</html>
+  </body>
+  </html>
