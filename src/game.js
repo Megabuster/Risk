@@ -93,12 +93,17 @@ angular.module('myApp')
         gameService.makeMove(move);
       }
 
+
       else if ($scope.board.phase === 2){
+        if (startOrEnd !== "end")
+          return;
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       }
       else if ($scope.board.phase === 3){
+        if (startOrEnd !== "end")
+          return;
         if ($scope.board.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
             $scope.board.selected = country;
@@ -141,6 +146,8 @@ angular.module('myApp')
         }
       }
       else{
+        if (startOrEnd !== "end")
+          return;
         if ($scope.board.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
             $scope.board.selected = country;
@@ -219,6 +226,8 @@ angular.module('myApp')
   };
 
   $scope.endTurnClicked = function() {
+    if (startOrEnd !== "end")
+      return;
     if (!$scope.isYourTurn){
       return;
     }
