@@ -696,7 +696,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 		if(board.players.player1.remainUnits < 0 || board.players.player2.remainUnits < 0){
 			throw new Error("No enough units!");
-
 		}
 		switch (board.phase){
 
@@ -1361,18 +1360,22 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 */
 
 angular.module('myApp')
-.controller('Ctrl', function (
-  $window, $scope, $log, $timeout,
-  gameService, stateService, gameLogic, resizeGameAreaService) {
+.controller('Ctrl', function ( $window, $scope, $log, $timeout, gameService, stateService, gameLogic, resizeGameAreaService) {
 
   'use strict';
 
   resizeGameAreaService.setWidthToHeight(1.36);
 
   var moveUnits;
-  var draggingPiece = null;
-  var beforePiece = null;
+  //var beforePiece = null;
+  var startOrEnd = null;
+  //var dragFromCountry = null;
+  var currentCountry = null;
+  var invisibleDivAboveAreaMap = document.getElementById("invisibleDivAboveAreaMap");
+  //var myimageId = document.getElementById("img_ID");
+  var clicking = false;
 
+  $scope.dragMessage = "Drag from one color to another";
   function sendComputerMove() {
     var items = gameLogic.getPossibleMoves($scope.board, $scope.turnIndex);
     gameService.makeMove(items[Math.floor(Math.random()*items.length)]);
@@ -1427,62 +1430,37 @@ angular.module('myApp')
 
   $scope.countryClicked = function (country) {
     try {
-      /*
-      if (clicking === false && startOrEnd === "move"){
-        console.log("lala");
-        return;
-      }
-      if (startOrEnd === "move"){
-          console.log("lala");
-      }
-      */
       if ($scope.board.phase === 1){
-        /*
-        if (startOrEnd === "start"){  
-          dragFromCountry = country;
+        if (clicking === false && startOrEnd === "move"){
+          return;
         }
-        else if (startOrEnd === "move"){
-          console.log("lala");
-          beforePiece = document.getElementById(dragFromCountry+"_Owner");
-          beforePiece[ng-show] = false;
-          draggingPiece = document.getElementById(country+"_Owner");
-          draggingPiece[ng-show] = true;
-          dragFromCountry = country;
+        if (startOrEnd === "move"){
+          currentCountry = country;
+          return;
         }
-        else if (startOrEnd === "end"){
-        */
+        else if (startOrEnd === "start"){  
+          currentCountry = country;
+          return;
+        }
+
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       }
 
+
       else if ($scope.board.phase === 2){
+        if (startOrEnd !== "end"){
+          return;
+        }
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       }
       else if ($scope.board.phase === 3){
-        /*
-        console.log("Clicked on country " + country + " startOrEnd=" + startOrEnd);
-        if (clicking === true && startOrEnd === "move"){
-          if (draggingPiece !== null){
-            var top = document.getElementById(country+"_Owner").style.top;
-            var left = document.getElementById(country+"_Owner").style.top;
-            console.log(top);
-            draggingPiece.style.top = top;
-            draggingPiece.style.left = left;
-          }
+        if (startOrEnd !== "end"){
           return;
         }
-        if (startOrEnd === "start"){
-          dragFromCountry = country;
-          draggingPiece = document.getElementById(country+"_Owner");
-          return;
-        }
-        if (startOrEnd === "move"){
-          return;
-        }
-        */
         if ($scope.board.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
             $scope.board.selected = country;
@@ -1525,15 +1503,20 @@ angular.module('myApp')
         }
       }
       else{
+        if (startOrEnd !== "end"){
+          return;
+        }
         if ($scope.board.selected === ""){
-          $scope.board.selected = country;
-          var div = document.getElementById(country+"_Owner");
-          div.style.height = "6%";
-          for (var neighbor in $scope.board.territory[country].neighbors){
-            if ($scope.board.territory[neighbor].owner === $scope.turnIndex){
-              div = document.getElementById(neighbor+"_Owner");
-              div.style["-webkit-animation-iteration-count"] = "3";
-            }
+          if ($scope.board.territory[country].owner === $scope.turnIndex){
+            $scope.board.selected = country;
+            var div = document.getElementById(country+"_Owner");
+            div.style.height = "6%";
+            for (var neighbor in $scope.board.territory[country].neighbors){
+              if ($scope.board.territory[neighbor].owner === $scope.turnIndex){
+                div = document.getElementById(neighbor+"_Owner");
+                div.style["-webkit-animation-iteration-count"] = "3";
+              }
+            }  
           }
         }else{
           $scope.board.target = country;
@@ -1595,12 +1578,15 @@ angular.module('myApp')
           var div = document.getElementById(temp+"_Owner");
           div.style["-webkit-animation-iteration-count"] = "";
       }
-      $log.info(["You can not move to ", country]);
+      //$log.info(["You can not move to ", country]);
       return;
     }
   };
 
   $scope.endTurnClicked = function() {
+    if (startOrEnd !== "end"){
+      return;
+    }
     if (!$scope.isYourTurn){
       return;
     }
@@ -1621,6 +1607,16 @@ angular.module('myApp')
   $scope.shouldShowNumber = function (country) {
     var unit = $scope.board.territory[country].units;
     return unit !== 0;
+  };
+
+  $scope.shouldShowImg = function (country) {
+    if (currentCountry === country){
+      return true;
+    }
+    else{
+      var unit = $scope.board.territory[country].units;
+      return unit !== 0;
+    }
   };
 
   $scope.isPieceRed = function (country) {
@@ -1691,7 +1687,12 @@ angular.module('myApp')
   };
 
   $scope.getImageSrc = function(country) {
-    return $scope.board.territory[country].owner === 0 ? "red.png" : "green.png";
+    if ($scope.board.territory[country].units === 0){
+      return $scope.turnIndex === 0 ? "red.png" : "green.png";
+    }
+    else{
+      return $scope.board.territory[country].owner === 0 ? "red.png" : "green.png";
+    }
   };
 
   var isModalShowing = {};
@@ -1702,14 +1703,7 @@ angular.module('myApp')
     delete isModalShowing[modalName];
   };
 
-  var startOrEnd = null;
-  var dragFromCountry = null;
-  var invisibleDivAboveAreaMap = document.getElementById("invisibleDivAboveAreaMap");
-  var myimageId = document.getElementById("img_ID");
-  var clicking = false;
-
-  $scope.dragMessage = "Drag from one color to another";
-  /*
+   
   window.handleInvisibleDivEvent = function (event, _startOrEnd) {
     startOrEnd = _startOrEnd;
     if (startOrEnd === "start"){
@@ -1723,16 +1717,13 @@ angular.module('myApp')
 
     var touch = event.changedTouches ? event.changedTouches[0] : event;
     var simulatedEvent = document.createEvent("MouseEvent");
-    simulatedEvent.initMouseEvent("click", true, true, window, 1,
-        touch.screenX, touch.screenY,
-        touch.clientX, touch.clientY, false,
-        false, false, false, 0, null);
+    simulatedEvent.initMouseEvent("click", true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
 
     invisibleDivAboveAreaMap.style.display = "none"; // Making it invisible to we find the correct elementFromPoint
     document.elementFromPoint(touch.clientX,touch.clientY).dispatchEvent(simulatedEvent);
     invisibleDivAboveAreaMap.style.display = "block";
   };
-  */
+  
   gameService.setGame({
     gameDeveloperEmail: "zl953@nyu.edu",
     minNumberOfPlayers: 2,

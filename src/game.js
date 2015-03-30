@@ -3,9 +3,7 @@
 */
 
 angular.module('myApp')
-.controller('Ctrl', function (
-  $window, $scope, $log, $timeout,
-  gameService, stateService, gameLogic, resizeGameAreaService) {
+.controller('Ctrl', function ( $window, $scope, $log, $timeout, gameService, stateService, gameLogic, resizeGameAreaService) {
 
   'use strict';
 
@@ -95,15 +93,17 @@ angular.module('myApp')
 
 
       else if ($scope.board.phase === 2){
-        if (startOrEnd !== "end")
+        if (startOrEnd !== "end"){
           return;
+        }
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       }
       else if ($scope.board.phase === 3){
-        if (startOrEnd !== "end")
+        if (startOrEnd !== "end"){
           return;
+        }
         if ($scope.board.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
             $scope.board.selected = country;
@@ -146,8 +146,9 @@ angular.module('myApp')
         }
       }
       else{
-        if (startOrEnd !== "end")
+        if (startOrEnd !== "end"){
           return;
+        }
         if ($scope.board.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
             $scope.board.selected = country;
@@ -220,14 +221,15 @@ angular.module('myApp')
           var div = document.getElementById(temp+"_Owner");
           div.style["-webkit-animation-iteration-count"] = "";
       }
-      $log.info(["You can not move to ", country]);
+      //$log.info(["You can not move to ", country]);
       return;
     }
   };
 
   $scope.endTurnClicked = function() {
-    if (startOrEnd !== "end")
+    if (startOrEnd !== "end"){
       return;
+    }
     if (!$scope.isYourTurn){
       return;
     }
@@ -358,10 +360,7 @@ angular.module('myApp')
 
     var touch = event.changedTouches ? event.changedTouches[0] : event;
     var simulatedEvent = document.createEvent("MouseEvent");
-    simulatedEvent.initMouseEvent("click", true, true, window, 1,
-        touch.screenX, touch.screenY,
-        touch.clientX, touch.clientY, false,
-        false, false, false, 0, null);
+    simulatedEvent.initMouseEvent("click", true, true, window, 1, touch.screenX, touch.screenY, touch.clientX, touch.clientY, false, false, false, false, 0, null);
 
     invisibleDivAboveAreaMap.style.display = "none"; // Making it invisible to we find the correct elementFromPoint
     document.elementFromPoint(touch.clientX,touch.clientY).dispatchEvent(simulatedEvent);

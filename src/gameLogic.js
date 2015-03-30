@@ -696,7 +696,6 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 		if(board.players.player1.remainUnits < 0 || board.players.player2.remainUnits < 0){
 			throw new Error("No enough units!");
-
 		}
 		switch (board.phase){
 
