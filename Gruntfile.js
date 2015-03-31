@@ -60,6 +60,7 @@ module.exports = function(grunt) {
         dest: 'dist/everything.js',
       },
     },
+    /*
     uglify: {
       options: {
         sourceMap: true,
@@ -70,6 +71,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    */
     processhtml: {
       dist: {
         files: {
@@ -77,6 +79,7 @@ module.exports = function(grunt) {
         }
       }
     },
+
     manifest: {
       generate: {
         options: {

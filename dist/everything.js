@@ -1485,6 +1485,10 @@ angular.module('myApp')
 
           if (gameLogic.checkIfWin($scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice)){
             isModalShowing.signinModal = true;
+            for (var temp in $scope.board.territory){
+              div = document.getElementById(temp+"_Owner");
+              div.style["-webkit-animation-iteration-count"] = "";
+            }
           }
           else{
             $scope.moveUnits = 0;
