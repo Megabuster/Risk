@@ -203,17 +203,21 @@
     <div id="invisibleDivAboveAreaMap" style="position:absolute; left:0; top:0; width:100%; height:100%;"
     onmousedown="handleInvisibleDivEvent(event, 'start')" onmouseup="handleInvisibleDivEvent(event, 'end')" onmousemove="handleInvisibleDivEvent(event, 'move')"
     ontouchstart="handleInvisibleDivEvent(event, 'start')" ontouchend="handleInvisibleDivEvent(event, 'end')" ontouchmove="handleInvisibleDivEvent(event, 'move')"></div>
+    </div>
 
-  <div class="overlayModal" ng-show="isModalShown('signinModal')" aria-hidden="true">
-    <div class="modal-backdrop in"></div>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" ng-click="dismissModal('signinModal')" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">How many units do you wanna move?</h4>
-        </div>
-        <div class="modal-footer">
-          <form oninput="amount.value=moveUnits.value">
+    <div class="overlayModal" ng-show="isModalShown('signinModal')" aria-hidden="true">
+      <div class="modal-backdrop in"></div>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" ng-click="dismissModal('signinModal')" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            
+
+            
+            <h4 class="modal-title" id="myModalLabel">How many units do you wanna move?</h4>
+          </div>
+          <div class="modal-footer">
+            <form oninput="amount.value=moveUnits.value">
             Move units: <input type="range" id="moveUnits"  min={{getMinMovableUnits()}} max={{getMovableUnits()}}>
             <output name="amount" for="rangeInput">0</output>
             <button type="button" class="btn btn-primary" ng-click="move()">
@@ -223,7 +227,6 @@
         </div>
       </div>
     </div>
-  </div>
 
   </body>
   </html>
