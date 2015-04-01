@@ -608,20 +608,71 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 	function getPossibleMoves(board, turnIndexBeforeMove) {
 		var possibleMoves = [];
 		var dice = {"d0":3, "d1":4, "d2":6, "d3":1, "d4":2};
-		var moveUnits = 1;
-		var moveType = "endTurn";
+		var moveUnits = 2;
+		var moveTypeList = ["endTurn", ""];
+		var countryList = [];
+		var targetCountryList = [];
 		for (var country in board.territory){
-			for (var targetCountry in board.territory){
+			if (board.territory[country].owner !== 1-turnIndexBeforeMove){
+				countryList.push(country);
+			}
+			else{
+				targetCountryList.push(country);
+			}
+		}
+
+		if (board.phase === 1){
+			for (var country in board.territory){
 				try{
-					possibleMoves.push(createMove(moveType, board, turnIndexBeforeMove, country, targetCountry, dice, moveUnits));
+					possibleMoves.push(createMove("", board, turnIndexBeforeMove, country, "", "", ""));
 				} catch (e){
 
 				}
 			}
+			return possibleMoves;
 		}
-		return possibleMoves;
-	}
 
+		else if (board.phase === 2){
+			for (var country in board.territory){
+				try{
+					possibleMoves.push(createMove("", board, turnIndexBeforeMove, country, "", "", ""));
+				} catch (e){
+
+				}
+			}
+			return possibleMoves;
+		}
+
+		else if (board.phase === 3){
+			for (var moveIndex in moveTypeList){
+				for (var countryIndex in countryList){
+					for (var targetCountryIndex in targetCountryList){
+						try{
+							possibleMoves.push(createMove(moveTypeList[moveIndex], board, turnIndexBeforeMove, countryList[countryIndex], targetCountryList[targetCountryIndex], dice, moveUnits));
+						} catch (e){
+
+						}
+					}
+				}
+			}
+			return possibleMoves;
+		}
+
+		else{
+			for (var moveIndex in moveTypeList){
+				for (var countryIndex in countryList){
+					for (var targetCountryIndex in targetCountryList){
+						try{
+							possibleMoves.push(createMove(moveTypeList[moveIndex], board, turnIndexBeforeMove, countryList[countryIndex], targetCountryList[targetCountryIndex], dice, moveUnits));
+						} catch (e){
+
+						}
+					}
+				}
+			}
+			return possibleMoves;
+		}
+	}
 
 	/**
 	 * Return true if every country is deployed with units.
