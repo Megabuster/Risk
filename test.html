@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<!-- build:[manifest] game.appcache -->
+<html lang="en">
+<!-- /build -->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Risk</title>
+  <meta name="description" content="Risk Game">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+  <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script> <!-- /build -->
+
+
+  <link rel="stylesheet" type="text/css" href="game.css">
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+</head>
+
+<body>
+  <div class="overlayModal">
+    Move units: <input type="range" id="moveUnits"  min={{getMinMovableUnits()}} max={{getMovableUnits()}}>
+  </div>
+</body>
+</html>
