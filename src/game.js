@@ -91,7 +91,7 @@ angular.module('myApp')
         gameService.makeMove(move);
       }
 
-
+      // Reinforce phase
       else if ($scope.board.phase === 2){
         if (startOrEnd !== "end"){
           return;
@@ -100,6 +100,7 @@ angular.module('myApp')
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
       }
+      // Attack phase
       else if ($scope.board.phase === 3){
         if (startOrEnd !== "end"){
           return;
@@ -132,6 +133,106 @@ angular.module('myApp')
               div = document.getElementById(temp+"_Owner");
               div.style["-webkit-animation-iteration-count"] = "";
             }
+            
+            $(function(){
+                var dice = $("#dice1");
+                $(".wrap1").append("<div id='dice_mask'></div>");//add mask
+                dice.attr("class","dice");//After clearing the last points animation
+                dice.css('cursor','default');
+                var num = $scope.dice.d0;//random num 1-6
+                dice.animate({left: '+2px'}, 100,function(){
+                    dice.addClass("dice_t");
+                }).delay(200).animate({top:'-2px'},100,function(){
+                    dice.removeClass("dice_t").addClass("dice_s");
+                }).delay(200).animate({opacity: 'show'},600,function(){
+                    dice.removeClass("dice_s").addClass("dice_e");
+                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
+                    dice.removeClass("dice_e").addClass("dice_"+num);
+                    $("#result").html("Your throwing points are<span>"+num+"</span>");
+                    dice.css('cursor','pointer');
+                    $("#dice_mask").remove();//remove mask
+                });
+            });
+
+            $(function(){
+                var dice = $("#dice2");
+                $(".wrap2").append("<div id='dice_mask'></div>");//add mask
+                dice.attr("class","dice");//After clearing the last points animation
+                dice.css('cursor','default');
+                var num = $scope.dice.d1;//random num 1-6
+                dice.animate({left: '+2px'}, 100,function(){
+                    dice.addClass("dice_t");
+                }).delay(200).animate({top:'-2px'},100,function(){
+                    dice.removeClass("dice_t").addClass("dice_s");
+                }).delay(200).animate({opacity: 'show'},600,function(){
+                    dice.removeClass("dice_s").addClass("dice_e");
+                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
+                    dice.removeClass("dice_e").addClass("dice_"+num);
+                    $("#result").html("Your throwing points are<span>"+num+"</span>");
+                    dice.css('cursor','pointer');
+                    $("#dice_mask").remove();//remove mask
+                });
+            });
+
+            $(function(){
+                var dice = $("#dice3");
+                $(".wrap3").append("<div id='dice_mask'></div>");//add mask
+                dice.attr("class","dice");//After clearing the last points animation
+                dice.css('cursor','default');
+                var num =  $scope.dice.d2;//random num 1-6
+                dice.animate({left: '+2px'}, 100,function(){
+                    dice.addClass("dice_t");
+                }).delay(200).animate({top:'-2px'},100,function(){
+                    dice.removeClass("dice_t").addClass("dice_s");
+                }).delay(200).animate({opacity: 'show'},600,function(){
+                    dice.removeClass("dice_s").addClass("dice_e");
+                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
+                    dice.removeClass("dice_e").addClass("dice_"+num);
+                    $("#result").html("Your throwing points are<span>"+num+"</span>");
+                    dice.css('cursor','pointer');
+                    $("#dice_mask").remove();//remove mask
+                });
+            });
+
+            $(function(){
+                var dice = $("#dice4");
+                $(".wrap4").append("<div id='dice_mask'></div>");//add mask
+                dice.attr("class","dice");//After clearing the last points animation
+                dice.css('cursor','default');
+                var num =  $scope.dice.d3;//random num 1-6
+                dice.animate({left: '+2px'}, 100,function(){
+                    dice.addClass("dice_t");
+                }).delay(200).animate({top:'-2px'},100,function(){
+                    dice.removeClass("dice_t").addClass("dice_s");
+                }).delay(200).animate({opacity: 'show'},600,function(){
+                    dice.removeClass("dice_s").addClass("dice_e");
+                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
+                    dice.removeClass("dice_e").addClass("dice_"+num);
+                    $("#result").html("Your throwing points are<span>"+num+"</span>");
+                    dice.css('cursor','pointer');
+                    $("#dice_mask").remove();//remove mask
+                });
+            });
+
+            $(function(){
+                var dice = $("#dice5");
+                $(".wrap5").append("<div id='dice_mask'></div>");//add mask
+                dice.attr("class","dice");//After clearing the last points animation
+                dice.css('cursor','default');
+                var num =  $scope.dice.d4; //random num 1-6
+                dice.animate({left: '+2px'}, 100,function(){
+                    dice.addClass("dice_t");
+                }).delay(200).animate({top:'-2px'},100,function(){
+                    dice.removeClass("dice_t").addClass("dice_s");
+                }).delay(200).animate({opacity: 'show'},600,function(){
+                    dice.removeClass("dice_s").addClass("dice_e");
+                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
+                    dice.removeClass("dice_e").addClass("dice_"+num);
+                    $("#result").html("Your throwing points are<span>"+num+"</span>");
+                    dice.css('cursor','pointer');
+                    $("#dice_mask").remove();//remove mask
+                });
+            });
           }
           else{
             $scope.moveUnits = 0;
@@ -149,6 +250,7 @@ angular.module('myApp')
           }
         }
       }
+      // Fortify phase
       else{
         if (startOrEnd !== "end"){
           return;
@@ -169,6 +271,10 @@ angular.module('myApp')
           $scope.board.target = country;
           if (gameLogic.checkIfMovable($scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target)){
             isModalShowing.signinModal = true;
+            for (var temp in $scope.board.territory){
+              div = document.getElementById(temp+"_Owner");
+              div.style["-webkit-animation-iteration-count"] = "";
+            }
           }
           else{
             var div = document.getElementById($scope.board.selected+"_Owner");
@@ -371,6 +477,7 @@ angular.module('myApp')
     invisibleDivAboveAreaMap.style.display = "block";
   };
   
+
   gameService.setGame({
     gameDeveloperEmail: "zl953@nyu.edu",
     minNumberOfPlayers: 2,
