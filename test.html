@@ -3,43 +3,32 @@
 <html lang="en">
 <!-- /build -->
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Risk</title>
-  <meta name="description" content="Risk Game">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-  <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script> <!-- /build -->
-
-
-  <link rel="stylesheet" type="text/css" href="game.css">
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.js"></script> 
 </head>
 
 <body>
-  <div ng-app="AngularTestApp" ng-controller="MainCtrl as mainCtrl">
+  <div ng-app="App" ng-controller="Ctrl">
     <form>
-      <input 
-      type="range" 
-      ng-model="mainCtrl.range.value" 
-      ng-attr-min="{{mainCtrl.range.min}}" 
-      ng-attr-max="{{mainCtrl.range.max}}" />
+        <input 
+            type="range"
+            ng-attr-min="{{min()}}" 
+            ng-attr-max="{{max()}}" />
     </form>
-    <div>{{mainCtrl.range.min}} -- {{mainCtrl.range.value}} -- {{mainCtrl.range.max}}</div>
+    <div>{{min()}} -- {{value()}}</div>
   </div>
   <script>
-   angular.module('AngularTestApp', [])
-    .controller('MainCtrl', [function () {
-        var self = this;
-        self.range = {
-            min: 0,
-            max: 10,
-            value: 3
-        };
-    }]);
+   angular.module('App', []).controller('Ctrl', function ($scope) {
+      $scope.min=function($scope){
+        return 1;
+      };
+      $scope.max=function($scope){
+        return 5;
+      };
+      $scope.value=function($scope){
+        return 3;
+      };
+    });
   </script>
 </body>
 </html>
