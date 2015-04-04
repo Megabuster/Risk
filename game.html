@@ -234,7 +234,7 @@
         </div>
         <div class="modal-footer">
           <form oninput="amount.value=moveUnits.value">
-            Move units: <input type="range" id="moveUnits"  ng-attr-min={{getMinMovableUnits()}} ng-attr-max={{getMovableUnits()}}>
+            Move units: <input type="range" id="moveUnits"  ng-attr-min="{{getMinMovableUnits()}}" ng-attr-max="{{getMovableUnits()}}">
             <output name="amount" for="rangeInput">0</output>
             <button type="button" class="btn btn-primary" ng-click="move()">
               Move

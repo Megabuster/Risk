@@ -17,12 +17,29 @@
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-
 </head>
 
 <body>
-  <div class="overlayModal">
-    Move units: <input type="range" id="moveUnits"  min={{2*3}} max={{5*4}}>
+  <div ng-app="AngularTestApp" ng-controller="MainCtrl as mainCtrl">
+    <form>
+      <input 
+      type="range" 
+      ng-model="mainCtrl.range.value" 
+      ng-attr-min="{{mainCtrl.range.min}}" 
+      ng-attr-max="{{mainCtrl.range.max}}" />
+    </form>
+    <div>{{mainCtrl.range.min}} -- {{mainCtrl.range.value}} -- {{mainCtrl.range.max}}</div>
   </div>
+  <script>
+   angular.module('AngularTestApp', [])
+    .controller('MainCtrl', [function () {
+        var self = this;
+        self.range = {
+            min: 0,
+            max: 10,
+            value: 3
+        };
+    }]);
+  </script>
 </body>
 </html>
