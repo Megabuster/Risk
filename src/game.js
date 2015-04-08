@@ -9,13 +9,12 @@ angular.module('myApp')
 
   resizeGameAreaService.setWidthToHeight(1.36);
 
+  $scope.selected = "";
+  $scope.target = "";
   var moveUnits;
-  //var beforePiece = null;
   var startOrEnd = null;
-  //var dragFromCountry = null;
   var currentCountry = null;
   var invisibleDivAboveAreaMap = document.getElementById("invisibleDivAboveAreaMap");
-  //var myimageId = document.getElementById("img_ID");
   var clicking = false;
 
   $scope.dragMessage = "Drag from one color to another";
@@ -105,9 +104,9 @@ angular.module('myApp')
         if (startOrEnd !== "end"){
           return;
         }
-        if ($scope.board.selected === ""){
+        if ($scope.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
-            $scope.board.selected = country;
+            $scope.selected = country;
             var div = document.getElementById(country+"_Owner");
             div.style.height = "6%";
             for (var neighbor in $scope.board.territory[country].neighbors){
@@ -119,135 +118,25 @@ angular.module('myApp')
           }
         }
         else{
-          var move = gameLogic.createRollMove($scope.dice, $scope.turnIndex);
-          gameService.makeMove(move);
-          $scope.board.target = country;
-          var attackerUnits = $scope.board.territory[$scope.board.selected].units;
-          var attackerOwner = $scope.board.territory[$scope.board.selected].owner;
-          var defenderUnits = $scope.board.territory[$scope.board.target].units;
-          var defenderOwner = $scope.board.territory[$scope.board.target].owner;
-
-          if (gameLogic.checkIfWin($scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice)){
-            isModalShowing.signinModal = true;
-            for (var temp in $scope.board.territory){
-              div = document.getElementById(temp+"_Owner");
-              div.style["-webkit-animation-iteration-count"] = "";
-            }
-            
-            $(function(){
-                var dice = $("#dice1");
-                $(".wrap1").append("<div id='dice_mask'></div>");//add mask
-                dice.attr("class","dice");//After clearing the last points animation
-                dice.css('cursor','default');
-                var num = $scope.dice.d0;//random num 1-6
-                dice.animate({left: '+2px'}, 100,function(){
-                    dice.addClass("dice_t");
-                }).delay(200).animate({top:'-2px'},100,function(){
-                    dice.removeClass("dice_t").addClass("dice_s");
-                }).delay(200).animate({opacity: 'show'},600,function(){
-                    dice.removeClass("dice_s").addClass("dice_e");
-                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
-                    dice.removeClass("dice_e").addClass("dice_"+num);
-                    $("#result").html("Your throwing points are<span>"+num+"</span>");
-                    dice.css('cursor','pointer');
-                    $("#dice_mask").remove();//remove mask
-                });
-            });
-
-            $(function(){
-                var dice = $("#dice2");
-                $(".wrap2").append("<div id='dice_mask'></div>");//add mask
-                dice.attr("class","dice");//After clearing the last points animation
-                dice.css('cursor','default');
-                var num = $scope.dice.d1;//random num 1-6
-                dice.animate({left: '+2px'}, 100,function(){
-                    dice.addClass("dice_t");
-                }).delay(200).animate({top:'-2px'},100,function(){
-                    dice.removeClass("dice_t").addClass("dice_s");
-                }).delay(200).animate({opacity: 'show'},600,function(){
-                    dice.removeClass("dice_s").addClass("dice_e");
-                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
-                    dice.removeClass("dice_e").addClass("dice_"+num);
-                    $("#result").html("Your throwing points are<span>"+num+"</span>");
-                    dice.css('cursor','pointer');
-                    $("#dice_mask").remove();//remove mask
-                });
-            });
-
-            $(function(){
-                var dice = $("#dice3");
-                $(".wrap3").append("<div id='dice_mask'></div>");//add mask
-                dice.attr("class","dice");//After clearing the last points animation
-                dice.css('cursor','default');
-                var num =  $scope.dice.d2;//random num 1-6
-                dice.animate({left: '+2px'}, 100,function(){
-                    dice.addClass("dice_t");
-                }).delay(200).animate({top:'-2px'},100,function(){
-                    dice.removeClass("dice_t").addClass("dice_s");
-                }).delay(200).animate({opacity: 'show'},600,function(){
-                    dice.removeClass("dice_s").addClass("dice_e");
-                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
-                    dice.removeClass("dice_e").addClass("dice_"+num);
-                    $("#result").html("Your throwing points are<span>"+num+"</span>");
-                    dice.css('cursor','pointer');
-                    $("#dice_mask").remove();//remove mask
-                });
-            });
-
-            $(function(){
-                var dice = $("#dice4");
-                $(".wrap4").append("<div id='dice_mask'></div>");//add mask
-                dice.attr("class","dice");//After clearing the last points animation
-                dice.css('cursor','default');
-                var num =  $scope.dice.d3;//random num 1-6
-                dice.animate({left: '+2px'}, 100,function(){
-                    dice.addClass("dice_t");
-                }).delay(200).animate({top:'-2px'},100,function(){
-                    dice.removeClass("dice_t").addClass("dice_s");
-                }).delay(200).animate({opacity: 'show'},600,function(){
-                    dice.removeClass("dice_s").addClass("dice_e");
-                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
-                    dice.removeClass("dice_e").addClass("dice_"+num);
-                    $("#result").html("Your throwing points are<span>"+num+"</span>");
-                    dice.css('cursor','pointer');
-                    $("#dice_mask").remove();//remove mask
-                });
-            });
-
-            $(function(){
-                var dice = $("#dice5");
-                $(".wrap5").append("<div id='dice_mask'></div>");//add mask
-                dice.attr("class","dice");//After clearing the last points animation
-                dice.css('cursor','default');
-                var num =  $scope.dice.d4; //random num 1-6
-                dice.animate({left: '+2px'}, 100,function(){
-                    dice.addClass("dice_t");
-                }).delay(200).animate({top:'-2px'},100,function(){
-                    dice.removeClass("dice_t").addClass("dice_s");
-                }).delay(200).animate({opacity: 'show'},600,function(){
-                    dice.removeClass("dice_s").addClass("dice_e");
-                }).delay(100).animate({left:'-2px',top:'2px'},100,function(){
-                    dice.removeClass("dice_e").addClass("dice_"+num);
-                    $("#result").html("Your throwing points are<span>"+num+"</span>");
-                    dice.css('cursor','pointer');
-                    $("#dice_mask").remove();//remove mask
-                });
-            });
-          }
-          else{
-            $scope.moveUnits = 0;
-            var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice, $scope.moveUnits);
-            $scope.isYourTurn = false; // to prevent making another move
-            gameService.makeMove(move);            
-            var div = document.getElementById($scope.board.selected+"_Owner");
+          $scope.target = country;
+          if (!gameLogic.checkIfAttackable($scope.board, $scope.turnIndex, $scope.selected, $scope.target)){
+            var div = document.getElementById($scope.selected+"_Owner");
             div.style.height = "4%";
-            $scope.board.selected = "";
-            $scope.board.target = "";
+            $scope.selected = "";
+            $scope.target = "";
             for (var temp in $scope.board.territory){
               var div = document.getElementById(temp+"_Owner");
               div.style["-webkit-animation-iteration-count"] = "";
             }
+            return;
           }
+          var rollMove = gameLogic.createRollMove($scope.dice, $scope.turnIndex);
+          var attackerUnits = $scope.board.territory[$scope.selected].units;
+          var attackerOwner = $scope.board.territory[$scope.selected].owner;
+          var defenderUnits = $scope.board.territory[$scope.target].units;
+          var defenderOwner = $scope.board.territory[$scope.target].owner;
+          isModalShowing.signinModal = true;
+          gameService.makeMove(rollMove);
         }
       }
       // Fortify phase
@@ -255,9 +144,9 @@ angular.module('myApp')
         if (startOrEnd !== "end"){
           return;
         }
-        if ($scope.board.selected === ""){
+        if ($scope.selected === ""){
           if ($scope.board.territory[country].owner === $scope.turnIndex){
-            $scope.board.selected = country;
+            $scope.selected = country;
             var div = document.getElementById(country+"_Owner");
             div.style.height = "6%";
             for (var neighbor in $scope.board.territory[country].neighbors){
@@ -268,8 +157,8 @@ angular.module('myApp')
             }  
           }
         }else{
-          $scope.board.target = country;
-          if (gameLogic.checkIfMovable($scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target)){
+          $scope.target = country;
+          if (gameLogic.checkIfMovable($scope.board, $scope.turnIndex, $scope.selected, $scope.target)){
             isModalShowing.signinModal = true;
             for (var temp in $scope.board.territory){
               div = document.getElementById(temp+"_Owner");
@@ -277,10 +166,10 @@ angular.module('myApp')
             }
           }
           else{
-            var div = document.getElementById($scope.board.selected+"_Owner");
+            var div = document.getElementById($scope.selected+"_Owner");
             div.style.height = "4%";
-            $scope.board.selected = "";
-            $scope.board.target = "";
+            $scope.selected = "";
+            $scope.target = "";
             for (var temp in $scope.board.territory){
               var div = document.getElementById(temp+"_Owner");
               div.style["-webkit-animation-iteration-count"] = "";
@@ -289,13 +178,13 @@ angular.module('myApp')
         }
       }
     } catch (e) {
-      var div = document.getElementById($scope.board.selected+"_Owner");
+      var div = document.getElementById($scope.selected+"_Owner");
       if (div === null){
         return;
       }
       div.style.height = "4%";
-      $scope.board.selected = "";
-      $scope.board.target = "";
+      $scope.selected = "";
+      $scope.target = "";
       
       for (var temp in $scope.board.territory){
         var div = document.getElementById(temp+"_Owner");
@@ -306,6 +195,29 @@ angular.module('myApp')
     }
   };
 
+  $scope.attack = function(){
+
+    if (!gameLogic.checkIfWin($scope.board, $scope.turnIndex, $scope.selected, $scope.target, $scope.dice)){
+      $scope.moveUnits = 0;
+      $scope.isYourTurn = false; // to prevent making another move
+      var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.selected, $scope.target, $scope.dice, $scope.moveUnits);
+      gameService.makeMove(move);    
+    
+      var div = document.getElementById($scope.selected+"_Owner");
+      div.style.height = "4%";
+      $scope.selected = "";
+      $scope.target = "";
+      for (var temp in $scope.board.territory){
+        var div = document.getElementById(temp+"_Owner");
+        div.style["-webkit-animation-iteration-count"] = "";
+      }
+      isMoveAvailable = false;
+      isModalShowing.signinModal = false;
+    }else{
+      isMoveAvailable = true;
+    }
+  }
+
   $scope.move = function() {
     try{
       for (var temp in $scope.board.territory){
@@ -313,19 +225,24 @@ angular.module('myApp')
         div.style["-webkit-animation-iteration-count"] = "";
       }
       $scope.moveUnits = parseInt(document.getElementById("moveUnits").value);
-      var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.board.selected, $scope.board.target, $scope.dice, $scope.moveUnits);
+      var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.selected, $scope.target, $scope.dice, $scope.moveUnits);
       $scope.isYourTurn = false; // to prevent making another move
       gameService.makeMove(move);            
-      var div = document.getElementById($scope.board.selected+"_Owner");
+      var div = document.getElementById($scope.selected+"_Owner");
       div.style.height = "4%";
-      $scope.board.selected = "";
-      $scope.board.target = "";
+      $scope.selected = "";
+      $scope.target = "";
+      for (var temp in $scope.board.territory){
+        var div = document.getElementById(temp+"_Owner");
+        div.style["-webkit-animation-iteration-count"] = "";
+      }
       isModalShowing.signinModal = false;
+      return;
     } catch (e) {
-      var div = document.getElementById($scope.board.selected+"_Owner");
+      var div = document.getElementById($scope.selected+"_Owner");
       div.style.height = "4%";
-      $scope.board.selected = "";
-      $scope.board.target = "";
+      $scope.selected = "";
+      $scope.target = "";
       
       for (var temp in $scope.board.territory){
           var div = document.getElementById(temp+"_Owner");
@@ -354,7 +271,7 @@ angular.module('myApp')
     };
 
   $scope.shouldShowUnits = function(){
-    return ($scope.board.phase === 4 && $scope.board.selected !== "" && $scope.board.territory[$scope.board.selected].owner === $scope.turnIndex);
+    return ($scope.board.phase === 4 && $scope.selected !== "" && $scope.board.territory[$scope.selected].owner === $scope.turnIndex);
   };
 
   $scope.shouldShowNumber = function (country) {
@@ -381,7 +298,7 @@ angular.module('myApp')
   };    
 
   $scope.getCountry = function(){
-    return $scope.board.selected;
+    return $scope.selected;
   };
   $scope.getTurn = function () {
     return $scope.turnIndex;
@@ -393,8 +310,8 @@ angular.module('myApp')
     return $scope.board.players[player].remainUnits;
   };
   $scope.getMovableUnits = function () {
-    if ($scope.board.selected !== ""){
-      var country = $scope.board.selected;
+    if ($scope.selected !== ""){
+      var country = $scope.selected;
       return $scope.board.territory[country].units-1;
     }else{
       return 0;
@@ -402,8 +319,8 @@ angular.module('myApp')
   };
 
   $scope.getMinMovableUnits = function () {
-    if ($scope.board.selected !== "" && $scope.board.phase === 3){
-      var country = $scope.board.selected;
+    if ($scope.selected !== "" && $scope.board.phase === 3){
+      var country = $scope.selected;
       if ($scope.board.territory[country].units >= 4){
         return 3;
       }
@@ -420,6 +337,41 @@ angular.module('myApp')
       return 0;
     }
   };
+
+  $scope.isDiceOneShow = function(){
+    return $scope.board.phase === 3;
+  }
+
+  $scope.isDiceTwoShow = function(){
+    if ($scope.board.phase === 3 && $scope.selected !== ""){
+      var country = $scope.selected;
+      return $scope.board.territory[country].units >= 3;
+    }else{
+      return false;
+    }
+  }
+
+  $scope.isDiceThreeShow = function(){
+    if ($scope.board.phase === 3 && $scope.selected !== ""){
+      var country = $scope.selected;
+      return $scope.board.territory[country].units >= 4;
+    }else{
+      return false;
+    }
+  }
+
+  $scope.isDiceFourShow = function(){
+    return $scope.board.phase === 3;
+  }
+
+  $scope.isDiceFiveShow = function(){
+    if ($scope.board.phase === 3 && $scope.target !== undefined && $scope.target !== ""){
+      var country = $scope.target;
+      return $scope.board.territory[country].units >= 2;
+    }else{
+      return false;
+    }
+  }
 
   $scope.getPhase = function () {
     if ($scope.board.phase === 1){
@@ -455,8 +407,14 @@ angular.module('myApp')
   $scope.dismissModal = function (modalName) {
     delete isModalShowing[modalName];
   };
-
-   
+  var isMoveAvailable = false;
+  $scope.isMoveShown = function () {
+    return isMoveAvailable || $scope.board.phase === 4;
+  };
+  $scope.isAttackShown = function () {
+    return (!isMoveAvailable && $scope.board.phase === 3);
+  };
+  
   window.handleInvisibleDivEvent = function (event, _startOrEnd) {
     startOrEnd = _startOrEnd;
     if (startOrEnd === "start"){

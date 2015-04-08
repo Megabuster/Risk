@@ -7,7 +7,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 
 	function getInitialBoard(totalPlayers) {
 		
-		return {"territory" : 
+		var board = {"territory" : 
 		{
 			"Alaska" : {
 				"name" : "Alaska" ,
@@ -564,10 +564,10 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		},
 			// 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
 			"phase" : 1,
-			"selected" : "",
-			"target" : "",
+			//"selected" : "",
+			//"target" : "",
 			"totalPlayers" : totalPlayers,
-			"temp" : 0,
+			//"temp" : 0,
 			"players" : {
 				"player1" : {
 					"totalTerritories" : 0,
@@ -592,6 +592,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 				}
 			},
 		};
+		return board;
 	}
 
 	function getWinner(board){
@@ -1224,6 +1225,29 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		return true;
 	}
 
+	function checkIfAttackable(board, turnIndexBeforeMove, country, targetCountry){
+		if (country === targetCountry){
+			return false;
+		}
+
+		if (board.territory[country].owner !== turnIndexBeforeMove){
+			return false;
+		}
+
+		if (board.territory[country].units === 1){
+			return false;
+		}
+
+		if (!(Object.keys(board.territory[country].neighbors).indexOf(board.territory[targetCountry].name) > -1)){
+			return false;
+		}
+
+		if (board.territory[targetCountry].owner === turnIndexBeforeMove){
+			return false;
+		}	
+		return true;
+	}
+
 
 	function checkIfWin(board, turnIndexBeforeMove, country, targetCountry, dice){
 		var i;
@@ -1404,6 +1428,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 		addOneUnitOnEachCountry: addOneUnitOnEachCountry,
 		getPossibleMoves : getPossibleMoves,
 		checkIfWin: checkIfWin,
-		checkIfMovable: checkIfMovable
+		checkIfMovable: checkIfMovable,
+		checkIfAttackable: checkIfAttackable
 	};
 });

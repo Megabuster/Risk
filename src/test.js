@@ -626,8 +626,9 @@ function helper(board){
       board.territory[key].units++; 
   }
   board.territory.New_Guinea.owner = 1;
-  board.territory.Western_Australia.units = 14;
-  board.territory.Eastern_Australia.units = 3;
+  board.territory.Western_Australia.units = 3;
+  board.territory.Eastern_Australia.units = 13;
+  //board.territory.New_Guinea.units = 3;
 
   board.players.player1.totalTerritories = 41;
   board.players.player2.totalTerritories = 1;
@@ -659,7 +660,7 @@ helper(board4);
 var delta5 = {"moveType": null, "country": "Eastern_Australia", "targetCountry":"", "moveUnits":0};
 var board5 = getInitialBoard(2);
 helper(board5);
-board5.territory.Eastern_Australia.units = 4;
+board5.territory.Eastern_Australia.units = 14;
 board5.players.player1.remainUnits = 0;
 board5.phase = 3;
 
@@ -677,7 +678,11 @@ var matchState3 = {
   currentVisibleTo: {},
 };
 
-var stateService = window.e2e_test_stateService;
+var w = Window;
+var stateService = w.e2e_test_stateService;
 stateService.setMatchState(matchState3);
 stateService.setPlayMode('passAndPlay');
-angular.element(document).scope().$apply();
+w.angular.element(document).scope().$apply();
+
+
+
