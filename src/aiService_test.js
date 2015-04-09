@@ -1,5 +1,11 @@
-function getInitialBoard(totalPlayers) {
-  return {"territory" : 
+describe("aiService", function() {
+
+  'use strict';
+
+  var _aiService;
+  function getInitialBoard(totalPlayers) {
+    
+    var board = {"territory" : 
     {
       "Alaska" : {
         "name" : "Alaska" ,
@@ -506,8 +512,6 @@ function getInitialBoard(totalPlayers) {
         "units" : 0
       },
 
-
-
       "Indonesia" : {
         "name" : "Indonesia" ,
         "neighbors" : {
@@ -556,133 +560,171 @@ function getInitialBoard(totalPlayers) {
       }
 
     },
-    // 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
-    "phase" : 1,
-    "selected" : "",
-    "totalPlayers" : totalPlayers,
-    " temp" : 0,
-    "players" : {
-      "player1" : {
-        "totalTerritories" : 0,
-        "remainUnits" : 30,
-        "Australia" : 0,
-        "Asia" : 0,
-        "Africa" : 0,
-        "Europe" : 0,
-        "South_America" : 0,
-        "North_America" : 0
+      // 1 means first deploy, 2 means second deploy, 3 means reinforce, 4 means attack, 5 means fortify
+      "phase" : 1,
+      //"selected" : "",
+      //"target" : "",
+      "totalPlayers" : totalPlayers,
+      //"temp" : 0,
+      "players" : {
+        "player1" : {
+          "totalTerritories" : 0,
+          "remainUnits" : 30,
+          "Australia" : 0,
+          "Asia" : 0,
+          "Africa" : 0,
+          "Europe" : 0,
+          "South_America" : 0,
+          "North_America" : 0
+        },
+
+        "player2" : {
+          "totalTerritories" : 0,
+          "remainUnits" : 30,
+          "Australia" : 0,
+          "Asia" : 0,
+          "Africa" : 0,
+          "Europe" : 0,
+          "South_America" : 0,
+          "North_America" : 0
+        }
       },
-
-      "player2" : {
-        "totalTerritories" : 0,
-        "remainUnits" : 30,
-        "Australia" : 0,
-        "Asia" : 0,
-        "Africa" : 0,
-        "Europe" : 0,
-        "South_America" : 0,
-        "North_America" : 0
-      }
-    },
-  };
-}
-
-
-function addOneUnitOnEachCountry(board){
-  var index = 1;
-  for (var key in board.territory){
-      index = 1 - index;
-      board.territory[key].owner =  index;
-      board.territory[key].units++; 
+    };
+    return board;
   }
-  board.players.player1.totalTerritories = 21;
-  board.players.player2.totalTerritories = 21;
 
-  board.players.player1.remainUnits = 9;
-  board.players.player2.remainUnits = 9;
+  function addOneUnitOnEachCountry(board){
+    var index = 1;
+    for (var key in board.territory){
+        index = 1 - index;
+        board.territory[key].owner =  index;
+        board.territory[key].units++; 
+    }
+    board.territory.China.owner = null;
+    board.territory.China.units = 0;
 
-  board.players.player1.North_America = 5;
-  board.players.player2.North_America = 4;
+    board.players.player1.totalTerritories = 20;
+    board.players.player2.totalTerritories = 21;
 
-  board.players.player1.South_America = 2;
-  board.players.player2.South_America = 2;
+    board.players.player1.remainUnits = 10;
+    board.players.player2.remainUnits = 9;
 
-  board.players.player1.Europe = 3;
-  board.players.player2.Europe = 4;
-  
-  board.players.player1.Africa = 3;
-  board.players.player2.Africa = 3;
-  
-  board.players.player1.Asia = 6;
-  board.players.player2.Asia = 6;
-  
-  board.players.player1.Australia = 2;
-  board.players.player2.Australia = 2;
-}
+    board.players.player1.North_America = 5;
+    board.players.player2.North_America = 4;
 
-function helper(board){
-  for (var key in board.territory){
-      board.territory[key].owner =  0;
-      board.territory[key].units++; 
+    board.players.player1.South_America = 2;
+    board.players.player2.South_America = 2;
+
+    board.players.player1.Europe = 3;
+    board.players.player2.Europe = 4;
+    
+    board.players.player1.Africa = 3;
+    board.players.player2.Africa = 3;
+    
+    board.players.player1.Asia = 5;
+    board.players.player2.Asia = 6;
+    
+    board.players.player1.Australia = 2;
+    board.players.player2.Australia = 2;
   }
-  board.territory.New_Guinea.owner = 1;
-  board.territory.Western_Australia.units = 3;
-  board.territory.Eastern_Australia.units = 13;
-  //board.territory.New_Guinea.units = 3;
 
-  board.players.player1.totalTerritories = 41;
-  board.players.player2.totalTerritories = 1;
+  function helper(board){
+    var index = 1;
+    for (var key in board.territory){
+        board.territory[key].owner =  index;
+        board.territory[key].units++; 
+    }
 
-  board.players.player1.remainUnits = 1;
-  board.players.player2.remainUnits = 5;
+    board.phase = 2;
 
-  board.players.player1.North_America = 9;
+    board.territory.China.owner = 0;
+    board.territory.China.units = 2;
 
-  board.players.player1.South_America = 4;
+    board.players.player1.totalTerritories = 1;
+    board.players.player2.totalTerritories = 41;
 
-  board.players.player1.Europe = 7;
+    board.players.player1.remainUnits = 10;
+    board.players.player2.remainUnits = 9;
+
+    board.players.player1.North_America = 0;
+    board.players.player2.North_America = 9;
+
+    board.players.player1.South_America = 0;
+    board.players.player2.South_America = 4;
+
+    board.players.player1.Europe = 0;
+    board.players.player2.Europe = 7;
+    
+    board.players.player1.Africa = 0;
+    board.players.player2.Africa = 6;
+    
+    board.players.player1.Asia = 1;
+    board.players.player2.Asia = 10;
+    
+    board.players.player1.Australia = 0;
+    board.players.player2.Australia = 4;
+  }
+
+  beforeEach(module("myApp"));
+
+  beforeEach(inject(function (aiService) {
+    _aiService = aiService;
+  }));
+
+  it("computer finds an proper country to deploy", function() {
+    var board = getInitialBoard(2);
+    addOneUnitOnEachCountry(board);
+    var move = _aiService.createComputerMove(board, 0);
+    var boardAfter = angular.copy(board);
+    boardAfter.territory.China.owner = 0;
+    boardAfter.territory.China.units = 1;
+    boardAfter.players.player1.Asia++;
+    boardAfter.players.player1.totalTerritories++;
+    boardAfter.players.player1.remainUnits--;
+    
+    var expectedMove =
+        [ {set: {key: "diceRoll", value: false}},
+          {"setTurn" : {"turnIndex" : 1}},
+          {"set": {"key": "board", "value": boardAfter}},
+          {"set": {"key": "delta", "value": {"moveType": "", "country": "China", "targetCountry":"", "moveUnits":""}}}]
+    expect(angular.equals(move, expectedMove)).toBe(true);
+  });
+
+  it("computer finds an proper country to reinforce", function() {
+    var board = getInitialBoard(2);
+    helper(board);
+    var move = _aiService.createComputerMove(board, 0);
+    console.log(move[2]);
+    var boardAfter = angular.copy(board);
+    boardAfter.territory.China.owner = 0;
+    boardAfter.territory.China.units++;
+    boardAfter.players.player1.remainUnits--;
+    
+    var expectedMove =
+        [ {set: {key: "diceRoll", value: false}},
+          {"setTurn" : {"turnIndex" : 0}},
+          {"set": {"key": "board", "value": boardAfter}},
+          {"set": {"key": "delta", "value": {"moveType": "", "country": "China", "targetCountry":"", "moveUnits":""}}}]
+    console.log(expectedMove[2]);
+    expect(angular.equals(move, expectedMove)).toBe(true);
+  });
   
-  board.players.player1.Africa = 6;
-  
-  board.players.player1.Asia = 12;
-  
-  board.players.player1.Australia = 3;
-  board.players.player2.Australia = 1;
-  board.phase = 2;
-}
-
-
-
-var delta4 = {"moveType": null, "country": "Eastern_Australia", "targetCountry":"", "moveUnits":0};
-var board4 = getInitialBoard(2);
-helper(board4);
-
-var delta5 = {"moveType": null, "country": "Eastern_Australia", "targetCountry":"", "moveUnits":0};
-var board5 = getInitialBoard(2);
-helper(board5);
-board5.territory.Eastern_Australia.units = 14;
-board5.players.player1.remainUnits = 0;
-board5.phase = 3;
-
-var matchState3 = {
-  turnIndexBeforeMove: 0,
-  turnIndex: 0,
-  endMatchScores: null,
-  lastMove: [{set: {key: "diceRoll", value: false}},
-        {setTurn: {turnIndex: 0}},
-        {set: {key: 'board', value: board5}},
-        {set: {key: 'delta', value: delta5}}],
-  lastState: {board: board4, delta: delta4},
-  currentState: {board: board5, delta: delta5},
-  lastVisibleTo: {},
-  currentVisibleTo: {},
-};
-
-var w = Window;
-var stateService = w.e2e_test_stateService;
-stateService.setMatchState(matchState3);
-stateService.setPlayMode('passAndPlay');
-w.angular.element(document).scope().$apply();
-
-
-
+  it("computer finds an proper country to reinforce", function() {
+    var board = getInitialBoard(2);
+    helper(board);
+    var move = _aiService.createComputerMove(board, 0);
+    console.log(move[2]);
+    var boardAfter = angular.copy(board);
+    boardAfter.territory.China.owner = 0;
+    boardAfter.territory.China.units++;
+    boardAfter.players.player1.remainUnits--;
+    
+    var expectedMove =
+        [ {set: {key: "diceRoll", value: false}},
+          {"setTurn" : {"turnIndex" : 0}},
+          {"set": {"key": "board", "value": boardAfter}},
+          {"set": {"key": "delta", "value": {"moveType": "", "country": "China", "targetCountry":"", "moveUnits":""}}}]
+    console.log(expectedMove[2]);
+    expect(angular.equals(move, expectedMove)).toBe(true);
+  });
+});

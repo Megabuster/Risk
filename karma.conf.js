@@ -2,8 +2,6 @@
 // Generated on Wed Feb 18 2015 16:45:24 GMT-0500 (EST)
 
 module.exports = function(config) {
-  'use strict';
-
   config.set({
 
     // base path that will be used to resolve all patterns (eg. files, exclude)
@@ -19,8 +17,9 @@ module.exports = function(config) {
     files: [
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js',
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-mocks.js',
-      'gameLogic.js',
-      //'gameLogic_test_ChenZhu.js'
+      'src/gameLogic.js',
+      'src/aiService.js',
+      'src/aiService_test.js'
     ],
 
 
@@ -33,24 +32,15 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     
     
-    preprocessors: {
-       'gameLogic.js': ['coverage']
-    },
-    
+   
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: ['progress'],
 
-    
-    coverageReporter: {
-        type : 'html',
-        dir : 'coverage/'
-    },
-    
+
     // web server port
-    port: 8888,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -68,13 +58,11 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox', 'Chrome'],
+    browsers: ['Chrome'],
 
     plugins : [
-        'karma-firefox-launcher',
         'karma-chrome-launcher',
         'karma-jasmine',
-        'karma-coverage'
     ],
 
     // Continuous Integration mode

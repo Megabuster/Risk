@@ -237,6 +237,7 @@ angular.module('myApp')
         div.style["-webkit-animation-iteration-count"] = "";
       }
       isModalShowing.signinModal = false;
+      isMoveAvailable = false;
       return;
     } catch (e) {
       var div = document.getElementById($scope.selected+"_Owner");

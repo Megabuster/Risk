@@ -1670,6 +1670,7 @@ angular.module('myApp')
         div.style["-webkit-animation-iteration-count"] = "";
       }
       isModalShowing.signinModal = false;
+      isMoveAvailable = false;
       return;
     } catch (e) {
       var div = document.getElementById($scope.selected+"_Owner");
@@ -1876,4 +1877,16 @@ angular.module('myApp')
     isMoveOk: gameLogic.isMoveOk,
     updateUI: updateUI
   });
+});
+;angular.module('myApp')
+.factory('aiService', function(gameLogic) {
+  'use strict';
+
+  function createComputerMove(board, playerIndex) {
+
+    var items = gameLogic.getPossibleMoves(board, playerIndex);
+    return(items[Math.floor(Math.random()*items.length)]);
+  }
+
+  return {createComputerMove: createComputerMove};
 });

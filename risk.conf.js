@@ -17,11 +17,9 @@ module.exports = function(config) {
     files: [
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js',
       'http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-mocks.js',
-      'gameLogic.js',
-      'gameLogic_test',
-      'game.js',
-      'game.html',
-      'game.css'
+      'src/gameLogic.js',
+      'src/aiService.js',
+      'src/aiService_test.js'
     ],
 
 
@@ -48,7 +46,6 @@ module.exports = function(config) {
     },
     
     // web server port
-    port: 8888,
 
 
     // enable / disable colors in the output (reporters and logs)
@@ -66,13 +63,11 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox', 'Chrome'],
+    browsers: ['Chrome'],
 
     plugins : [
-        'karma-firefox-launcher',
         'karma-chrome-launcher',
         'karma-jasmine',
-        'karma-coverage'
     ],
 
     // Continuous Integration mode
