@@ -3,7 +3,7 @@
 */
 
 angular.module('myApp')
-.controller('Ctrl', function ( $window, $scope, $log, $timeout, gameService, stateService, gameLogic, resizeGameAreaService) {
+.controller('Ctrl', function ( $window, $scope, $log, $timeout, $translate, gameService, stateService, gameLogic, resizeGameAreaService) {
 
   'use strict';
 

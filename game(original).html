@@ -28,13 +28,6 @@
   <script src="http://yoav-zibin.github.io/emulator/stateService.js"></script>
   <!-- /build -->
 
-  <script>
-  window.angularTranslationLanguages = ['en', 'chs'];
-  </script>
-  <!-- build:js http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js -->
-  <script src="http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.js"></script>
-  <!-- /build -->
-
   <script src="http://yoav-zibin.github.io/emulator/examples/resizeMapArea.js"></script>
   <!--script src="dragAndDropListeners.js"></script-->
 
@@ -188,11 +181,11 @@
       <img ng-show="shouldShowImg('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Australia')}}">
       <img ng-show="shouldShowImg('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0% ;height:4%;" ng-src="{{getImageSrc('Western_Australia')}}">
 
-      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">{{ 'P1_UNIT_REMAIN' | translate }}{{getUnit("player1")}}</p>
-      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">{{ 'P2_UNIT_REMAIN' | translate }}{{getUnit("player2")}}</p>
-      <p class="help" id="phase" style="position:absolute; top:3.0%;left:40%">{{ 'CURRENT_PHASE' | translate }}{{getPhase()}}</p>       
-      <p class="help" id="turnIndex" style="position:absolute; top:94.0%;left:7%">{{ 'PLAYER_TURN1' | translate }}{{getTurn()+1}}{{ 'PLAYER_TURN2' | translate }}</p>       
-      <p class="help" id="chose country" style="position:absolute; top:94.0%;left:72%">{{ 'CHOOSE' | translate }}{{getCountry()}}</p>       
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">Player1 remain units:{{getUnit("player1")}}</p>
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">Player2 remain units:{{getUnit("player2")}}</p>
+      <p class="help" id="phase" style="position:absolute; top:3.0%;left:40%">Current phase:{{getPhase()}}</p>       
+      <p class="help" id="turnIndex" style="position:absolute; top:94.0%;left:7%">It's player{{getTurn()+1}}'s turn</p>       
+      <p class="help" id="chose country" style="position:absolute; top:94.0%;left:72%">You have chosen {{getCountry()}}</p>       
       
     </map>
     <img id="endTurn" style="position:absolute; top:92.0%;left:34.5%;width:30%" src="button.gif" ng-click="endTurnClicked()" />
@@ -207,8 +200,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel" ng-show="isMoveShown()">{{ 'WIN_AND_MOVE' | translate }}</h4>
-          <h4 class="modal-title" id="myModalLabel" ng-show="isAttackShown()">{{ 'CLICK_AND_ATTACK' | translate }}</h4>
+          <h4 class="modal-title" id="myModalLabel" ng-show="isMoveShown()">You win! How many units do you wanna move?</h4>
+          <h4 class="modal-title" id="myModalLabel" ng-show="isAttackShown()">Please click on Attack to make an attack</h4>
         </div>
         <div class="modal-footer">
           <form oninput="amount.value=moveUnits.value" ng-show="isMoveShown()">
