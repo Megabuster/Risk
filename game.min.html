@@ -9,12 +9,19 @@
 
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
 
-  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-  <!--script src="http://code.jquery.com/ui/1.11.3/jquery-ui.js"></script-->
+  <!-- For the game rules/instructions, I use carousel from Angular UI + Bootstrap -->
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular-touch.min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js"></script>
 
-  <script src="dist/everything.min.js"></script>
+  <script src="dist/everything.js"></script>
 
   <script src="http://yoav-zibin.github.io/emulator/dist/gameServices.min.js"></script>
+
+  <script>
+  window.angularTranslationLanguages = ['en', 'chs'];
+  </script>
+  <script src="http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js"></script>
 
   <script src="http://yoav-zibin.github.io/emulator/examples/resizeMapArea.js"></script>
   <!--script src="dragAndDropListeners.js"></script-->
@@ -32,8 +39,140 @@
 
 <body ng-cloak ng-controller="Ctrl">
 
+  <div class="overlayModal" ng-show="isHelpModalShown" aria-hidden="true">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" ng-click="isHelpModalShown = false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">
+            Rules of Risk
+          </h4>
+        </div>
+        <div class="modal-body">
+          <carousel style="height: 120px">
+            <slide>
+              <table style="position: relative; left:15%;">
+                <tr >
+                  <td style="width:100px;">
+                    At first, you can put your piece
+                    on any empty country
+                  </td>
+                  <td>
+                    <img src="imgs/1.jpg" style="height:120px; ">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:15%;">
+                <tr>
+                  <td style="width:100px;">
+                  Then you can put pieces on your territory after
+                  all countries occupied
+                  </td>
+                  <td>
+                    <img src="imgs/2.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:15%;">
+                <tr>
+                  <td style="width:100px;">
+                  After all players use up all their units,
+                  it becomes reinforce phase
+                  </td>
+                  <td>
+                    <img src="imgs/3.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:10%;">
+                <tr>
+                  <td style="width:150px;">
+                  After reinforce phase, it goes into attack phase.
+                  You can attack adjacent enemy country with your 
+                  country that has more than one units
+                  </td>
+                  <td>
+                    <img src="imgs/4.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:15%;">
+                <tr>
+                  <td style="width:100px;">
+                  Click on attack to make an actual attack
+                  </td>
+                  <td>
+                    <img src="imgs/5.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:15%;">
+                <tr>
+                  <td style="width:100px;">
+                  Then you can click on END TURN button on the bottom
+                  to go into next phase(fortify)
+                  </td>
+                  <td>
+                    <img src="imgs/6.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:10%;">
+                <tr>
+                  <td style="width:150px;">
+                  In the fortify phase, you can fortify your adjacent 
+                  country with your country that has more than one units
+                  </td>
+                  <td>
+                    <img src="imgs/7.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+            <slide>
+              <table style="position: relative; left:15%;">
+                <tr>
+                  <td style="width:100px;">
+                  Then you can click on END TURN button to end your turn
+                  </td>
+                  <td>
+                    <img src="imgs/8.jpg" style="height:120px;">
+                  </td>
+                </tr>
+              </table>
+            </slide>
+          </carousel>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" ng-click="isHelpModalShown = false">
+            close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="gameArea" >
-    <img id="img_ID" width="100%" height="100%" src="http://www.badgehungry.com/blog/wp-content/uploads/2010/05/Risk01.jpg" usemap="#map" border="0" alt="" />
+    <img id="img_ID" width="100%" height="100%" src="backGround.jpg" usemap="#map" border="0" alt="" />
+
+    <div style="position:absolute; bottom:2%; left: 2%">
+      <span ng-click="isHelpModalShown = true"
+        class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+    </div>
+
     <map name="map" id="map_ID">
       <area id="Greenland" alt="Greenland" title="Greenland"  shape="poly" coords="277,162,283,143,312,125,328,74,310,73,284,61,267,73,233,91,227,104,250,108,258,140,264,160" style="outline:none;" target="_self" ng-click="countryClicked('Greenland')"  />
       <area id="Northwest_Territory" alt="Northwest_Territory" title="Northwest_Territory" shape="poly" coords="173,149,206,127,199,89,88,110,74,110,76,142" ng-click="countryClicked('Northwest_Territory')"  />
@@ -169,11 +308,11 @@
       <img ng-show="shouldShowImg('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Australia')}}">
       <img ng-show="shouldShowImg('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0% ;height:4%;" ng-src="{{getImageSrc('Western_Australia')}}">
 
-      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">Player1 remain units:{{getUnit("player1")}}</p>
-      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">Player2 remain units:{{getUnit("player2")}}</p>
-      <p class="help" id="phase" style="position:absolute; top:3.0%;left:40%">Current phase:{{getPhase()}}</p>       
-      <p class="help" id="turnIndex" style="position:absolute; top:94.0%;left:7%">It's player{{getTurn()+1}}'s turn</p>       
-      <p class="help" id="chose country" style="position:absolute; top:94.0%;left:72%">You have chosen {{getCountry()}}</p>       
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">{{ 'P1_UNIT_REMAIN' | translate }}{{getUnit("player1")}}</p>
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">{{ 'P2_UNIT_REMAIN' | translate }}{{getUnit("player2")}}</p>
+      <p class="help" id="phase" style="position:absolute; top:3.0%;left:40%">{{ 'CURRENT_PHASE' | translate }}{{getPhase()}}</p>       
+      <p class="help" id="turnIndex" style="position:absolute; top:94.0%;left:7%">{{ 'PLAYER_TURN1' | translate }}{{getTurn()+1}}{{ 'PLAYER_TURN2' | translate }}</p>       
+      <p class="help" id="chose country" style="position:absolute; top:94.0%;left:72%">{{ 'CHOOSE' | translate }}{{getCountry()}}</p>       
       
     </map>
     <img id="endTurn" style="position:absolute; top:92.0%;left:34.5%;width:30%" src="button.gif" ng-click="endTurnClicked()" />
@@ -188,8 +327,8 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel" ng-show="isMoveShown()">You win! How many units do you wanna move?</h4>
-          <h4 class="modal-title" id="myModalLabel" ng-show="isAttackShown()">Please click on Attack to make an attack</h4>
+          <h4 class="modal-title" id="myModalLabel" ng-show="isMoveShown()">{{ 'WIN_AND_MOVE' | translate }}</h4>
+          <h4 class="modal-title" id="myModalLabel" ng-show="isAttackShown()">{{ 'CLICK_AND_ATTACK' | translate }}</h4>
         </div>
         <div class="modal-footer">
           <form oninput="amount.value=moveUnits.value" ng-show="isMoveShown()">

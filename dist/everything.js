@@ -1,7 +1,7 @@
 /*
 	Created by Zhuoran on 2/24/14
 */
-angular.module('myApp',[]).factory('gameLogic', function(){
+angular.module('myApp',['ngTouch', 'ui.bootstrap']).factory('gameLogic', function(){
 
 	'use strict';
 
@@ -1436,7 +1436,7 @@ angular.module('myApp',[]).factory('gameLogic', function(){
 */
 
 angular.module('myApp')
-.controller('Ctrl', function ( $window, $scope, $log, $timeout, gameService, stateService, gameLogic, resizeGameAreaService) {
+.controller('Ctrl', function ( $window, $scope, $log, $timeout, $translate, gameService, stateService, gameLogic, resizeGameAreaService) {
 
   'use strict';
 
