@@ -99,7 +99,7 @@ module.exports = function(grunt) {
             'button.gif',
             'green.png',
             'red.png',
-            'background.jpg',
+            'backGround.jpg',
             'imgs/1.jpg',
             'imgs/2.jpg',
             'imgs/3.jpg',
