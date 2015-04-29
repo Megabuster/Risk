@@ -1506,6 +1506,7 @@ angular.module('myApp')
   $scope.countryClicked = function (country) {
     try {
       if ($scope.board.phase === 1){
+        console.log(startOrEnd);
         if (clicking === false && startOrEnd === "move"){
           return;
         }
@@ -1517,7 +1518,6 @@ angular.module('myApp')
           currentCountry = country;
           return;
         }
-
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
         gameService.makeMove(move);
@@ -1611,6 +1611,7 @@ angular.module('myApp')
         }
       }
     } catch (e) {
+      console.log('lala');
       var div = document.getElementById($scope.selected+"_Owner");
       if (div === null){
         return;
@@ -1682,7 +1683,6 @@ angular.module('myApp')
           var div = document.getElementById(temp+"_Owner");
           div.style["-webkit-animation-iteration-count"] = "";
       }
-      //$log.info(["You can not move to ", country]);
       return;
     }
   };
@@ -1771,41 +1771,6 @@ angular.module('myApp')
       return 0;
     }
   };
-
-  $scope.isDiceOneShow = function(){
-    return $scope.board.phase === 3;
-  }
-
-  $scope.isDiceTwoShow = function(){
-    if ($scope.board.phase === 3 && $scope.selected !== ""){
-      var country = $scope.selected;
-      return $scope.board.territory[country].units >= 3;
-    }else{
-      return false;
-    }
-  }
-
-  $scope.isDiceThreeShow = function(){
-    if ($scope.board.phase === 3 && $scope.selected !== ""){
-      var country = $scope.selected;
-      return $scope.board.territory[country].units >= 4;
-    }else{
-      return false;
-    }
-  }
-
-  $scope.isDiceFourShow = function(){
-    return $scope.board.phase === 3;
-  }
-
-  $scope.isDiceFiveShow = function(){
-    if ($scope.board.phase === 3 && $scope.target !== undefined && $scope.target !== ""){
-      var country = $scope.target;
-      return $scope.board.territory[country].units >= 2;
-    }else{
-      return false;
-    }
-  }
 
   $scope.getPhase = function () {
     if ($scope.board.phase === 1){

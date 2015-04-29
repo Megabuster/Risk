@@ -46,8 +46,7 @@
         <div class="modal-header">
           <button type="button" class="close" ng-click="isHelpModalShown = false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">
-            Rules of Risk
-          </h4>
+          {{ 'RULES_OF_RISK' | translate }}          </h4>
         </div>
         <div class="modal-body">
           <carousel style="height: 120px">
@@ -55,8 +54,7 @@
               <table style="position: relative; left:15%;">
                 <tr >
                   <td style="width:100px;">
-                    At first, you can put your piece
-                    on any empty country
+                    {{ 'RULES_SLIDE1' | translate}}
                   </td>
                   <td>
                     <img src="imgs/1.jpg" style="height:120px; ">
@@ -68,8 +66,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                  Then you can put pieces on your territory after
-                  all countries occupied
+                    {{ 'RULES_SLIDE2' | translate}}
                   </td>
                   <td>
                     <img src="imgs/2.jpg" style="height:120px;">
@@ -81,8 +78,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                  After all players use up all their units,
-                  it becomes reinforce phase
+                    {{ 'RULES_SLIDE3' | translate}}
                   </td>
                   <td>
                     <img src="imgs/3.jpg" style="height:120px;">
@@ -94,9 +90,7 @@
               <table style="position: relative; left:10%;">
                 <tr>
                   <td style="width:150px;">
-                  After reinforce phase, it goes into attack phase.
-                  You can attack adjacent enemy country with your 
-                  country that has more than one units
+                    {{ 'RULES_SLIDE4' | translate}}
                   </td>
                   <td>
                     <img src="imgs/4.jpg" style="height:120px;">
@@ -108,7 +102,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                  Click on attack to make an actual attack
+                    {{ 'RULES_SLIDE5' | translate}}
                   </td>
                   <td>
                     <img src="imgs/5.jpg" style="height:120px;">
@@ -120,8 +114,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                  Then you can click on END TURN button on the bottom
-                  to go into next phase(fortify)
+                    {{ 'RULES_SLIDE6' | translate}}
                   </td>
                   <td>
                     <img src="imgs/6.jpg" style="height:120px;">
@@ -133,8 +126,7 @@
               <table style="position: relative; left:10%;">
                 <tr>
                   <td style="width:150px;">
-                  In the fortify phase, you can fortify your adjacent 
-                  country with your country that has more than one units
+                    {{ 'RULES_SLIDE7' | translate}}
                   </td>
                   <td>
                     <img src="imgs/7.jpg" style="height:120px;">
@@ -146,7 +138,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                  Then you can click on END TURN button to end your turn
+                    {{ 'RULES_SLIDE8' | translate}}
                   </td>
                   <td>
                     <img src="imgs/8.jpg" style="height:120px;">
@@ -332,14 +324,14 @@
         </div>
         <div class="modal-footer">
           <form oninput="amount.value=moveUnits.value" ng-show="isMoveShown()">
-            Move units: <input type="range" id="moveUnits"  ng-attr-min="{{getMinMovableUnits()}}" ng-attr-max="{{getMovableUnits()}}" ng-show="isMoveShown()"/>
+            {{ 'MOVE_UNITS' | translate }}: <input type="range" id="moveUnits"  ng-attr-min="{{getMinMovableUnits()}}" ng-attr-max="{{getMovableUnits()}}" ng-show="isMoveShown()"/>
             <output name="amount" for="rangeInput" ng-show="isMoveShown()">0</output>
            </form>
             <button type="button" class="btn btn-primary" ng-click="attack()" ng-show="isAttackShown()">
-              Attack
+              {{ 'ATTACK' | translate }}
             </button>
             <button type="button" class="btn btn-primary" ng-click="move()" ng-show="isMoveShown()">
-              Move
+              {{ 'MOVE' | translate }}
             </button>
           </div>
         </div>

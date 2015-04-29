@@ -98,7 +98,16 @@ module.exports = function(grunt) {
             'game.css',
             'button.gif',
             'green.png',
-            'red.png'
+            'red.png',
+            'background.jpg',
+            'imgs/1.jpg',
+            'imgs/2.jpg',
+            'imgs/3.jpg',
+            'imgs/4.jpg',
+            'imgs/5.jpg',
+            'imgs/6.jpg',
+            'imgs/7.jpg',
+            'imgs/8.jpg',
           ],
           network: [
             'languages/en.js',
@@ -150,8 +159,7 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['jshint', 'karma',
-      'concat', 'uglify',
-      'processhtml', 'manifest',
+      'concat', 'processhtml', 'manifest',
       'http-server', 'protractor']);
 
 };
