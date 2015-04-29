@@ -27,15 +27,15 @@ html, body {
   user-select: none;
 }
 
-@media (max-width: 300px) {
+@media (min-width: 300px) {
   p {
-    font-size: 70%;
+    font-size: 40%;
   }
 }
 
 @media (min-width: 500px) {
   p {
-    font-size: 80%;
+    font-size: 60%;
   }
 }
 
@@ -47,7 +47,7 @@ html, body {
 
 @media (min-width: 1200px) {
   p {
-    font-size: 130%;
+    font-size: 110%;
   }
 }
  
@@ -86,6 +86,16 @@ img{
   -o-animation-iteration-count: 0;
 }
 
+.carousel-indicators li {
+  background-color: black;
+}
+.carousel-indicators .active {
+  background-color: green;
+}
+td {
+  padding:0 5px 0 5px;
+}
+
 .modal-dialog {
   z-index: 1001;
 }
@@ -98,34 +108,11 @@ img{
   width:80%;
   height:100%;
 }
-/*
 .modal-backdrop {
   z-index: 1000;
   position: absolute;
   left: 20%;
   top: 20%;
-  width:60%;
-  height:60%;
+  width:100%;
+  height:100%;
 }
-*/
-
-.wrap1{display: inline-block; width:100px; height:100px; } 
-.wrap2{display: inline-block; width:100px; height:100px; } 
-.wrap3{display: inline-block; width:100px; height:100px; } 
-
-.wrap4{display: inline-block; width:100px; height:100px; } 
-.wrap5{display: inline-block; width:100px; height:100px; } 
-
-.dice{width:90px; height:90px; background:url(http://www.goocode.net/demo/dice/dice.png) no-repeat;} 
-
-.dice_1{background-position:-5px -4px} 
-.dice_2{background-position:-5px -107px} 
-.dice_3{background-position:-5px -212px} 
-.dice_4{background-position:-5px -317px} 
-.dice_5{background-position:-5px -427px} 
-.dice_6{background-position:-5px -535px} 
-.dice_t{background-position:-5px -651px} 
-.dice_s{background-position:-5px -763px} 
-.dice_e{background-position:-5px -876px} 
-#dice_mask{width:90px; height:90px; background:#fff; opacity:0; position:absolute; 
- top:0; left:0; z-index:999} 
