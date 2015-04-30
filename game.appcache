@@ -12,6 +12,10 @@ http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/fonts/glyphicons-halflings-regula
 http://yoav-zibin.github.io/emulator/dist/gameServices.min.js
 http://yoav-zibin.github.io/emulator/angular-translate/angular-translate.min.js
 http://yoav-zibin.github.io/emulator/main.css
+http://yoav-zibin.github.io/emulator/examples/resizeMapArea.js
+http://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css
+http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css
+http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css
 dist/everything.js
 game.css
 button.gif
