@@ -1,4 +1,4 @@
-window.angularTranslationsLoaded('chs', {
+window.angularTranslationsLoaded('zh', {
   "P1_UNIT_REMAIN": "玩家1剩余部队数:",
   "P2_UNIT_REMAIN": "玩家2剩余部队数:",
   "CURRENT_PHASE": "正在进行的回合:",
