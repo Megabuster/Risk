@@ -27,7 +27,7 @@ angular.module('myApp')
     $scope.board = params.stateAfterMove.board;
     $scope.delta = params.stateAfterMove.delta;
     $scope.dice = {};
-
+    $scope.playMode = params.playMode;
     if(params.stateAfterMove.d0 !== undefined){
       $scope.dice.d0 = params.stateAfterMove.d0;
     }else {
@@ -281,6 +281,20 @@ angular.module('myApp')
   };
 
   $scope.shouldShowImg = function (country) {
+    if ($scope.playMode === "playBlack" || $scope.playMode === "playWhite"){
+      if ($scope.playMode === "playWhite"){
+        if ($scope.turnIndex === 1){
+          return false;
+        }
+      }
+
+      else{
+        if ($scope.turnIndex === 0){
+          return false;
+        }
+      }
+    }
+
     if (currentCountry === country){
       return true;
     }
