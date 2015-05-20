@@ -1714,6 +1714,7 @@ angular.module('myApp')
   };
 
   $scope.shouldShowImg = function (country) {
+    /*
     if ($scope.playMode === "playBlack" || $scope.playMode === "playWhite"){
       if ($scope.playMode === "playWhite"){
         if ($scope.turnIndex === 1){
@@ -1727,7 +1728,7 @@ angular.module('myApp')
         }
       }
     }
-
+    */
     if (currentCountry === country){
       return true;
     }
@@ -1829,6 +1830,9 @@ angular.module('myApp')
   };
   
   window.handleInvisibleDivEvent = function (event, _startOrEnd) {
+    if (!$scope.isYourTurn){
+      return;
+    }
     startOrEnd = _startOrEnd;
     if (startOrEnd === "start"){
       clicking = true;
