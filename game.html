@@ -10,7 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
   <!-- build:js http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js -->
-  <script crossorigin="anonymous" src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.js"></script> <!-- /build -->
+  <script crossorigin="anonymous" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script> <!-- /build -->
 
   <!-- For the game rules/instructions, I use carousel from Angular UI + Bootstrap -->
   <!-- build:css http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css -->
@@ -24,18 +24,17 @@
   <!-- /build -->
 
   <!-- build:js dist/everything.js -->
-  <script crossorigin="anonymous" src="src/gameLogic.js"></script>
-  <script crossorigin="anonymous" src="src/game.js"></script>
+  <script src="src/gameLogic.js"></script>
+  <script src="src/game.js"></script>
   <!-- /build -->
 
-  <script>
-  window.angularTranslationLanguages = ['en', 'zh'];
+
   </script>
   <!-- build:js http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.min.js -->
-  <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.2.js"></script>
+  <script crossorigin="anonymous" src="http://yoav-zibin.github.io/emulator/dist/turnBasedServices.3.js"></script>
   <!-- /build -->
 
-  <script>
+ <script>
     resizeMapArea({imageId: "img_ID", mapId: "map_ID", originalWidth: 815, originalHeight: 600});
 
 </script>
@@ -43,6 +42,7 @@
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
 <link rel="stylesheet" type="text/css" href="game.css">
+<link rel="stylesheet" type="text/css" href="http://yoav-zibin.github.io/emulator/main.css">
 
 </head>
 
@@ -55,7 +55,7 @@
         <div class="modal-header">
           <button type="button" class="close" ng-click="isHelpModalShown = false" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel">
-          {{ 'RULES_OF_RISK' | translate }}          </h4>
+          {{ 'RULES_OF_RISK' }}          </h4>
         </div>
         <div class="modal-body">
           <carousel style="height: 120px">
@@ -63,7 +63,7 @@
               <table style="position: relative; left:15%;">
                 <tr >
                   <td style="width:100px;">
-                    {{ 'RULES_SLIDE1' | translate}}
+                    {{ 'RULES_SLIDE1' }}
                   </td>
                   <td>
                     <img src="imgs/1.jpg" style="height:120px; ">
@@ -75,7 +75,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                    {{ 'RULES_SLIDE2' | translate}}
+                    {{ 'RULES_SLIDE2' }}
                   </td>
                   <td>
                     <img src="imgs/2.jpg" style="height:120px;">
@@ -87,7 +87,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                    {{ 'RULES_SLIDE3' | translate}}
+                    {{ 'RULES_SLIDE3' }}
                   </td>
                   <td>
                     <img src="imgs/3.jpg" style="height:120px;">
@@ -99,7 +99,7 @@
               <table style="position: relative; left:10%;">
                 <tr>
                   <td style="width:150px;">
-                    {{ 'RULES_SLIDE4' | translate}}
+                    {{ 'RULES_SLIDE4' }}
                   </td>
                   <td>
                     <img src="imgs/4.jpg" style="height:120px;">
@@ -111,7 +111,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                    {{ 'RULES_SLIDE5' | translate}}
+                    {{ 'RULES_SLIDE5' }}
                   </td>
                   <td>
                     <img src="imgs/5.jpg" style="height:120px;">
@@ -123,7 +123,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                    {{ 'RULES_SLIDE6' | translate}}
+                    {{ 'RULES_SLIDE6' }}
                   </td>
                   <td>
                     <img src="imgs/6.jpg" style="height:120px;">
@@ -135,7 +135,7 @@
               <table style="position: relative; left:10%;">
                 <tr>
                   <td style="width:150px;">
-                    {{ 'RULES_SLIDE7' | translate}}
+                    {{ 'RULES_SLIDE7' }}
                   </td>
                   <td>
                     <img src="imgs/7.jpg" style="height:120px;">
@@ -147,7 +147,7 @@
               <table style="position: relative; left:15%;">
                 <tr>
                   <td style="width:100px;">
-                    {{ 'RULES_SLIDE8' | translate}}
+                    {{ 'RULES_SLIDE8' }}
                   </td>
                   <td>
                     <img src="imgs/8.jpg" style="height:120px;">
@@ -309,11 +309,11 @@
       <img ng-show="shouldShowImg('Eastern_Australia')" id="Eastern_Australia_Owner" style="position:absolute; top:72.0%;left:91.0% ;height:4%;" ng-src="{{getImageSrc('Eastern_Australia')}}">
       <img ng-show="shouldShowImg('Western_Australia')" id="Western_Australia_Owner" style="position:absolute; top:75.0%;left:82.0% ;height:4%;" ng-src="{{getImageSrc('Western_Australia')}}">
 
-      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">{{ 'P1_UNIT_REMAIN' | translate }}{{getUnit("player1")}}</p>
-      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">{{ 'P2_UNIT_REMAIN' | translate }}{{getUnit("player2")}}</p>
-      <p class="help" id="phase" style="position:absolute; top:3.0%;left:40%">{{ 'CURRENT_PHASE' | translate }}{{getPhase()}}</p>       
-      <p class="help" id="turnIndex" style="position:absolute; top:94.0%;left:7%">{{ 'PLAYER_TURN1' | translate }}{{getTurn()+1}}{{ 'PLAYER_TURN2' | translate }}</p>       
-      <p class="help" id="chose country" style="position:absolute; top:94.0%;left:72%">{{ 'CHOOSE' | translate }}{{getCountry()}}</p>       
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:7%; ">{{ 'P1_UNIT_REMAIN'   }}{{getUnit("player1")}}</p>
+      <p class="help" id="Player_Remain_Units" style="position:absolute; top:3.0%;left:73%">{{ 'P2_UNIT_REMAIN'   }}{{getUnit("player2")}}</p>
+      <p class="help" id="phase" style="position:absolute; top:3.0%;left:40%">{{ 'CURRENT_PHASE'   }}{{getPhase()}}</p>       
+      <p class="help" id="turnIndex" style="position:absolute; top:94.0%;left:7%">{{ 'PLAYER_TURN1'   }}{{getTurn()+1}}{{ 'PLAYER_TURN2'   }}</p>       
+      <p class="help" id="chose country" style="position:absolute; top:94.0%;left:72%">{{ 'CHOOSE'   }}{{getCountry()}}</p>       
       
     </map>
     <img id="endTurn" style="position:absolute; top:92.0%;left:34.5%;width:30%" src="button.gif" ng-click="endTurnClicked()" />
@@ -328,19 +328,19 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel" ng-show="isMoveShown()">{{ 'WIN_AND_MOVE' | translate }}</h4>
-          <h4 class="modal-title" id="myModalLabel" ng-show="isAttackShown()">{{ 'CLICK_AND_ATTACK' | translate }}</h4>
+          <h4 class="modal-title" id="myModalLabel" ng-show="isMoveShown()">{{ 'WIN_AND_MOVE'   }}</h4>
+          <h4 class="modal-title" id="myModalLabel" ng-show="isAttackShown()">{{ 'CLICK_AND_ATTACK'   }}</h4>
         </div>
         <div class="modal-footer">
           <form oninput="amount.value=moveUnits.value" ng-show="isMoveShown()">
-            {{ 'MOVE_UNITS' | translate }}: <input type="range" id="moveUnits"  ng-attr-min="{{getMinMovableUnits()}}" ng-attr-max="{{getMovableUnits()}}" ng-show="isMoveShown()"/>
+            {{ 'MOVE_UNITS'   }}: <input type="range" id="moveUnits"  ng-attr-min="{{getMinMovableUnits()}}" ng-attr-max="{{getMovableUnits()}}" ng-show="isMoveShown()"/>
             <output name="amount" for="rangeInput" ng-show="isMoveShown()">0</output>
            </form>
             <button type="button" class="btn btn-primary" ng-click="attack()" ng-show="isAttackShown()">
-              {{ 'ATTACK' | translate }}
+              {{ 'ATTACK'   }}
             </button>
             <button type="button" class="btn btn-primary" ng-click="move()" ng-show="isMoveShown()">
-              {{ 'MOVE' | translate }}
+              {{ 'MOVE'   }}
             </button>
           </div>
         </div>
