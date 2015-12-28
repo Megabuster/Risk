@@ -3,11 +3,11 @@
 */
 
 angular.module('myApp')
-.controller('Ctrl', function ( $window, $scope, $log, $timeout, $translate, gameService, stateService, gameLogic, resizeGameAreaService) {
+.controller('Ctrl', function ( $window, $scope, $log, $timeout, gameLogic) {
 
   'use strict';
 
-  resizeGameAreaService.setWidthToHeight(1.36);
+  resizeGameAreaService.setWidthToHeight(1.36); 
 
   $scope.selected = "";
   $scope.target = "";
@@ -20,7 +20,7 @@ angular.module('myApp')
   $scope.dragMessage = "Drag from one color to another";
   function sendComputerMove() {
     var items = gameLogic.getPossibleMoves($scope.board, $scope.turnIndex);
-    gameService.makeMove(items[Math.floor(Math.random()*items.length)]);
+     gameService.makeMove(items[Math.floor(Math.random()*items.length)]);
   }
 
   function updateUI(params) {
@@ -87,7 +87,7 @@ angular.module('myApp')
         }
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
-        gameService.makeMove(move);
+         gameService.makeMove(move);
       }
 
       // Reinforce phase
@@ -97,7 +97,7 @@ angular.module('myApp')
         }
         var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, country, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
-        gameService.makeMove(move);
+         gameService.makeMove(move);
       }
       // Attack phase
       else if ($scope.board.phase === 3){
@@ -136,7 +136,7 @@ angular.module('myApp')
           var defenderUnits = $scope.board.territory[$scope.target].units;
           var defenderOwner = $scope.board.territory[$scope.target].owner;
           isModalShowing.signinModal = true;
-          gameService.makeMove(rollMove);
+           gameService.makeMove(rollMove);
         }
       }
       // Fortify phase
@@ -202,7 +202,7 @@ angular.module('myApp')
       $scope.moveUnits = 0;
       $scope.isYourTurn = false; // to prevent making another move
       var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.selected, $scope.target, $scope.dice, $scope.moveUnits);
-      gameService.makeMove(move);    
+       gameService.makeMove(move);    
     
       var div = document.getElementById($scope.selected+"_Owner");
       div.style.height = "4%";
@@ -228,7 +228,7 @@ angular.module('myApp')
       $scope.moveUnits = parseInt(document.getElementById("moveUnits").value);
       var move = gameLogic.createMove(null, $scope.board, $scope.turnIndex, $scope.selected, $scope.target, $scope.dice, $scope.moveUnits);
       $scope.isYourTurn = false; // to prevent making another move
-      gameService.makeMove(move);            
+       gameService.makeMove(move);            
       var div = document.getElementById($scope.selected+"_Owner");
       div.style.height = "4%";
       $scope.selected = "";
@@ -264,7 +264,7 @@ angular.module('myApp')
     try {
       var move = gameLogic.createMove('endTurn', $scope.board, $scope.turnIndex, null, null, null, null);
         $scope.isYourTurn = false; // to prevent making another move
-        gameService.makeMove(move);
+         gameService.makeMove(move);
       } catch (e) {
         $log.info(["You can not end turn because you still have remain units"]);
         return;
